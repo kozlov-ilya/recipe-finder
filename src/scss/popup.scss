@@ -1,0 +1,49 @@
+.popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  pointer-events: none;
+  touch-action: none;
+}
+
+.popup_opened {
+  pointer-events: auto;
+  touch-action: auto;
+
+  & .popup__overlay {
+    opacity: 1;
+  }
+
+  & .popup__content {
+    transform: translateY(0);
+  }
+}
+
+.popup__overlay {
+  position: fixed;
+  inset: 0;
+
+  background: var(--color-bg-overlay);
+
+  opacity: 0;
+
+  transition: opacity var(--transition-popup);
+}
+
+.popup__content {
+  position: relative;
+
+  width: 100%;
+  height: 300px;
+  padding: 1rem 1.5rem;
+  background: var(--color-bg-secondary);
+
+  transform: translateY(100%);
+  border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;
+
+  transition: transform var(--transition-popup);
+}

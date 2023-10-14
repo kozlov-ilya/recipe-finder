@@ -1,0 +1,30 @@
+:root {
+  --font-fallback: "Satoshi", sans-serif;
+  --font-family-body: var(--font-fallback);
+  --font-family-heading: var(--font-fallback);
+
+  --font-size-900: 3.052rem;
+  --font-size-800: 2.441rem;
+  --font-size-700: 1.953rem;
+  --font-size-600: 1.563rem;
+  --font-size-500: 1.25rem;
+  --font-size-400: 1rem;
+  --font-size-300: 0.8rem;
+
+  --font-size-body: var(--font-size-400);
+  --font-size-h1: var(--font-size-800);
+  --font-size-h2: var(--font-size-600);
+  --font-size-h3: var(--font-size-500);
+  --font-size-small: var(--font-size-300);
+  --line-height-body: 1.75;
+  --line-height-heading: 1.3;
+
+  --font-type-body: 400 var(--font-size-body) / var(--line-height-body)
+    var(--font-family-body);
+  --font-type-h1: 700 var(--font-size-h1) / var(--line-height-heading)
+    var(--font-family-heading);
+  --font-type-h2: 700 var(--font-size-h2) / var(--line-height-heading)
+    var(--font-family-heading);
+  --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)
+    var(--font-family-heading);
+}

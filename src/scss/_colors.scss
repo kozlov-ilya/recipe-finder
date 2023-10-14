@@ -1,0 +1,19 @@
+:root {
+  --color-gray-400: #161617;
+  --color-gray-300: #232325;
+  --color-gray-200: #2f2f32;
+  --color-yellow: #fdde55;
+
+  --color-white-400: #fff;
+  --color-white-300: hsla(0, 0%, 100%, 0.8);
+  --color-white-200: hsla(0, 0%, 100%, 0.6);
+  --color-white-100: hsla(0, 0%, 100%, 0.4);
+
+  --color-bg-primary: var(--color-gray-400);
+  --color-bg-secondary: var(--color-gray-300);
+  --color-bg-tertiary: var(--color-gray-200);
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+
+  --color-text-primary: var(--color-white-400);
+  --color-text-secondary: var(--color-white-300);
+}

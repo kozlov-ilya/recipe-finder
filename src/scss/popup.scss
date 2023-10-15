@@ -7,12 +7,10 @@
   z-index: 100;
 
   pointer-events: none;
-  touch-action: none;
 }
 
 .popup_opened {
   pointer-events: auto;
-  touch-action: auto;
 
   & .popup__overlay {
     opacity: 1;

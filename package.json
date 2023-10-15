@@ -6,8 +6,11 @@
   "scripts": {
     "serve": "webpack serve",
     "dev": "webpack --mode development",
-    "prod": "webpack --mode production"
+    "prod": "webpack --mode production",
+    "predeploy": "npm run dev",
+    "deploy": "gh-pages -d dist"
   },
+  "homepage": "https://kozlov-ilya.github.io/toxin/",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -16,6 +19,7 @@
   },
   "devDependencies": {
     "css-loader": "^6.8.1",
+    "gh-pages": "^6.0.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.3",
     "sass": "^1.69.1",

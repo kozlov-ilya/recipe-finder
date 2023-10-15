@@ -11,9 +11,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "hammerjs": "^2.0.8"
-  },
   "devDependencies": {
     "css-loader": "^6.8.1",
     "html-loader": "^4.2.0",

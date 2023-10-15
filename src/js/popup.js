@@ -28,48 +28,73 @@ const closePopup = (popupElem) => {
   popupElem.classList.remove("popup_opened");
 };
 
-const addPopupHandlers = (popupElem) => {
+const addPopupTouchHandlers = (popupElem) => {
   const popupContentElem = popupElem.querySelector(".popup__content");
   const popupOverlayElem = popupElem.querySelector(".popup__overlay");
 
-  const popupContentElemHeight = getPopupContentHeight(popupContentElem);
-  // console.log(popupContentElemHeight);
+  const popupContentHeight = getPopupContentHeight(popupContentElem);
 
-  const hammer = new Hammer(popupElem);
+  let startTouchData = {};
+  let popupSwiped = false;
 
-  hammer.add(
-    new Hammer.Pan({
-      direction: Hammer.DIRECTION_VERTICAL,
-      threshold: 0,
-    })
-  );
+  const handlePopupTouchstart = (event) => {
+    event.preventDefault();
 
-  hammer.on("panup pandown", (event) => {
-    if (event.deltaY > 0) {
-      const translateY = (event.deltaY / popupContentElemHeight) * 100;
+    popupSwiped = false;
 
-      makePopupTransformFaster(popupContentElem, popupOverlayElem);
+    startTouchData.startY = event.touches[0].clientY;
+    startTouchData.startTime = Date.now();
 
-      setPopupContentTranslateY(popupContentElem, `${translateY}%`);
-      setPopupOverlayOpacity(popupOverlayElem, 1 - translateY / 100);
+    popupElem.addEventListener("touchmove", handlePopupTouchmove);
+  };
+
+  const handlePopupTouchmove = (event) => {
+    event.preventDefault();
+
+    makePopupTransformFaster(popupContentElem, popupOverlayElem);
+
+    const currentY = event.touches[0].clientY;
+
+    const deltaY = currentY - startTouchData.startY;
+    const deltaTime = Date.now() - startTouchData.startTime;
+    const touchVelocity = deltaY / deltaTime;
+
+    if (deltaY >= 0) {
+      let contentTranslate = (deltaY / popupContentHeight) * 100;
+
+      setPopupContentTranslateY(popupContentElem, `${contentTranslate}%`);
+      setPopupOverlayOpacity(popupOverlayElem, 1 - contentTranslate / 100);
     }
-  });
 
-  hammer.on("panend", (event) => {
-    if (event.velocityY > 0.3 && event.distance > 10) {
-      /* Swiped */
-      clearPopupInlineStyles(popupContentElem, popupOverlayElem);
+    if (touchVelocity > 0.5) {
+      popupSwiped = true;
+    }
+  };
+
+  const handlePopupTouchend = (event) => {
+    event.preventDefault();
+
+    const endY = event.changedTouches[0].clientY;
+
+    const deltaY = endY - startTouchData.startY;
+
+    if (popupSwiped || deltaY > popupContentHeight * 0.7) {
       closePopup(popupElem);
-    } else {
-      clearPopupInlineStyles(popupContentElem, popupOverlayElem);
     }
-  });
+
+    clearPopupInlineStyles(popupContentElem, popupOverlayElem);
+
+    popupElem.removeEventListener("touchmove", handlePopupTouchmove);
+  };
+
+  popupElem.addEventListener("touchstart", handlePopupTouchstart);
+  popupElem.addEventListener("touchend", handlePopupTouchend);
 };
 
 export const addHandlersToAllPopups = () => {
   const popupElems = document.querySelectorAll(".popup");
 
   popupElems.forEach((popupElem) => {
-    addPopupHandlers(popupElem);
+    addPopupTouchHandlers(popupElem);
   });
 };

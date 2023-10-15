@@ -9,5 +9,4 @@ export const addFiltersButtonHandlers = () => {
   const filtersButtonElem = document.querySelector(".filters__button");
 
   filtersButtonElem.addEventListener("click", handleFiltersButtonClick);
-  filtersButtonElem.addEventListener("touchend", handleFiltersButtonClick);
 };

@@ -132,12 +132,10 @@ body {
   inset: 0;
   z-index: 100;
   pointer-events: none;
-  touch-action: none;
 }
 
 .popup_opened {
   pointer-events: auto;
-  touch-action: auto;
 }
 .popup_opened .popup__overlay {
   opacity: 1;
@@ -312,7 +310,7 @@ body {
 .recipe-card__title {
   font: var(--font-type-h3);
   color: var(--color-text-secondary);
-}`, "",{"version":3,"sources":["webpack://./src/scss/_abstract.scss","webpack://./src/scss/main.scss","webpack://./src/scss/_base.scss","webpack://./src/scss/_colors.scss","webpack://./src/scss/_fonts.scss","webpack://./src/scss/_typography.scss","webpack://./src/scss/_variables.scss","webpack://./src/scss/popup.scss"],"names":[],"mappings":"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","sourcesContent":[".text_bold {\r\n  font-weight: 700;\r\n}\r\n","@import \"./_abstract.scss\";\r\n@import \"./_base.scss\";\r\n@import \"./_colors.scss\";\r\n@import \"./_fonts.scss\";\r\n@import \"./_typography.scss\";\r\n@import \"./_variables.scss\";\r\n@import \"./popup.scss\";\r\n\r\nbody {\r\n  font: var(--font-type-body);\r\n  color: var(--color-text-primary);\r\n}\r\n\r\n.main {\r\n  min-height: 100svh;\r\n  background: var(--color-bg-primary);\r\n}\r\n\r\n.wrapper {\r\n  width: 100%;\r\n  max-width: 1280px;\r\n  margin: 0 auto;\r\n  padding: 0 8px;\r\n}\r\n\r\n.content {\r\n  display: grid;\r\n  row-gap: 10px;\r\n\r\n  padding-top: 100px;\r\n}\r\n\r\n/* SEARCH */\r\n\r\n.search {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 10px;\r\n\r\n  width: 100%;\r\n}\r\n\r\n.search__form {\r\n  display: flex;\r\n  position: relative;\r\n\r\n  height: 2.8rem;\r\n  background: var(--color-bg-tertiary);\r\n\r\n  border-radius: var(--border-radius-200);\r\n  overflow: hidden;\r\n}\r\n\r\n.search__search-icon {\r\n  display: inline-block;\r\n  position: absolute;\r\n  top: 0;\r\n  bottom: 0;\r\n  left: 10px;\r\n\r\n  width: 25px;\r\n  height: 25px;\r\n  margin: auto 0;\r\n\r\n  background: url(\"../img/search-icon.svg\");\r\n  background-repeat: no-repeat;\r\n  background-size: contain;\r\n}\r\n\r\n.search__input {\r\n  width: 100%;\r\n  height: 100%;\r\n  border: none;\r\n  outline: none;\r\n  background: transparent;\r\n\r\n  padding: 0.8rem 0.8rem 0.8rem 3rem;\r\n\r\n  font: inherit;\r\n  color: inherit;\r\n\r\n  &:focus {\r\n    outline: none;\r\n  }\r\n}\r\n\r\n.search__button {\r\n  display: none;\r\n\r\n  height: 100%;\r\n  border: 0;\r\n  margin: 0;\r\n}\r\n\r\n.filters {\r\n  width: 100%;\r\n}\r\n\r\n.filters__button {\r\n  display: grid;\r\n  place-items: center;\r\n\r\n  height: var(--button-height-m);\r\n  /* height: 100px; */\r\n  aspect-ratio: 1 / 1;\r\n  border: 0;\r\n  padding: 0;\r\n  background: var(--color-bg-tertiary);\r\n\r\n  border-radius: var(--border-radius-200);\r\n}\r\n\r\n.filters__button-svg {\r\n  /* background: #fff; */\r\n  & * {\r\n    fill: #fff;\r\n  }\r\n}\r\n\r\n/* INGREDIENTS */\r\n\r\n/* .ingredients {\r\n  width: 100%;\r\n  height: 100px;\r\n  background: var(--color-bg-secondary);\r\n\r\n  @media (width < 1024px) {\r\n    display: none;\r\n  }\r\n} */\r\n\r\n/* RECIPES */\r\n\r\n.recipes {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 0.75rem;\r\n\r\n  width: 100%;\r\n}\r\n\r\n/* RECIPE CARD */\r\n\r\n.recipe-card {\r\n  width: 100%;\r\n  background: var(--color-bg-secondary);\r\n\r\n  border-radius: var(--border-radius-400);\r\n}\r\n\r\n.recipe-card__img-wrapper {\r\n  height: 55.5vw;\r\n  overflow: hidden;\r\n  padding: 0.25rem;\r\n\r\n  border-radius: var(--border-radius-400);\r\n}\r\n\r\n.recipe-card__img {\r\n  width: 100%;\r\n  height: 100%;\r\n  object-fit: cover;\r\n\r\n  border-radius: var(--border-radius-300);\r\n}\r\n\r\n.recipe-card__description {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 1rem;\r\n\r\n  padding: 0.5rem 1rem;\r\n}\r\n\r\n.recipe-card__title {\r\n  font: var(--font-type-h3);\r\n  color: var(--color-text-secondary);\r\n}\r\n\r\n.recipe-card__cooking-time {\r\n}\r\n","*,\r\n::before,\r\n::after {\r\n  box-sizing: border-box;\r\n}\r\n\r\nhtml {\r\n  font-size: 100%; /* 16px */\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n}\r\n\r\n.preload-transitions * {\r\n  -webkit-transition: none !important;\r\n  -moz-transition: none !important;\r\n  -ms-transition: none !important;\r\n  -o-transition: none !important;\r\n  transition: none !important;\r\n}\r\n",":root {\r\n  --color-gray-400: #161617;\r\n  --color-gray-300: #232325;\r\n  --color-gray-200: #2f2f32;\r\n  --color-yellow: #fdde55;\r\n\r\n  --color-white-400: #fff;\r\n  --color-white-300: hsla(0, 0%, 100%, 0.8);\r\n  --color-white-200: hsla(0, 0%, 100%, 0.6);\r\n  --color-white-100: hsla(0, 0%, 100%, 0.4);\r\n\r\n  --color-bg-primary: var(--color-gray-400);\r\n  --color-bg-secondary: var(--color-gray-300);\r\n  --color-bg-tertiary: var(--color-gray-200);\r\n  --color-bg-overlay: rgba(0, 0, 0, 0.6);\r\n\r\n  --color-text-primary: var(--color-white-400);\r\n  --color-text-secondary: var(--color-white-300);\r\n}\r\n","@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 400;\r\n  src: url(../fonts/Satoshi-Regular.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Regular.woff) format(woff);\r\n}\r\n\r\n@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 700;\r\n  src: url(../fonts/Satoshi-Bold.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Bold.woff) format(woff);\r\n}\r\n",":root {\r\n  --font-fallback: \"Satoshi\", sans-serif;\r\n  --font-family-body: var(--font-fallback);\r\n  --font-family-heading: var(--font-fallback);\r\n\r\n  --font-size-900: 3.052rem;\r\n  --font-size-800: 2.441rem;\r\n  --font-size-700: 1.953rem;\r\n  --font-size-600: 1.563rem;\r\n  --font-size-500: 1.25rem;\r\n  --font-size-400: 1rem;\r\n  --font-size-300: 0.8rem;\r\n\r\n  --font-size-body: var(--font-size-400);\r\n  --font-size-h1: var(--font-size-800);\r\n  --font-size-h2: var(--font-size-600);\r\n  --font-size-h3: var(--font-size-500);\r\n  --font-size-small: var(--font-size-300);\r\n  --line-height-body: 1.75;\r\n  --line-height-heading: 1.3;\r\n\r\n  --font-type-body: 400 var(--font-size-body) / var(--line-height-body)\r\n    var(--font-family-body);\r\n  --font-type-h1: 700 var(--font-size-h1) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h2: 700 var(--font-size-h2) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n}\r\n",":root {\r\n  --border-radius-400: 0.875rem;\r\n  --border-radius-300: 0.75rem;\r\n  --border-radius-200: 0.5rem;\r\n\r\n  --button-height-m: 2.25rem;\r\n\r\n  --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);\r\n  --transition-popup-open: 120ms ease-out;\r\n}\r\n",".popup {\r\n  display: flex;\r\n  flex-direction: column;\r\n  justify-content: flex-end;\r\n  position: fixed;\r\n  inset: 0;\r\n  z-index: 100;\r\n\r\n  pointer-events: none;\r\n  touch-action: none;\r\n}\r\n\r\n.popup_opened {\r\n  pointer-events: auto;\r\n  touch-action: auto;\r\n\r\n  & .popup__overlay {\r\n    opacity: 1;\r\n  }\r\n\r\n  & .popup__content {\r\n    transform: translateY(0);\r\n  }\r\n}\r\n\r\n.popup__overlay {\r\n  position: fixed;\r\n  inset: 0;\r\n\r\n  background: var(--color-bg-overlay);\r\n\r\n  opacity: 0;\r\n\r\n  transition: opacity var(--transition-popup);\r\n}\r\n\r\n.popup__content {\r\n  position: relative;\r\n\r\n  width: 100%;\r\n  height: 300px;\r\n  padding: 1rem 1.5rem;\r\n  background: var(--color-bg-secondary);\r\n\r\n  transform: translateY(100%);\r\n  border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;\r\n\r\n  transition: transform var(--transition-popup);\r\n}\r\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/scss/_abstract.scss","webpack://./src/scss/main.scss","webpack://./src/scss/_base.scss","webpack://./src/scss/_colors.scss","webpack://./src/scss/_fonts.scss","webpack://./src/scss/_typography.scss","webpack://./src/scss/_variables.scss","webpack://./src/scss/popup.scss"],"names":[],"mappings":"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","sourcesContent":[".text_bold {\r\n  font-weight: 700;\r\n}\r\n","@import \"./_abstract.scss\";\n@import \"./_base.scss\";\n@import \"./_colors.scss\";\n@import \"./_fonts.scss\";\n@import \"./_typography.scss\";\n@import \"./_variables.scss\";\n@import \"./popup.scss\";\n\nbody {\n  font: var(--font-type-body);\n  color: var(--color-text-primary);\n}\n\n.main {\n  min-height: 100svh;\n  background: var(--color-bg-primary);\n}\n\n.wrapper {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n  padding: 0 8px;\n}\n\n.content {\n  display: grid;\n  row-gap: 10px;\n\n  padding-top: 100px;\n}\n\n/* SEARCH */\n\n.search {\n  display: flex;\n  flex-direction: column;\n  row-gap: 10px;\n\n  width: 100%;\n}\n\n.search__form {\n  display: flex;\n  position: relative;\n\n  height: 2.8rem;\n  background: var(--color-bg-tertiary);\n\n  border-radius: var(--border-radius-200);\n  overflow: hidden;\n}\n\n.search__search-icon {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 10px;\n\n  width: 25px;\n  height: 25px;\n  margin: auto 0;\n\n  background: url(\"../img/search-icon.svg\");\n  background-repeat: no-repeat;\n  background-size: contain;\n}\n\n.search__input {\n  width: 100%;\n  height: 100%;\n  border: none;\n  outline: none;\n  background: transparent;\n\n  padding: 0.8rem 0.8rem 0.8rem 3rem;\n\n  font: inherit;\n  color: inherit;\n\n  &:focus {\n    outline: none;\n  }\n}\n\n.search__button {\n  display: none;\n\n  height: 100%;\n  border: 0;\n  margin: 0;\n}\n\n.filters {\n  width: 100%;\n}\n\n.filters__button {\n  display: grid;\n  place-items: center;\n\n  height: var(--button-height-m);\n  /* height: 100px; */\n  aspect-ratio: 1 / 1;\n  border: 0;\n  padding: 0;\n  background: var(--color-bg-tertiary);\n\n  border-radius: var(--border-radius-200);\n}\n\n.filters__button-svg {\n  /* background: #fff; */\n  & * {\n    fill: #fff;\n  }\n}\n\n/* INGREDIENTS */\n\n/* .ingredients {\n  width: 100%;\n  height: 100px;\n  background: var(--color-bg-secondary);\n\n  @media (width < 1024px) {\n    display: none;\n  }\n} */\n\n/* RECIPES */\n\n.recipes {\n  display: flex;\n  flex-direction: column;\n  row-gap: 0.75rem;\n\n  width: 100%;\n}\n\n/* RECIPE CARD */\n\n.recipe-card {\n  width: 100%;\n  background: var(--color-bg-secondary);\n\n  border-radius: var(--border-radius-400);\n}\n\n.recipe-card__img-wrapper {\n  height: 55.5vw;\n  overflow: hidden;\n  padding: 0.25rem;\n\n  border-radius: var(--border-radius-400);\n}\n\n.recipe-card__img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n\n  border-radius: var(--border-radius-300);\n}\n\n.recipe-card__description {\n  display: flex;\n  flex-direction: column;\n  row-gap: 1rem;\n\n  padding: 0.5rem 1rem;\n}\n\n.recipe-card__title {\n  font: var(--font-type-h3);\n  color: var(--color-text-secondary);\n}\n\n.recipe-card__cooking-time {\n}\n","*,\r\n::before,\r\n::after {\r\n  box-sizing: border-box;\r\n}\r\n\r\nhtml {\r\n  font-size: 100%; /* 16px */\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n}\r\n\r\n.preload-transitions * {\r\n  -webkit-transition: none !important;\r\n  -moz-transition: none !important;\r\n  -ms-transition: none !important;\r\n  -o-transition: none !important;\r\n  transition: none !important;\r\n}\r\n",":root {\r\n  --color-gray-400: #161617;\r\n  --color-gray-300: #232325;\r\n  --color-gray-200: #2f2f32;\r\n  --color-yellow: #fdde55;\r\n\r\n  --color-white-400: #fff;\r\n  --color-white-300: hsla(0, 0%, 100%, 0.8);\r\n  --color-white-200: hsla(0, 0%, 100%, 0.6);\r\n  --color-white-100: hsla(0, 0%, 100%, 0.4);\r\n\r\n  --color-bg-primary: var(--color-gray-400);\r\n  --color-bg-secondary: var(--color-gray-300);\r\n  --color-bg-tertiary: var(--color-gray-200);\r\n  --color-bg-overlay: rgba(0, 0, 0, 0.6);\r\n\r\n  --color-text-primary: var(--color-white-400);\r\n  --color-text-secondary: var(--color-white-300);\r\n}\r\n","@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 400;\r\n  src: url(../fonts/Satoshi-Regular.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Regular.woff) format(woff);\r\n}\r\n\r\n@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 700;\r\n  src: url(../fonts/Satoshi-Bold.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Bold.woff) format(woff);\r\n}\r\n",":root {\r\n  --font-fallback: \"Satoshi\", sans-serif;\r\n  --font-family-body: var(--font-fallback);\r\n  --font-family-heading: var(--font-fallback);\r\n\r\n  --font-size-900: 3.052rem;\r\n  --font-size-800: 2.441rem;\r\n  --font-size-700: 1.953rem;\r\n  --font-size-600: 1.563rem;\r\n  --font-size-500: 1.25rem;\r\n  --font-size-400: 1rem;\r\n  --font-size-300: 0.8rem;\r\n\r\n  --font-size-body: var(--font-size-400);\r\n  --font-size-h1: var(--font-size-800);\r\n  --font-size-h2: var(--font-size-600);\r\n  --font-size-h3: var(--font-size-500);\r\n  --font-size-small: var(--font-size-300);\r\n  --line-height-body: 1.75;\r\n  --line-height-heading: 1.3;\r\n\r\n  --font-type-body: 400 var(--font-size-body) / var(--line-height-body)\r\n    var(--font-family-body);\r\n  --font-type-h1: 700 var(--font-size-h1) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h2: 700 var(--font-size-h2) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n}\r\n",":root {\r\n  --border-radius-400: 0.875rem;\r\n  --border-radius-300: 0.75rem;\r\n  --border-radius-200: 0.5rem;\r\n\r\n  --button-height-m: 2.25rem;\r\n\r\n  --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);\r\n  --transition-popup-open: 120ms ease-out;\r\n}\r\n",".popup {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n\n  pointer-events: none;\n}\n\n.popup_opened {\n  pointer-events: auto;\n\n  & .popup__overlay {\n    opacity: 1;\n  }\n\n  & .popup__content {\n    transform: translateY(0);\n  }\n}\n\n.popup__overlay {\n  position: fixed;\n  inset: 0;\n\n  background: var(--color-bg-overlay);\n\n  opacity: 0;\n\n  transition: opacity var(--transition-popup);\n}\n\n.popup__content {\n  position: relative;\n\n  width: 100%;\n  height: 300px;\n  padding: 1rem 1.5rem;\n  background: var(--color-bg-secondary);\n\n  transform: translateY(100%);\n  border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;\n\n  transition: transform var(--transition-popup);\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -868,7 +866,6 @@ const addFiltersButtonHandlers = () => {
   const filtersButtonElem = document.querySelector(".filters__button");
 
   filtersButtonElem.addEventListener("click", handleFiltersButtonClick);
-  filtersButtonElem.addEventListener("touchend", handleFiltersButtonClick);
 };
 
 
@@ -915,49 +912,74 @@ const closePopup = (popupElem) => {
   popupElem.classList.remove("popup_opened");
 };
 
-const addPopupHandlers = (popupElem) => {
+const addPopupTouchHandlers = (popupElem) => {
   const popupContentElem = popupElem.querySelector(".popup__content");
   const popupOverlayElem = popupElem.querySelector(".popup__overlay");
 
-  const popupContentElemHeight = getPopupContentHeight(popupContentElem);
-  // console.log(popupContentElemHeight);
+  const popupContentHeight = getPopupContentHeight(popupContentElem);
 
-  const hammer = new Hammer(popupElem);
+  let startTouchData = {};
+  let popupSwiped = false;
 
-  hammer.add(
-    new Hammer.Pan({
-      direction: Hammer.DIRECTION_VERTICAL,
-      threshold: 0,
-    })
-  );
+  const handlePopupTouchstart = (event) => {
+    event.preventDefault();
 
-  hammer.on("panup pandown", (event) => {
-    if (event.deltaY > 0) {
-      const translateY = (event.deltaY / popupContentElemHeight) * 100;
+    popupSwiped = false;
 
-      makePopupTransformFaster(popupContentElem, popupOverlayElem);
+    startTouchData.startY = event.touches[0].clientY;
+    startTouchData.startTime = Date.now();
 
-      setPopupContentTranslateY(popupContentElem, `${translateY}%`);
-      setPopupOverlayOpacity(popupOverlayElem, 1 - translateY / 100);
+    popupElem.addEventListener("touchmove", handlePopupTouchmove);
+  };
+
+  const handlePopupTouchmove = (event) => {
+    event.preventDefault();
+
+    makePopupTransformFaster(popupContentElem, popupOverlayElem);
+
+    const currentY = event.touches[0].clientY;
+
+    const deltaY = currentY - startTouchData.startY;
+    const deltaTime = Date.now() - startTouchData.startTime;
+    const touchVelocity = deltaY / deltaTime;
+
+    if (deltaY >= 0) {
+      let contentTranslate = (deltaY / popupContentHeight) * 100;
+
+      setPopupContentTranslateY(popupContentElem, `${contentTranslate}%`);
+      setPopupOverlayOpacity(popupOverlayElem, 1 - contentTranslate / 100);
     }
-  });
 
-  hammer.on("panend", (event) => {
-    if (event.velocityY > 0.3 && event.distance > 10) {
-      /* Swiped */
-      clearPopupInlineStyles(popupContentElem, popupOverlayElem);
+    if (touchVelocity > 0.5) {
+      popupSwiped = true;
+    }
+  };
+
+  const handlePopupTouchend = (event) => {
+    event.preventDefault();
+
+    const endY = event.changedTouches[0].clientY;
+
+    const deltaY = endY - startTouchData.startY;
+
+    if (popupSwiped || deltaY > popupContentHeight * 0.7) {
       closePopup(popupElem);
-    } else {
-      clearPopupInlineStyles(popupContentElem, popupOverlayElem);
     }
-  });
+
+    clearPopupInlineStyles(popupContentElem, popupOverlayElem);
+
+    popupElem.removeEventListener("touchmove", handlePopupTouchmove);
+  };
+
+  popupElem.addEventListener("touchstart", handlePopupTouchstart);
+  popupElem.addEventListener("touchend", handlePopupTouchend);
 };
 
 const addHandlersToAllPopups = () => {
   const popupElems = document.querySelectorAll(".popup");
 
   popupElems.forEach((popupElem) => {
-    addPopupHandlers(popupElem);
+    addPopupTouchHandlers(popupElem);
   });
 };
 

@@ -5,8 +5,12 @@ const handleFiltersButtonClick = (event) => {
   openPopup(filtersPopup);
 };
 
-export const addFiltersButtonHandlers = () => {
+const addFiltersButtonHandlers = () => {
   const filtersButtonElem = document.querySelector(".filters__button");
 
   filtersButtonElem.addEventListener("click", handleFiltersButtonClick);
+};
+
+export const addFiltersHandlers = () => {
+  addFiltersButtonHandlers();
 };

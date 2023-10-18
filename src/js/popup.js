@@ -28,30 +28,53 @@ const closePopup = (popupElem) => {
   popupElem.classList.remove("popup_opened");
 };
 
+const contentIsScrolledToTop = (popupContentElem) => {
+  return popupContentElem.scrollTop === 0;
+};
+
 const addPopupTouchHandlers = (popupElem) => {
   const popupContentElem = popupElem.querySelector(".popup__content");
   const popupOverlayElem = popupElem.querySelector(".popup__overlay");
 
-  const popupContentHeight = getPopupContentHeight(popupContentElem);
+  let popupContentHeight = getPopupContentHeight(popupContentElem);
 
   let startTouchData = {};
   let popupSwiped = false;
 
-  const handlePopupTouchstart = (event) => {
-    event.preventDefault();
+  const handlePopupClick = (event) => {
+    if (!event.target.closest(".popup__content")) {
+      closePopup(popupElem);
+    }
+  };
 
+  const handlePopupTouchstart = (event) => {
+    popupContentHeight = getPopupContentHeight(popupContentElem);
     popupSwiped = false;
 
     startTouchData.startY = event.touches[0].clientY;
     startTouchData.startTime = Date.now();
 
-    popupElem.addEventListener("touchmove", handlePopupTouchmove);
+    popupElem.addEventListener("touchmove", handlePopupTouchmove, {
+      once: true,
+    });
   };
 
   const handlePopupTouchmove = (event) => {
     event.preventDefault();
 
-    makePopupTransformFaster(popupContentElem, popupOverlayElem);
+    const currentY = event.touches[0].clientY;
+    const deltaY = currentY - startTouchData.startY;
+
+    if (
+      (deltaY > 0 && contentIsScrolledToTop(popupContentElem)) ||
+      !event.touches[0].target.closest(".popup__scrollable-content")
+    ) {
+      popupElem.addEventListener("touchmove", handlePopupDrag);
+    }
+  };
+
+  const handlePopupDrag = (event) => {
+    event.preventDefault();
 
     const currentY = event.touches[0].clientY;
 
@@ -60,6 +83,8 @@ const addPopupTouchHandlers = (popupElem) => {
     const touchVelocity = deltaY / deltaTime;
 
     if (deltaY >= 0) {
+      makePopupTransformFaster(popupContentElem, popupOverlayElem);
+
       let contentTranslate = (deltaY / popupContentHeight) * 100;
 
       setPopupContentTranslateY(popupContentElem, `${contentTranslate}%`);
@@ -72,8 +97,6 @@ const addPopupTouchHandlers = (popupElem) => {
   };
 
   const handlePopupTouchend = (event) => {
-    event.preventDefault();
-
     const endY = event.changedTouches[0].clientY;
 
     const deltaY = endY - startTouchData.startY;
@@ -84,9 +107,10 @@ const addPopupTouchHandlers = (popupElem) => {
 
     clearPopupInlineStyles(popupContentElem, popupOverlayElem);
 
-    popupElem.removeEventListener("touchmove", handlePopupTouchmove);
+    popupElem.removeEventListener("touchmove", handlePopupDrag);
   };
 
+  popupElem.addEventListener("click", handlePopupClick);
   popupElem.addEventListener("touchstart", handlePopupTouchstart);
   popupElem.addEventListener("touchend", handlePopupTouchend);
 };

@@ -1,10 +1,16 @@
 import { addSearchFormHandlers } from "./search.js";
-import { addFiltersButtonHandlers } from "./filters.js";
+import { addFiltersHandlers } from "./filters.js";
 import { addHandlersToAllPopups } from "./popup.js";
+import {
+  addIngredientsHandlers,
+  displayAllIngredientsCategories,
+} from "./ingredients.js";
 
-/* HANDLERS */
 document.addEventListener("DOMContentLoaded", (event) => {
+  displayAllIngredientsCategories();
+
   addSearchFormHandlers();
-  addFiltersButtonHandlers();
+  addFiltersHandlers();
   addHandlersToAllPopups();
+  addIngredientsHandlers();
 });

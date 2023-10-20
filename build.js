@@ -73,8 +73,10 @@ body {
   --color-bg-secondary: var(--color-gray-300);
   --color-bg-tertiary: var(--color-gray-200);
   --color-bg-overlay: rgba(0, 0, 0, 0.6);
+  --color-bg-highlight: var(--color-white-200);
   --color-text-primary: var(--color-white-400);
   --color-text-secondary: var(--color-white-300);
+  --color-text-highlight: #000;
 }
 
 @font-face {
@@ -120,6 +122,8 @@ body {
   --border-radius-300: 0.75rem;
   --border-radius-200: 0.5rem;
   --button-height-m: 2.25rem;
+  --ingredients-item-height: 2rem;
+  --ingredients-gap: 0.5rem;
   --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);
   --transition-popup-open: 120ms ease-out;
 }
@@ -131,6 +135,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 100;
+  height: 100%;
   pointer-events: none;
 }
 
@@ -155,12 +160,71 @@ body {
 .popup__content {
   position: relative;
   width: 100%;
-  height: 300px;
-  padding: 1rem 1.5rem;
+  height: calc(100% - 3rem);
   background: var(--color-bg-secondary);
   transform: translateY(100%);
   border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;
+  overflow: auto;
   transition: transform var(--transition-popup);
+}
+
+.ingredients {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0 1.5rem;
+}
+
+.ingredients-category_active .arrow-icon {
+  transform: rotateX(180deg);
+}
+.ingredients-category_active .ingredients-item:nth-child(n+8) {
+  display: flex;
+}
+.ingredients-category_active .ingredients-item-more-btn.ingredients-item-more-btn {
+  display: none;
+}
+
+.ingredients-category__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 50px;
+}
+
+.ingredients-category__title {
+  font: var(--font-type-h3);
+}
+
+.ingredients-category__body {
+  margin-top: 0.5rem;
+}
+
+.ingredients-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ingredients-gap);
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+  list-style-type: none;
+}
+
+.ingredients-item {
+  display: flex;
+  align-items: center;
+  height: var(--ingredients-item-height);
+  padding: 0 0.7rem;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--border-radius-200);
+}
+.ingredients-item-product_active {
+  background: var(--color-bg-highlight);
+  color: var(--color-text-highlight);
+}
+.ingredients-item:nth-child(n+9) {
+  display: none;
 }
 
 body {
@@ -238,7 +302,8 @@ body {
   margin: 0;
 }
 
-.filters {
+/* FILTERS */
+.filters-btns {
   width: 100%;
 }
 
@@ -261,16 +326,15 @@ body {
   fill: #fff;
 }
 
-/* INGREDIENTS */
-/* .ingredients {
-  width: 100%;
-  height: 100px;
+.filters__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 1rem 1.5rem;
   background: var(--color-bg-secondary);
+  font: var(--font-type-h3);
+}
 
-  @media (width < 1024px) {
-    display: none;
-  }
-} */
 /* RECIPES */
 .recipes {
   display: flex;
@@ -310,7 +374,7 @@ body {
 .recipe-card__title {
   font: var(--font-type-h3);
   color: var(--color-text-secondary);
-}`, "",{"version":3,"sources":["webpack://./src/scss/_abstract.scss","webpack://./src/scss/main.scss","webpack://./src/scss/_base.scss","webpack://./src/scss/_colors.scss","webpack://./src/scss/_fonts.scss","webpack://./src/scss/_typography.scss","webpack://./src/scss/_variables.scss","webpack://./src/scss/popup.scss"],"names":[],"mappings":"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","sourcesContent":[".text_bold {\r\n  font-weight: 700;\r\n}\r\n","@import \"./_abstract.scss\";\n@import \"./_base.scss\";\n@import \"./_colors.scss\";\n@import \"./_fonts.scss\";\n@import \"./_typography.scss\";\n@import \"./_variables.scss\";\n@import \"./popup.scss\";\n\nbody {\n  font: var(--font-type-body);\n  color: var(--color-text-primary);\n}\n\n.main {\n  min-height: 100svh;\n  background: var(--color-bg-primary);\n}\n\n.wrapper {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n  padding: 0 8px;\n}\n\n.content {\n  display: grid;\n  row-gap: 10px;\n\n  padding-top: 100px;\n}\n\n/* SEARCH */\n\n.search {\n  display: flex;\n  flex-direction: column;\n  row-gap: 10px;\n\n  width: 100%;\n}\n\n.search__form {\n  display: flex;\n  position: relative;\n\n  height: 2.8rem;\n  background: var(--color-bg-tertiary);\n\n  border-radius: var(--border-radius-200);\n  overflow: hidden;\n}\n\n.search__search-icon {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 10px;\n\n  width: 25px;\n  height: 25px;\n  margin: auto 0;\n\n  background: url(\"../img/search-icon.svg\");\n  background-repeat: no-repeat;\n  background-size: contain;\n}\n\n.search__input {\n  width: 100%;\n  height: 100%;\n  border: none;\n  outline: none;\n  background: transparent;\n\n  padding: 0.8rem 0.8rem 0.8rem 3rem;\n\n  font: inherit;\n  color: inherit;\n\n  &:focus {\n    outline: none;\n  }\n}\n\n.search__button {\n  display: none;\n\n  height: 100%;\n  border: 0;\n  margin: 0;\n}\n\n.filters {\n  width: 100%;\n}\n\n.filters__button {\n  display: grid;\n  place-items: center;\n\n  height: var(--button-height-m);\n  /* height: 100px; */\n  aspect-ratio: 1 / 1;\n  border: 0;\n  padding: 0;\n  background: var(--color-bg-tertiary);\n\n  border-radius: var(--border-radius-200);\n}\n\n.filters__button-svg {\n  /* background: #fff; */\n  & * {\n    fill: #fff;\n  }\n}\n\n/* INGREDIENTS */\n\n/* .ingredients {\n  width: 100%;\n  height: 100px;\n  background: var(--color-bg-secondary);\n\n  @media (width < 1024px) {\n    display: none;\n  }\n} */\n\n/* RECIPES */\n\n.recipes {\n  display: flex;\n  flex-direction: column;\n  row-gap: 0.75rem;\n\n  width: 100%;\n}\n\n/* RECIPE CARD */\n\n.recipe-card {\n  width: 100%;\n  background: var(--color-bg-secondary);\n\n  border-radius: var(--border-radius-400);\n}\n\n.recipe-card__img-wrapper {\n  height: 55.5vw;\n  overflow: hidden;\n  padding: 0.25rem;\n\n  border-radius: var(--border-radius-400);\n}\n\n.recipe-card__img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n\n  border-radius: var(--border-radius-300);\n}\n\n.recipe-card__description {\n  display: flex;\n  flex-direction: column;\n  row-gap: 1rem;\n\n  padding: 0.5rem 1rem;\n}\n\n.recipe-card__title {\n  font: var(--font-type-h3);\n  color: var(--color-text-secondary);\n}\n\n.recipe-card__cooking-time {\n}\n","*,\r\n::before,\r\n::after {\r\n  box-sizing: border-box;\r\n}\r\n\r\nhtml {\r\n  font-size: 100%; /* 16px */\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n}\r\n\r\n.preload-transitions * {\r\n  -webkit-transition: none !important;\r\n  -moz-transition: none !important;\r\n  -ms-transition: none !important;\r\n  -o-transition: none !important;\r\n  transition: none !important;\r\n}\r\n",":root {\n  --color-gray-400: #161617;\n  --color-gray-300: #232325;\n  --color-gray-200: #2f2f32;\n  --color-yellow: #fdde55;\n\n  --color-white-400: #fff;\n  --color-white-300: hsla(0, 0%, 100%, 0.8);\n  --color-white-200: hsla(0, 0%, 100%, 0.6);\n  --color-white-100: hsla(0, 0%, 100%, 0.4);\n\n  --color-bg-primary: var(--color-gray-400);\n  --color-bg-secondary: var(--color-gray-300);\n  --color-bg-tertiary: var(--color-gray-200);\n  --color-bg-overlay: rgba(0, 0, 0, 0.6);\n\n  --color-text-primary: var(--color-white-400);\n  --color-text-secondary: var(--color-white-300);\n}\n","@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 400;\r\n  src: url(../fonts/Satoshi-Regular.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Regular.woff) format(woff);\r\n}\r\n\r\n@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 700;\r\n  src: url(../fonts/Satoshi-Bold.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Bold.woff) format(woff);\r\n}\r\n",":root {\n  --font-fallback: \"Satoshi\", sans-serif;\n  --font-family-body: var(--font-fallback);\n  --font-family-heading: var(--font-fallback);\n\n  --font-size-900: 3.052rem;\n  --font-size-800: 2.441rem;\n  --font-size-700: 1.953rem;\n  --font-size-600: 1.563rem;\n  --font-size-500: 1.25rem;\n  --font-size-400: 1rem;\n  --font-size-300: 0.8rem;\n\n  --font-size-body: var(--font-size-400);\n  --font-size-h1: var(--font-size-800);\n  --font-size-h2: var(--font-size-600);\n  --font-size-h3: var(--font-size-500);\n  --font-size-small: var(--font-size-300);\n  --line-height-body: 1.75;\n  --line-height-heading: 1.3;\n\n  --font-type-body: 400 var(--font-size-body) / var(--line-height-body)\n    var(--font-family-body);\n  --font-type-h1: 700 var(--font-size-h1) / var(--line-height-heading)\n    var(--font-family-heading);\n  --font-type-h2: 700 var(--font-size-h2) / var(--line-height-heading)\n    var(--font-family-heading);\n  --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)\n    var(--font-family-heading);\n}\n",":root {\r\n  --border-radius-400: 0.875rem;\r\n  --border-radius-300: 0.75rem;\r\n  --border-radius-200: 0.5rem;\r\n\r\n  --button-height-m: 2.25rem;\r\n\r\n  --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);\r\n  --transition-popup-open: 120ms ease-out;\r\n}\r\n",".popup {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n\n  pointer-events: none;\n}\n\n.popup_opened {\n  pointer-events: auto;\n\n  & .popup__overlay {\n    opacity: 1;\n  }\n\n  & .popup__content {\n    transform: translateY(0);\n  }\n}\n\n.popup__overlay {\n  position: fixed;\n  inset: 0;\n\n  background: var(--color-bg-overlay);\n\n  opacity: 0;\n\n  transition: opacity var(--transition-popup);\n}\n\n.popup__content {\n  position: relative;\n\n  width: 100%;\n  height: 300px;\n  padding: 1rem 1.5rem;\n  background: var(--color-bg-secondary);\n\n  transform: translateY(100%);\n  border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;\n\n  transition: transform var(--transition-popup);\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/scss/_abstract.scss","webpack://./src/scss/main.scss","webpack://./src/scss/_base.scss","webpack://./src/scss/_colors.scss","webpack://./src/scss/_fonts.scss","webpack://./src/scss/_typography.scss","webpack://./src/scss/_variables.scss","webpack://./src/scss/popup.scss","webpack://./src/scss/ingredients.scss"],"names":[],"mappings":"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","sourcesContent":[".text_bold {\r\n  font-weight: 700;\r\n}\r\n","@import \"./_abstract.scss\";\n@import \"./_base.scss\";\n@import \"./_colors.scss\";\n@import \"./_fonts.scss\";\n@import \"./_typography.scss\";\n@import \"./_variables.scss\";\n@import \"./popup.scss\";\n@import \"./ingredients.scss\";\n\nbody {\n  font: var(--font-type-body);\n  color: var(--color-text-primary);\n}\n\n.main {\n  min-height: 100svh;\n  background: var(--color-bg-primary);\n}\n\n.wrapper {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n  padding: 0 8px;\n}\n\n.content {\n  display: grid;\n  row-gap: 10px;\n\n  padding-top: 100px;\n}\n\n/* SEARCH */\n\n.search {\n  display: flex;\n  flex-direction: column;\n  row-gap: 10px;\n\n  width: 100%;\n}\n\n.search__form {\n  display: flex;\n  position: relative;\n\n  height: 2.8rem;\n  background: var(--color-bg-tertiary);\n\n  border-radius: var(--border-radius-200);\n  overflow: hidden;\n}\n\n.search__search-icon {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 10px;\n\n  width: 25px;\n  height: 25px;\n  margin: auto 0;\n\n  background: url(\"../img/search-icon.svg\");\n  background-repeat: no-repeat;\n  background-size: contain;\n}\n\n.search__input {\n  width: 100%;\n  height: 100%;\n  border: none;\n  outline: none;\n  background: transparent;\n\n  padding: 0.8rem 0.8rem 0.8rem 3rem;\n\n  font: inherit;\n  color: inherit;\n\n  &:focus {\n    outline: none;\n  }\n}\n\n.search__button {\n  display: none;\n\n  height: 100%;\n  border: 0;\n  margin: 0;\n}\n\n/* FILTERS */\n\n.filters-btns {\n  width: 100%;\n}\n\n.filters__button {\n  display: grid;\n  place-items: center;\n\n  height: var(--button-height-m);\n  /* height: 100px; */\n  aspect-ratio: 1 / 1;\n  border: 0;\n  padding: 0;\n  background: var(--color-bg-tertiary);\n\n  border-radius: var(--border-radius-200);\n}\n\n.filters__button-svg {\n  /* background: #fff; */\n  & * {\n    fill: #fff;\n  }\n}\n\n.filters {\n}\n\n.filters__header {\n  position: sticky;\n  top: 0;\n  z-index: 10;\n\n  padding: 1rem 1.5rem;\n  background: var(--color-bg-secondary);\n\n  font: var(--font-type-h3);\n}\n\n.filters__title {\n}\n\n/* RECIPES */\n\n.recipes {\n  display: flex;\n  flex-direction: column;\n  row-gap: 0.75rem;\n\n  width: 100%;\n}\n\n/* RECIPE CARD */\n\n.recipe-card {\n  width: 100%;\n  background: var(--color-bg-secondary);\n\n  border-radius: var(--border-radius-400);\n}\n\n.recipe-card__img-wrapper {\n  height: 55.5vw;\n  overflow: hidden;\n  padding: 0.25rem;\n\n  border-radius: var(--border-radius-400);\n}\n\n.recipe-card__img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n\n  border-radius: var(--border-radius-300);\n}\n\n.recipe-card__description {\n  display: flex;\n  flex-direction: column;\n  row-gap: 1rem;\n\n  padding: 0.5rem 1rem;\n}\n\n.recipe-card__title {\n  font: var(--font-type-h3);\n  color: var(--color-text-secondary);\n}\n\n.recipe-card__cooking-time {\n}\n","*,\r\n::before,\r\n::after {\r\n  box-sizing: border-box;\r\n}\r\n\r\nhtml {\r\n  font-size: 100%; /* 16px */\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n}\r\n\r\n.preload-transitions * {\r\n  -webkit-transition: none !important;\r\n  -moz-transition: none !important;\r\n  -ms-transition: none !important;\r\n  -o-transition: none !important;\r\n  transition: none !important;\r\n}\r\n",":root {\r\n  --color-gray-400: #161617;\r\n  --color-gray-300: #232325;\r\n  --color-gray-200: #2f2f32;\r\n  --color-yellow: #fdde55;\r\n\r\n  --color-white-400: #fff;\r\n  --color-white-300: hsla(0, 0%, 100%, 0.8);\r\n  --color-white-200: hsla(0, 0%, 100%, 0.6);\r\n  --color-white-100: hsla(0, 0%, 100%, 0.4);\r\n\r\n  --color-bg-primary: var(--color-gray-400);\r\n  --color-bg-secondary: var(--color-gray-300);\r\n  --color-bg-tertiary: var(--color-gray-200);\r\n  --color-bg-overlay: rgba(0, 0, 0, 0.6);\r\n  --color-bg-highlight: var(--color-white-200);\r\n\r\n  --color-text-primary: var(--color-white-400);\r\n  --color-text-secondary: var(--color-white-300);\r\n  --color-text-highlight: #000;\r\n}\r\n","@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 400;\r\n  src: url(../fonts/Satoshi-Regular.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Regular.woff) format(woff);\r\n}\r\n\r\n@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 700;\r\n  src: url(../fonts/Satoshi-Bold.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Bold.woff) format(woff);\r\n}\r\n",":root {\r\n  --font-fallback: \"Satoshi\", sans-serif;\r\n  --font-family-body: var(--font-fallback);\r\n  --font-family-heading: var(--font-fallback);\r\n\r\n  --font-size-900: 3.052rem;\r\n  --font-size-800: 2.441rem;\r\n  --font-size-700: 1.953rem;\r\n  --font-size-600: 1.563rem;\r\n  --font-size-500: 1.25rem;\r\n  --font-size-400: 1rem;\r\n  --font-size-300: 0.8rem;\r\n\r\n  --font-size-body: var(--font-size-400);\r\n  --font-size-h1: var(--font-size-800);\r\n  --font-size-h2: var(--font-size-600);\r\n  --font-size-h3: var(--font-size-500);\r\n  --font-size-small: var(--font-size-300);\r\n  --line-height-body: 1.75;\r\n  --line-height-heading: 1.3;\r\n\r\n  --font-type-body: 400 var(--font-size-body) / var(--line-height-body)\r\n    var(--font-family-body);\r\n  --font-type-h1: 700 var(--font-size-h1) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h2: 700 var(--font-size-h2) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n}\r\n",":root {\r\n  --border-radius-400: 0.875rem;\r\n  --border-radius-300: 0.75rem;\r\n  --border-radius-200: 0.5rem;\r\n\r\n  --button-height-m: 2.25rem;\r\n\r\n  --ingredients-item-height: 2rem;\r\n  --ingredients-gap: 0.5rem;\r\n\r\n  --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);\r\n  --transition-popup-open: 120ms ease-out;\r\n}\r\n",".popup {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n\n  height: 100%;\n\n  pointer-events: none;\n}\n\n.popup_opened {\n  pointer-events: auto;\n\n  & .popup__overlay {\n    opacity: 1;\n  }\n\n  & .popup__content {\n    transform: translateY(0);\n  }\n}\n\n.popup__overlay {\n  position: fixed;\n  inset: 0;\n\n  background: var(--color-bg-overlay);\n\n  opacity: 0;\n\n  transition: opacity var(--transition-popup);\n}\n\n.popup__content {\n  position: relative;\n\n  width: 100%;\n  height: calc(100% - 3rem);\n  // padding: 1rem 1.5rem;\n  background: var(--color-bg-secondary);\n\n  transform: translateY(100%);\n  border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;\n\n  overflow: auto;\n\n  transition: transform var(--transition-popup);\n}\n",".ingredients {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 1.5rem;\r\n\r\n  padding: 0 1.5rem;\r\n}\r\n\r\n.ingredients-category {\r\n  &_active {\r\n    & .arrow-icon {\r\n      transform: rotateX(180deg);\r\n    }\r\n\r\n    & .ingredients-item:nth-child(n + 8) {\r\n      display: flex;\r\n    }\r\n\r\n    & .ingredients-item-more-btn.ingredients-item-more-btn {\r\n      display: none;\r\n    }\r\n  }\r\n}\r\n\r\n.ingredients-category__header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n\r\n  min-height: 50px;\r\n}\r\n\r\n.ingredients-category__title {\r\n  font: var(--font-type-h3);\r\n}\r\n\r\n.ingredients-category__body {\r\n  // display: grid;\r\n  // grid-template-rows: calc(\r\n  //   var(--ingredients-item-height) * 2 + var(--ingredients-gap)\r\n  // );\r\n  margin-top: 0.5rem;\r\n}\r\n\r\n.ingredients-list {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: var(--ingredients-gap);\r\n  overflow: hidden;\r\n\r\n  margin: 0;\r\n  padding: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.ingredients-item {\r\n  display: flex;\r\n  align-items: center;\r\n\r\n  height: var(--ingredients-item-height);\r\n  padding: 0 0.7rem;\r\n  background: var(--color-bg-tertiary);\r\n\r\n  border-radius: var(--border-radius-200);\r\n\r\n  &-product_active {\r\n    background: var(--color-bg-highlight);\r\n\r\n    color: var(--color-text-highlight);\r\n  }\r\n\r\n  &:nth-child(n + 9) {\r\n    display: none;\r\n  }\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -830,15 +894,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _search_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./search.js */ "./src/js/search.js");
 /* harmony import */ var _filters_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./filters.js */ "./src/js/filters.js");
 /* harmony import */ var _popup_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./popup.js */ "./src/js/popup.js");
+/* harmony import */ var _ingredients_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ingredients.js */ "./src/js/ingredients.js");
 
 
 
 
-/* HANDLERS */
+
 document.addEventListener("DOMContentLoaded", (event) => {
+  (0,_ingredients_js__WEBPACK_IMPORTED_MODULE_3__.displayAllIngredientsCategories)();
+
   (0,_search_js__WEBPACK_IMPORTED_MODULE_0__.addSearchFormHandlers)();
-  (0,_filters_js__WEBPACK_IMPORTED_MODULE_1__.addFiltersButtonHandlers)();
+  (0,_filters_js__WEBPACK_IMPORTED_MODULE_1__.addFiltersHandlers)();
   (0,_popup_js__WEBPACK_IMPORTED_MODULE_2__.addHandlersToAllPopups)();
+  (0,_ingredients_js__WEBPACK_IMPORTED_MODULE_3__.addIngredientsHandlers)();
 });
 
 
@@ -852,7 +920,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addFiltersButtonHandlers: () => (/* binding */ addFiltersButtonHandlers)
+/* harmony export */   addFiltersHandlers: () => (/* binding */ addFiltersHandlers)
 /* harmony export */ });
 /* harmony import */ var _popup_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./popup.js */ "./src/js/popup.js");
 
@@ -867,6 +935,208 @@ const addFiltersButtonHandlers = () => {
 
   filtersButtonElem.addEventListener("click", handleFiltersButtonClick);
 };
+
+const addFiltersHandlers = () => {
+  addFiltersButtonHandlers();
+};
+
+
+/***/ }),
+
+/***/ "./src/js/ingredients.js":
+/*!*******************************!*\
+  !*** ./src/js/ingredients.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   addIngredientsHandlers: () => (/* binding */ addIngredientsHandlers),
+/* harmony export */   displayAllIngredientsCategories: () => (/* binding */ displayAllIngredientsCategories)
+/* harmony export */ });
+/* harmony import */ var _ingredientsList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ingredientsList */ "./src/js/ingredientsList.js");
+
+
+const displayIngredientsCategory = (
+  categotyTitle,
+  ingredientsArr,
+  ingredientsElem
+) => {
+  const ingredientsCategoryElem = document.createElement("div");
+  ingredientsCategoryElem.classList.add("ingredients-category");
+
+  const ingredientsCategoryBodyElem = document.createElement("div");
+  ingredientsCategoryBodyElem.classList.add("ingredients-category__body");
+
+  const ingredientsListElem = document.createElement("ul");
+  ingredientsListElem.classList.add("ingredients-list");
+
+  ingredientsArr.splice(7, 0, `+${ingredientsArr.length - 7} more`);
+
+  ingredientsArr.forEach((ingredientItem, index) => {
+    const ingredientsItemElem = document.createElement("li");
+    ingredientsItemElem.classList.add(
+      "ingredients-item",
+      index != 7 ? "ingredients-item-product" : "ingredients-item-more-btn"
+    );
+
+    ingredientsItemElem.textContent = ingredientItem;
+
+    ingredientsListElem.appendChild(ingredientsItemElem);
+  });
+
+  ingredientsCategoryBodyElem.appendChild(ingredientsListElem);
+
+  ingredientsCategoryElem.innerHTML = `
+    <div class="ingredients-category__header">
+      <div class="ingredients-category__title">${categotyTitle}</div>
+      <svg class="arrow-icon" width="16" height="16" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M8 9.58236L12.7931 4.79249C13.1838 4.4021 13.817 4.40232 14.2073 4.79297C14.5977 5.18363 14.5975 5.8168 14.2069 6.20719L8.70687 11.7034C8.3164 12.0936 7.6836 12.0936 7.29313 11.7034L1.79313 6.20719C1.40248 5.8168 1.40226 5.18363 1.79265 4.79297C2.18304 4.40232 2.81621 4.4021 3.20687 4.79249L8 9.58236Z" fill="currentColor"></path></svg>
+    </div>
+  `;
+
+  ingredientsCategoryElem.appendChild(ingredientsCategoryBodyElem);
+
+  ingredientsElem.appendChild(ingredientsCategoryElem);
+};
+
+const displayAllIngredientsCategories = () => {
+  const ingredientsElem = document.querySelector(".ingredients");
+
+  for (let ingredientCategory of _ingredientsList__WEBPACK_IMPORTED_MODULE_0__.ingredientsCategoriesArr) {
+    displayIngredientsCategory(
+      ingredientCategory.title,
+      ingredientCategory.ingredientsArr,
+      ingredientsElem
+    );
+  }
+};
+
+const handleIngredientsItemProductClick = (event) => {
+  if (event.target.closest(".ingredients-item-product")) {
+    const ingredientsItem = event.target.closest(".ingredients-item-product");
+
+    ingredientsItem.classList.toggle("ingredients-item-product_active");
+  }
+};
+
+const handleIngredientsItemMoreBtnClick = (event) => {
+  if (event.target.closest(".ingredients-item-more-btn")) {
+    const ingredientsCategoryElem = event.target.closest(
+      ".ingredients-category"
+    );
+
+    ingredientsCategoryElem.classList.toggle("ingredients-category_active");
+  }
+};
+
+const handleIngredientsHeaderClick = (event) => {
+  if (event.target.closest(".ingredients-category__header")) {
+    const ingredientsCategoryElem = event.target.closest(
+      ".ingredients-category"
+    );
+
+    ingredientsCategoryElem.classList.toggle("ingredients-category_active");
+  }
+};
+
+const addIngredientsHandlers = () => {
+  const ingredientsElem = document.querySelector(".ingredients");
+
+  ingredientsElem.addEventListener("click", handleIngredientsItemProductClick);
+  ingredientsElem.addEventListener("click", handleIngredientsHeaderClick);
+  ingredientsElem.addEventListener("click", handleIngredientsItemMoreBtnClick);
+};
+
+
+/***/ }),
+
+/***/ "./src/js/ingredientsList.js":
+/*!***********************************!*\
+  !*** ./src/js/ingredientsList.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ingredientsCategoriesArr: () => (/* binding */ ingredientsCategoriesArr)
+/* harmony export */ });
+const ingredientsCategoriesArr = [
+  {
+    title: "Essentials",
+    ingredientsArr: [
+      "butter",
+      "egg",
+      "garlic",
+      "milk",
+      "onion",
+      "sugar",
+      "flour",
+      "olive oil",
+      "pepper",
+      "carrot",
+      "chicken",
+      "oil",
+      "rice",
+      "cinnamon",
+      "mayonnaise",
+      "bread",
+      "baking soda",
+      "spaghetti",
+      "tomato",
+      "sour cream",
+    ],
+  },
+  {
+    title: "Vegetables",
+    ingredientsArr: [
+      "butter",
+      "egg",
+      "garlic",
+      "milk",
+      "onion",
+      "sugar",
+      "flour",
+      "olive oil",
+      "pepper",
+      "carrot",
+      "chicken",
+      "oil",
+      "rice",
+      "cinnamon",
+      "mayonnaise",
+      "bread",
+      "baking soda",
+      "spaghetti",
+      "tomato",
+      "sour cream",
+    ],
+  },
+  {
+    title: "Vegetables",
+    ingredientsArr: [
+      "butter",
+      "egg",
+      "garlic",
+      "milk",
+      "onion",
+      "sugar",
+      "flour",
+      "olive oil",
+      "pepper",
+      "carrot",
+      "chicken",
+      "oil",
+      "rice",
+      "cinnamon",
+      "mayonnaise",
+      "bread",
+      "baking soda",
+      "spaghetti",
+      "tomato",
+      "sour cream",
+    ],
+  },
+];
 
 
 /***/ }),
@@ -912,30 +1182,53 @@ const closePopup = (popupElem) => {
   popupElem.classList.remove("popup_opened");
 };
 
+const contentIsScrolledToTop = (popupContentElem) => {
+  return popupContentElem.scrollTop === 0;
+};
+
 const addPopupTouchHandlers = (popupElem) => {
   const popupContentElem = popupElem.querySelector(".popup__content");
   const popupOverlayElem = popupElem.querySelector(".popup__overlay");
 
-  const popupContentHeight = getPopupContentHeight(popupContentElem);
+  let popupContentHeight = getPopupContentHeight(popupContentElem);
 
   let startTouchData = {};
   let popupSwiped = false;
 
-  const handlePopupTouchstart = (event) => {
-    event.preventDefault();
+  const handlePopupClick = (event) => {
+    if (!event.target.closest(".popup__content")) {
+      closePopup(popupElem);
+    }
+  };
 
+  const handlePopupTouchstart = (event) => {
+    popupContentHeight = getPopupContentHeight(popupContentElem);
     popupSwiped = false;
 
     startTouchData.startY = event.touches[0].clientY;
     startTouchData.startTime = Date.now();
 
-    popupElem.addEventListener("touchmove", handlePopupTouchmove);
+    popupElem.addEventListener("touchmove", handlePopupTouchmove, {
+      once: true,
+    });
   };
 
   const handlePopupTouchmove = (event) => {
     event.preventDefault();
 
-    makePopupTransformFaster(popupContentElem, popupOverlayElem);
+    const currentY = event.touches[0].clientY;
+    const deltaY = currentY - startTouchData.startY;
+
+    if (
+      (deltaY > 0 && contentIsScrolledToTop(popupContentElem)) ||
+      !event.touches[0].target.closest(".popup__scrollable-content")
+    ) {
+      popupElem.addEventListener("touchmove", handlePopupDrag);
+    }
+  };
+
+  const handlePopupDrag = (event) => {
+    event.preventDefault();
 
     const currentY = event.touches[0].clientY;
 
@@ -944,6 +1237,8 @@ const addPopupTouchHandlers = (popupElem) => {
     const touchVelocity = deltaY / deltaTime;
 
     if (deltaY >= 0) {
+      makePopupTransformFaster(popupContentElem, popupOverlayElem);
+
       let contentTranslate = (deltaY / popupContentHeight) * 100;
 
       setPopupContentTranslateY(popupContentElem, `${contentTranslate}%`);
@@ -956,8 +1251,6 @@ const addPopupTouchHandlers = (popupElem) => {
   };
 
   const handlePopupTouchend = (event) => {
-    event.preventDefault();
-
     const endY = event.changedTouches[0].clientY;
 
     const deltaY = endY - startTouchData.startY;
@@ -968,9 +1261,10 @@ const addPopupTouchHandlers = (popupElem) => {
 
     clearPopupInlineStyles(popupContentElem, popupOverlayElem);
 
-    popupElem.removeEventListener("touchmove", handlePopupTouchmove);
+    popupElem.removeEventListener("touchmove", handlePopupDrag);
   };
 
+  popupElem.addEventListener("click", handlePopupClick);
   popupElem.addEventListener("touchstart", handlePopupTouchstart);
   popupElem.addEventListener("touchend", handlePopupTouchend);
 };

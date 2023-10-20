@@ -16,7 +16,7 @@
               <input class="search__input" type="text" />
               <button class="search__button" type="submit"></button>
             </form>
-            <div class="filters">
+            <div class="filters-btns">
               <button class="filters__button" type="button">
                 <svg
                   width="16"
@@ -42,7 +42,14 @@
       </div>
       <div class="filters-popup popup">
         <div class="popup__overlay"></div>
-        <div class="popup__content"></div>
+        <div class="popup__content">
+          <div class="filters">
+            <div class="filters__header">
+              <div class="filters__title">Filters</div>
+            </div>
+            <div class="ingredients popup__scrollable-content"></div>
+          </div>
+        </div>
       </div>
     </main>
     <script>

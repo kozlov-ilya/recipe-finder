@@ -36,16 +36,16 @@
 
 .popup__content {
   position: relative;
+  overflow: auto;
 
   width: 100%;
   height: calc(100% - 3rem);
-  // padding: 1rem 1.5rem;
   background: var(--color-bg-secondary);
 
   transform: translateY(100%);
   border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;
 
-  overflow: auto;
+  scroll-behavior: smooth;
 
   transition: transform var(--transition-popup);
 }

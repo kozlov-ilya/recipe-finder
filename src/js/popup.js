@@ -39,6 +39,7 @@ const addPopupTouchHandlers = (popupElem) => {
   let popupContentHeight = getPopupContentHeight(popupContentElem);
 
   let startTouchData = {};
+  let relativeTouchData = {};
   let popupSwiped = false;
 
   const handlePopupClick = (event) => {
@@ -53,6 +54,9 @@ const addPopupTouchHandlers = (popupElem) => {
 
     startTouchData.startY = event.touches[0].clientY;
     startTouchData.startTime = Date.now();
+
+    relativeTouchData.startY = event.touches[0].clientY;
+    relativeTouchData.startTime = Date.now();
 
     popupElem.addEventListener("touchmove", handlePopupTouchmove, {
       once: true,
@@ -78,21 +82,29 @@ const addPopupTouchHandlers = (popupElem) => {
 
     const currentY = event.touches[0].clientY;
 
-    const deltaY = currentY - startTouchData.startY;
-    const deltaTime = Date.now() - startTouchData.startTime;
-    const touchVelocity = deltaY / deltaTime;
+    const deltaYAbs = currentY - startTouchData.startY;
+    const deltaTimeAbs = Date.now() - startTouchData.startTime;
 
-    if (deltaY >= 0) {
+    const deltaYRel = currentY - relativeTouchData.startY;
+    const deltaTimeRel = Date.now() - relativeTouchData.startTime;
+
+    const touchVelocityAbs = deltaYAbs / deltaTimeAbs;
+    const touchVelocityRel = deltaYRel / deltaTimeRel;
+
+    if (deltaYAbs >= 0) {
       makePopupTransformFaster(popupContentElem, popupOverlayElem);
 
-      let contentTranslate = (deltaY / popupContentHeight) * 100;
+      let contentTranslate = (deltaYAbs / popupContentHeight) * 100;
 
       setPopupContentTranslateY(popupContentElem, `${contentTranslate}%`);
       setPopupOverlayOpacity(popupOverlayElem, 1 - contentTranslate / 100);
     }
 
-    if (touchVelocity > 0.5) {
+    if (touchVelocityAbs > 0.4 || touchVelocityRel > 0.4) {
       popupSwiped = true;
+    } else if (touchVelocityAbs < 0.15) {
+      relativeTouchData.startY = currentY;
+      relativeTouchData.startTime = Date.now();
     }
   };
 

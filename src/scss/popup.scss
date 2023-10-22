@@ -39,7 +39,8 @@
   overflow: auto;
 
   width: 100%;
-  height: calc(100% - 3rem);
+  height: auto;
+  max-height: calc(100% - 3rem);
   background: var(--color-bg-secondary);
 
   transform: translateY(100%);

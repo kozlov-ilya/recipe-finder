@@ -1,57 +1,256 @@
-import { fetchData } from "./api.js";
-import { displayParsedRecipe } from "./recipe.js";
+import {
+  getAllIngredientsArr,
+  updateSelectedIngredientsList,
+} from "./ingredients";
 
-/* FUNCTIONS */
+const openSearchSuggestions = () => {
+  const searchSuggestionsElem = document.querySelector(
+    ".ingredients-search__suggestions"
+  );
 
-const getSearchInputValue = () => {
-  const searchInput = document.querySelector(".search__input");
-
-  return searchInput.value;
+  searchSuggestionsElem.classList.add("ingredients-search__suggestions_show");
 };
 
-const createRecipeQueries = (searchInputValue, numberOfRecipes) => {
-  let queries = [];
+const closeSearchSuggestions = () => {
+  const searchSuggestionsElem = document.querySelector(
+    ".ingredients-search__suggestions"
+  );
 
-  queries.push(["query", searchInputValue]);
-  queries.push(["number", numberOfRecipes]);
-  queries.push(["addRecipeInformation", true]);
-
-  return queries;
+  searchSuggestionsElem.classList.remove(
+    "ingredients-search__suggestions_show"
+  );
 };
 
-const clearRecipesList = () => {
-  const recipesElem = document.querySelector(".recipes");
-  recipesElem.innerHTML = "";
+const displaySuggestionsItem = (suggestionsItemValue, suggestionsListElem) => {
+  const suggestionsItemElem = document.createElement("li");
+  suggestionsItemElem.classList.add("ingredients-search__suggestions-item");
+
+  suggestionsItemElem.textContent = suggestionsItemValue;
+
+  suggestionsListElem.appendChild(suggestionsItemElem);
+
+  return suggestionsItemElem;
 };
 
-const parseRecipes = (fetchedData) => {
-  clearRecipesList();
+const clearSuggestionsList = (suggestionsListElem) => {
+  suggestionsListElem.innerHTML = "";
+};
 
-  fetchedData.results.forEach((fetchedRecipe) => {
-    const {
-      image: image,
-      title,
-      readyInMinutes: cookingTime,
-      sourceUrl: src,
-    } = fetchedRecipe;
+const highlightSuggestionsItemByIndex = (suggestionsItemIndex) => {
+  const suggestionsItemElems = document.querySelectorAll(
+    ".ingredients-search__suggestions-item"
+  );
 
-    const parsedRecipe = { image, title, cookingTime, src };
+  suggestionsItemElems[suggestionsItemIndex].classList.add(
+    "ingredients-search__suggestions-item_active"
+  );
+};
 
-    displayParsedRecipe(parsedRecipe);
+const highlightSuggestionsItemByElem = (suggestionsItemElem) => {
+  suggestionsItemElem.classList.add(
+    "ingredients-search__suggestions-item_active"
+  );
+};
+
+const getHighlightedItemIndex = (suggestionsItemElems) => {
+  return Array.from(suggestionsItemElems).findIndex((suggestionsItem) => {
+    return suggestionsItem.classList.contains(
+      "ingredients-search__suggestions-item_active"
+    );
   });
 };
 
-const handleSearchFormSubmit = (event) => {
+const getHighlightedSuggestionsItem = (suggestionsItemElems) => {
+  const highlightedItemIndex = getHighlightedItemIndex(suggestionsItemElems);
+
+  return suggestionsItemElems[highlightedItemIndex];
+};
+
+const unhighlightAllSuggestionsItems = () => {
+  const suggestionsItemElems = document.querySelectorAll(
+    ".ingredients-search__suggestions-item"
+  );
+
+  suggestionsItemElems.forEach((suggestionsItem) => {
+    suggestionsItem.classList.remove(
+      "ingredients-search__suggestions-item_active"
+    );
+  });
+};
+
+const scrollToHighlightedSuggestionsItems = (suggestionsItemElems) => {
+  const suggestionsListElem = document.querySelector(
+    ".ingredients-search__suggestions-list"
+  );
+  const suggestionsElem = document.querySelector(
+    ".ingredients-search__suggestions"
+  );
+  const highlightedSuggestionsItemElem =
+    getHighlightedSuggestionsItem(suggestionsItemElems);
+
+  const itemOffsetTop = highlightedSuggestionsItemElem.offsetTop;
+  const itemHeight = highlightedSuggestionsItemElem.clientHeight;
+  const listScrollTop = suggestionsListElem.scrollTop;
+  const suggestionsHeight = suggestionsElem.clientHeight;
+
+  if (itemOffsetTop < listScrollTop) {
+    suggestionsListElem.scrollTop = itemOffsetTop;
+  } else if (itemOffsetTop >= listScrollTop + suggestionsHeight) {
+    suggestionsListElem.scrollTop =
+      itemOffsetTop - suggestionsHeight + itemHeight;
+  }
+};
+
+const clearSearchInput = () => {
+  const searchInputElem = document.querySelector(".ingredients-search__input");
+
+  searchInputElem.value = "";
+};
+
+const handleSuggestionsItemHover = (event) => {
+  const hoveredSuggestionsItem = event.currentTarget;
+
+  unhighlightAllSuggestionsItems();
+  highlightSuggestionsItemByElem(hoveredSuggestionsItem);
+};
+
+const handleSearchInputInput = (event) => {
+  const searchInputElem = event.target;
+  const searchSuggestionsListElem = document.querySelector(
+    ".ingredients-search__suggestions-list"
+  );
+
+  const allIngredientsArr = getAllIngredientsArr();
+
+  const searchValue = searchInputElem.value.toLowerCase();
+
+  if (searchValue.length < 3) {
+    closeSearchSuggestions();
+    return;
+  }
+
+  clearSuggestionsList(searchSuggestionsListElem);
+
+  const filteredSuggestionsArr = allIngredientsArr.filter((ingredient) => {
+    return ingredient.includes(searchValue) && ingredient.split(" ").length < 3;
+  });
+
+  filteredSuggestionsArr.forEach((suggestion) => {
+    const suggestionsItemElem = displaySuggestionsItem(
+      suggestion,
+      searchSuggestionsListElem
+    );
+    suggestionsItemElem.addEventListener(
+      "mouseenter",
+      handleSuggestionsItemHover
+    );
+  });
+
+  if (filteredSuggestionsArr.length) {
+    highlightSuggestionsItemByIndex(0);
+    openSearchSuggestions();
+  }
+};
+
+const handleSearchInputKeydown = (event) => {
+  if (event.code === "ArrowUp" || event.code === "ArrowDown") {
+    event.preventDefault();
+
+    const suggestionsItemElems = document.querySelectorAll(
+      ".ingredients-search__suggestions-item"
+    );
+
+    const highlightedItemIndex = getHighlightedItemIndex(suggestionsItemElems);
+
+    let itemIndexToHighlight =
+      highlightedItemIndex + (event.code === "ArrowUp" ? -1 : 1);
+
+    itemIndexToHighlight =
+      itemIndexToHighlight >= suggestionsItemElems.length
+        ? 0
+        : itemIndexToHighlight < 0
+        ? suggestionsItemElems.length - 1
+        : itemIndexToHighlight;
+
+    unhighlightAllSuggestionsItems();
+    highlightSuggestionsItemByIndex(itemIndexToHighlight);
+    scrollToHighlightedSuggestionsItems(
+      suggestionsItemElems,
+      itemIndexToHighlight
+    );
+  }
+};
+
+const handleSuggestionsItemClick = (event) => {
+  const clickedSuggestionsItem = event.target.closest(
+    ".ingredients-search__suggestions-item"
+  );
+
+  if (!clickedSuggestionsItem) {
+    return;
+  }
+
+  updateSelectedIngredientsList(clickedSuggestionsItem.textContent);
+  clearSearchInput();
+  closeSearchSuggestions();
+  unhighlightAllSuggestionsItems();
+};
+
+const handleIngredientsSearchFormSubmit = (event) => {
   event.preventDefault();
 
-  const searchInputValue = getSearchInputValue();
-  const queries = createRecipeQueries(searchInputValue, 5);
+  const suggestionsItemElems = document.querySelectorAll(
+    ".ingredients-search__suggestions-item"
+  );
 
-  fetchData([...queries], parseRecipes);
+  const highlightedSuggestionsItemElem =
+    getHighlightedSuggestionsItem(suggestionsItemElems);
+
+  if (!highlightedSuggestionsItemElem) {
+    return;
+  }
+
+  updateSelectedIngredientsList(highlightedSuggestionsItemElem.textContent);
+  clearSearchInput();
+  closeSearchSuggestions();
+  unhighlightAllSuggestionsItems();
 };
 
-export const addSearchFormHandlers = () => {
-  const searchForm = document.querySelector(".search__form");
-
-  searchForm.addEventListener("submit", handleSearchFormSubmit);
+const handleDocumentWithSuggestionsOpenedClick = (event) => {
+  if (!event.target.closest(".ingredients-search__suggestions")) {
+    closeSearchSuggestions();
+  }
 };
+
+export const addIngredientsSearchFormHandlers = () => {
+  const searchFormElem = document.querySelector(".ingredients-search__form");
+  const searchInputElem = document.querySelector(".ingredients-search__input");
+
+  searchFormElem.addEventListener("submit", handleIngredientsSearchFormSubmit);
+  searchFormElem.addEventListener("click", handleSuggestionsItemClick);
+  searchInputElem.addEventListener("input", handleSearchInputInput);
+  searchInputElem.addEventListener("keydown", handleSearchInputKeydown);
+  document.addEventListener("click", handleDocumentWithSuggestionsOpenedClick);
+};
+
+// const clearRecipesList = () => {
+//   const recipesElem = document.querySelector(".recipes");
+//   recipesElem.innerHTML = "";
+// };
+
+// const parseRecipes = (fetchedData) => {
+//   clearRecipesList();
+
+//   fetchedData.results.forEach((fetchedRecipe) => {
+//     const {
+//       image: image,
+//       title,
+//       readyInMinutes: cookingTime,
+//       sourceUrl: src,
+//     } = fetchedRecipe;
+
+//     const parsedRecipe = { image, title, cookingTime, src };
+
+//     displayParsedRecipe(parsedRecipe);
+//   });
+// };

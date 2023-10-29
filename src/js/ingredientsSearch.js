@@ -232,25 +232,3 @@ export const addIngredientsSearchFormHandlers = () => {
   searchInputElem.addEventListener("keydown", handleSearchInputKeydown);
   document.addEventListener("click", handleDocumentWithSuggestionsOpenedClick);
 };
-
-// const clearRecipesList = () => {
-//   const recipesElem = document.querySelector(".recipes");
-//   recipesElem.innerHTML = "";
-// };
-
-// const parseRecipes = (fetchedData) => {
-//   clearRecipesList();
-
-//   fetchedData.results.forEach((fetchedRecipe) => {
-//     const {
-//       image: image,
-//       title,
-//       readyInMinutes: cookingTime,
-//       sourceUrl: src,
-//     } = fetchedRecipe;
-
-//     const parsedRecipe = { image, title, cookingTime, src };
-
-//     displayParsedRecipe(parsedRecipe);
-//   });
-// };

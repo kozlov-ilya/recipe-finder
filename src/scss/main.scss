@@ -8,6 +8,10 @@ body {
   color: var(--color-text-primary);
 }
 
+.prevent-scrolling {
+  overflow: hidden;
+}
+
 .main {
   min-height: 100svh;
   background: var(--color-bg-primary);
@@ -21,6 +25,9 @@ body {
 }
 
 .content {
+}
+
+.recipes-search-container {
   display: grid;
   row-gap: 10px;
 

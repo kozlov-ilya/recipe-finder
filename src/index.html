@@ -62,7 +62,23 @@
           <button class="recipe-search-button" type="button">
             Find Recipes
           </button>
-          <div class="recipes"></div>
+          <div class="recipes">
+            <div class="recipes__list"></div>
+            <template class="recipe-card-template">
+              <div class="recipe-card">
+                <div class="recipe-card__img-wrapper">
+                  <img src="#" class="recipe-card__img" />
+                </div>
+                <div class="recipe-card__description">
+                  <div class="recipe-card__title"></div>
+                  <div class="recipe-card__cooking-time">
+                    <span class="recipe-card__cooking-time-value"></span>
+                    minutes
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
       <div class="filters-popup popup">

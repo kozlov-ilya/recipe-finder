@@ -1,32 +1,34 @@
 import { getSelectedIngredientsArr } from "./ingredients";
 import { fetchData } from "./api";
 
-const displayParsedRecipe = ({
-  image,
+const displayRecipe = ({
+  image = "#",
   title = "untitled",
   src = "",
   cookingTime = "",
 }) => {
-  const recipesElem = document.querySelector(".recipes");
+  const recipesListElem = document.querySelector(".recipes__list");
 
-  const recipeCardElem = document.createElement("div");
-  recipeCardElem.classList.add("recipe-card");
+  const recipeCardTemplate = document.querySelector(".recipe-card-template");
+  const recipeCardElem = recipeCardTemplate.content.cloneNode(true);
 
-  recipeCardElem.innerHTML = `
-    <div class="recipe-card__img-wrapper">
-      <img src=${image} class="recipe-card__img" />
-    </div>
-      <div class="recipe-card__description">
-      <div class="recipe-card__title">${title}</div>
-      <div class="recipe-card__cooking-time"><span class="text_bold">${cookingTime}</span> minutes</div>
-    </div>
-  `;
+  const recipeCardImgElem = recipeCardElem.querySelector(".recipe-card__img");
+  const recipeCardTitleElem = recipeCardElem.querySelector(
+    ".recipe-card__title"
+  );
+  const recipeCardCookingTimeValueElem = recipeCardElem.querySelector(
+    ".recipe-card__cooking-time-value"
+  );
 
-  recipesElem.appendChild(recipeCardElem);
+  recipeCardImgElem.src = image;
+  recipeCardTitleElem.textContent = title;
+  recipeCardCookingTimeValueElem.textContent = cookingTime;
+
+  recipesListElem.appendChild(recipeCardElem);
 };
 
 const clearRecipesList = () => {
-  const recipesElem = document.querySelector(".recipes");
+  const recipesElem = document.querySelector(".recipes__list");
   recipesElem.innerHTML = "";
 };
 
@@ -41,7 +43,8 @@ const parseRecipes = (fetchedData) => {
       sourceUrl: src,
     } = fetchedRecipe;
     const parsedRecipe = { image, title, cookingTime, src };
-    displayParsedRecipe(parsedRecipe);
+
+    displayRecipe(parsedRecipe);
   });
 };
 

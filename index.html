@@ -3,20 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <script
+      src="https://kit.fontawesome.com/09e062b361.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Recipe Finder</title>
   <script defer src="build.js"></script></head>
   <body class="preload-transitions">
     <main class="main">
       <div class="wrapper">
         <div class="content">
-          <div class="search">
-            <form class="search__form">
-              <span class="search__search-icon"></span>
-              <input class="search__input" type="text" />
-              <button class="search__button" type="submit"></button>
+          <div class="ingredients-search">
+            <form class="ingredients-search__form">
+              <input class="ingredients-search__input" type="text" />
+              <div class="ingredients-search__suggestions">
+                <ul class="ingredients-search__suggestions-list"></ul>
+              </div>
             </form>
-            <div class="filters-btns">
+            <div class="ingredients-search__buttons">
               <button class="filters__button" type="button">
                 <svg
                   width="16"
@@ -35,8 +39,29 @@
                 </svg>
               </button>
             </div>
+            <div class="selected-ingredients-menu">
+              <div class="selected-ingredients-menu__header">
+                <div class="selected-ingredients-menu__title">
+                  Change your ingredients
+                </div>
+                <i
+                  class="selected-ingredients-menu__arrow-down-icon fa-solid fa-chevron-down"
+                ></i>
+              </div>
+              <div class="selected-ingredients-menu__body">
+                <div class="selected-ingredients-menu__content">
+                  <ul class="selected-ingredients-menu__list" empty>
+                    <div class="selected-ingredients-menu__list-message">
+                      No ingredients added
+                    </div>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
-          <!-- <div class="ingredients"></div> -->
+          <button class="recipe-search-button" type="button">
+            Find Recipes
+          </button>
           <div class="recipes"></div>
         </div>
       </div>

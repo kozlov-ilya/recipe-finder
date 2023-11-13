@@ -1,7 +1,8 @@
 @import "./base/index.scss";
 @import "./popup.scss";
-@import "./ingredients.scss";
+@import "./search.scss";
 @import "./recipes.scss";
+@import "./filters.scss";
 
 body {
   font: var(--font-type-body);
@@ -25,49 +26,4 @@ body {
 }
 
 .content {
-}
-
-.recipes-search-container {
-  display: grid;
-  row-gap: 10px;
-
-  padding-top: 1rem;
-}
-
-.filters__button {
-  display: grid;
-  place-items: center;
-
-  height: var(--button-height);
-  aspect-ratio: 1 / 1;
-  border: 0;
-  padding: 0;
-  background: var(--color-bg-tertiary);
-
-  border-radius: var(--border-radius-200);
-}
-
-.filters__button-svg {
-  & * {
-    fill: #fff;
-  }
-}
-
-/* FILTERS */
-
-.filters {
-}
-
-.filters__header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-
-  padding: 1rem 1.5rem;
-  background: var(--color-bg-secondary);
-
-  font: var(--font-type-h3);
-}
-
-.filters__title {
 }

@@ -1,3 +1,5 @@
+import { preventBodyScrolling, allowBodyScrolling } from "./general";
+
 const getPopupContentHeight = (popupContentElem) => {
   return popupContentElem.offsetHeight;
 };
@@ -22,10 +24,14 @@ const makePopupTransformFaster = (popupContentElem, popupOverlayElem) => {
 
 export const openPopup = (popupElem) => {
   popupElem.classList.add("popup_opened");
+
+  preventBodyScrolling();
 };
 
 const closePopup = (popupElem) => {
   popupElem.classList.remove("popup_opened");
+
+  allowBodyScrolling();
 };
 
 const contentIsScrolledToTop = (popupContentElem) => {

@@ -2,6 +2,7 @@ import {
   getAllIngredientsArr,
   updateSelectedIngredientsList,
 } from "./ingredients";
+import { togglePopularIngredientsItemSelection } from "./filters";
 
 const openSearchSuggestions = () => {
   const searchSuggestionsElem = document.querySelector(
@@ -190,7 +191,12 @@ const handleSuggestionsItemClick = (event) => {
     return;
   }
 
-  updateSelectedIngredientsList(clickedSuggestionsItem.textContent);
+  const ingredientName = highlightedSuggestionsItemElem.textContent;
+
+  updateSelectedIngredientsList(ingredientName);
+
+  togglePopularIngredientsItemSelection(ingredientName);
+
   clearSearchInput();
   closeSearchSuggestions();
   unhighlightAllSuggestionsItems();
@@ -210,7 +216,12 @@ const handleIngredientsSearchFormSubmit = (event) => {
     return;
   }
 
-  updateSelectedIngredientsList(highlightedSuggestionsItemElem.textContent);
+  const ingredientName = highlightedSuggestionsItemElem.textContent;
+
+  updateSelectedIngredientsList(ingredientName);
+
+  togglePopularIngredientsItemSelection(ingredientName);
+
   clearSearchInput();
   closeSearchSuggestions();
   unhighlightAllSuggestionsItems();

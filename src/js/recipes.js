@@ -1,5 +1,6 @@
 import { getSelectedIngredientsArr } from "./ingredients";
 import { fetchData } from "./api";
+import { preventBodyScrolling, allowBodyScrolling } from "./general";
 import savedRecipes from "../tmp/recipes.json" assert { type: "json" };
 
 const fetchedRecipes = [];
@@ -79,14 +80,6 @@ const hideRecipe = () => {
   const recipeElem = document.querySelector(".recipe");
 
   recipeElem.classList.remove("recipe_show");
-};
-
-const preventBodyScrolling = () => {
-  document.querySelector("body").classList.add("prevent-scrolling");
-};
-
-const allowBodyScrolling = () => {
-  document.querySelector("body").classList.remove("prevent-scrolling");
 };
 
 const getRecipeObjById = (recipeId) => {

@@ -191,7 +191,7 @@ const handleSuggestionsItemClick = (event) => {
     return;
   }
 
-  const ingredientName = highlightedSuggestionsItemElem.textContent;
+  const ingredientName = clickedSuggestionsItem.textContent;
 
   updateSelectedIngredientsList(ingredientName);
 

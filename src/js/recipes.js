@@ -1,9 +1,16 @@
 import { getSelectedIngredientsArr } from "./ingredients";
 import { fetchData } from "./api";
 import { preventBodyScrolling, allowBodyScrolling } from "./general";
-import savedRecipes from "../tmp/recipes.json" assert { type: "json" };
+import savedRecipes from "../assets/recipes.json" assert { type: "json" };
+
+console.log(savedRecipes);
 
 const fetchedRecipes = [];
+
+const changeRecipeImageSrcResolution = (recipeImageSrc) => {
+  const regex = /(?<=-)(.*?)(?=\.jpg)/;
+  return recipeImageSrc.replace(regex, "636x393");
+};
 
 const displayRecipeCard = ({ title, image, cookingTime, id }) => {
   const recipesListElem = document.querySelector(".recipes__cards-list");
@@ -50,6 +57,7 @@ const createRecipesSearchQuery = (ingredientsArr, recipesNumber) => {
   query = query + "&" + `instructionsRequired=${true}`;
   query = query + "&" + `addRecipeInformation=${true}`;
   query = query + "&" + `fillIngredients=${true}`;
+  query = query + "&" + `addRecipeNutrition=${true}`;
 
   return query;
 };
@@ -201,21 +209,27 @@ const displayRecipeInfo = (recipeId) => {
   const recipeTitleElem = document.querySelector(".recipe__title");
   const recipeImgElem = document.querySelector(".recipe__img");
   const recipeCookingTimeValueElem = document.querySelector(
-    ".recipe__cooking-time-value"
+    ".recipe__time-value"
   );
+  const recipeServingsValueElem = document.querySelector(
+    ".recipe__servings-value"
+  );
+  const recipeSourceLink = document.querySelector(".recipe__src-link");
   const recipeIngredients = getIngredientsInfo(recipeId);
-  const recipeInstruction = getInstructionsInfo(recipeId);
+  const recipeInstructions = getInstructionsInfo(recipeId);
 
   clearRecipeIngredientsList();
   clearRecipeInstructionStepsList();
 
   recipeTitleElem.textContent = recipeObj.title;
   recipeImgElem.src = recipeObj.image;
-  recipeCookingTimeValueElem.textContent = recipeObj.cookingTime;
+  recipeCookingTimeValueElem.textContent = `${recipeObj.cookingTime} mins`;
+  recipeServingsValueElem.textContent = `${recipeObj.servings} servings`;
+  recipeSourceLink.href = recipeObj.src;
   recipeIngredients.forEach((ingredientObj) => {
     displayRecipeIngredient(ingredientObj);
   });
-  recipeInstruction.forEach((instructionStepObj) => {
+  recipeInstructions.forEach((instructionStepObj) => {
     displayRecipeInstructionStep(instructionStepObj);
   });
 };
@@ -277,6 +291,7 @@ const loadSavedRecipes = () => {
     let {
       id,
       readyInMinutes: cookingTime,
+      servings,
       extendedIngredients: allIngredients,
       usedIngredients,
       title,
@@ -288,11 +303,12 @@ const loadSavedRecipes = () => {
     fetchedRecipes.push({
       id,
       cookingTime,
+      servings,
       allIngredients,
       usedIngredients,
       title,
       src,
-      image,
+      image: changeRecipeImageSrcResolution(image),
       instruction,
     });
   });

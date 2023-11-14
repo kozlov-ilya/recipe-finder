@@ -8,6 +8,9 @@ const hidePopupElem = (popupElem) => {
   const popupContentElem = popupElem.querySelector(".popup__content");
 
   const handlePopupSwiped = (event) => {
+    /* If popup was opened again before transition ended */
+    if (popupElem.classList.contains("popup_opened")) return;
+
     popupElem.style.display = "none";
 
     popupContentElem.removeEventListener("transitionend", handlePopupSwiped);
@@ -17,7 +20,7 @@ const hidePopupElem = (popupElem) => {
 };
 
 const displayPopupElem = (popupElem) => {
-  popupElem.style = "";
+  popupElem.style.display = "flex";
 };
 
 const clearPopupInlineStyles = (popupContentElem, popupOverlayElem) => {

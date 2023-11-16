@@ -248,30 +248,30 @@ const handleRecipeCardClick = (event) => {
 
 const handleRecipeCloseButtonClick = (event) => {
   hideRecipe();
+
   allowBodyScrolling();
 };
 
-const handleTabMenuButtonClick = (event) => {
-  const clickedTabElem = event.target.closest(".tab-menu__tab-button");
+const handleRecipeTouchstart = (event) => {
+  let startTouchData = {};
 
-  if (!clickedTabElem) return;
+  startTouchData.startX = event.touches[0].clientX;
+  startTouchData.startTime = Date.now();
 
-  const tabs = document.querySelectorAll(".tab-menu__tab-button");
-  const contentItems = document.querySelectorAll(".tab-menu__content-item");
-  let clickedTabIndex = 0;
+  const handlePopupTouchend = (event) => {
+    const endX = event.changedTouches[0].clientX;
 
-  tabs.forEach((tab, index) => {
-    tab.classList.remove("tab-menu__tab-button_active");
+    const deltaX = endX - startTouchData.startX;
+    const deltaTime = Date.now() - startTouchData.startTime;
 
-    clickedTabIndex = tab === clickedTabElem ? index : clickedTabIndex;
-  });
+    const touchVelocity = deltaX / deltaTime;
 
-  contentItems.forEach((contentItem) => {
-    contentItem.classList.remove("tab-menu__content-item_active");
-  });
+    if (touchVelocity > 0.4) {
+      hideRecipe();
+    }
+  };
 
-  clickedTabElem.classList.add("tab-menu__tab-button_active");
-  contentItems[clickedTabIndex].classList.add("tab-menu__content-item_active");
+  event.currentTarget.addEventListener("touchend", handlePopupTouchend);
 };
 
 export const addRecipesHandlers = () => {
@@ -282,8 +282,9 @@ export const addRecipesHandlers = () => {
 
   recipesSearchButton.addEventListener("click", handleRecipesSearchButtonClick);
   recipesList.addEventListener("click", handleRecipeCardClick);
-  recipeElem.addEventListener("click", handleTabMenuButtonClick);
   recipeCloseButton.addEventListener("click", handleRecipeCloseButtonClick);
+
+  recipeElem.addEventListener("touchstart", handleRecipeTouchstart);
 };
 
 const loadSavedRecipes = () => {

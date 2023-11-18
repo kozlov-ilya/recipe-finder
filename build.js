@@ -2406,7 +2406,7 @@ document.addEventListener("DOMContentLoaded", router);
 const handleNonExistingPageRequest = () => {
   if (window.location.pathname === "/404.html") {
     // Redirect to the home page
-    window.location.href = "index.html";
+    window.location.href = "/index.html";
   }
 };
 

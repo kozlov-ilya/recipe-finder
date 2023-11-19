@@ -1180,13 +1180,12 @@ const fetchData = async function (query, successCallback) {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _router_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router.js */ "./src/js/router.js");
-/* harmony import */ var _ingredientsSearch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ingredientsSearch */ "./src/js/ingredientsSearch.js");
-/* harmony import */ var _filters_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./filters.js */ "./src/js/filters.js");
-/* harmony import */ var _popup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./popup.js */ "./src/js/popup.js");
-/* harmony import */ var _ingredients_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ingredients.js */ "./src/js/ingredients.js");
-/* harmony import */ var _recipes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./recipes */ "./src/js/recipes.js");
-
+/* harmony import */ var _ingredientsSearch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ingredientsSearch */ "./src/js/ingredientsSearch.js");
+/* harmony import */ var _filters_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./filters.js */ "./src/js/filters.js");
+/* harmony import */ var _popup_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./popup.js */ "./src/js/popup.js");
+/* harmony import */ var _ingredients_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ingredients.js */ "./src/js/ingredients.js");
+/* harmony import */ var _recipes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./recipes */ "./src/js/recipes.js");
+// import "./router.js";
 
 
 
@@ -1194,11 +1193,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  (0,_ingredientsSearch__WEBPACK_IMPORTED_MODULE_1__.addIngredientsSearchFormHandlers)();
-  (0,_filters_js__WEBPACK_IMPORTED_MODULE_2__.addFiltersHandlers)();
-  (0,_popup_js__WEBPACK_IMPORTED_MODULE_3__.addHandlersToAllPopups)();
-  (0,_ingredients_js__WEBPACK_IMPORTED_MODULE_4__.addIngredientsHandlers)();
-  (0,_recipes__WEBPACK_IMPORTED_MODULE_5__.addRecipesHandlers)();
+  console.log(window.location.pathname);
+  // addIngredientsSearchFormHandlers();
+  // addFiltersHandlers();
+  // addHandlersToAllPopups();
+  // addIngredientsHandlers();
+  // addRecipesHandlers();
 });
 
 
@@ -2201,9 +2201,16 @@ const displayRecipeInfo = (recipeId) => {
   });
 };
 
+const scrollRecipeToTop = () => {
+  const recipeElem = document.querySelector(".recipe");
+
+  recipeElem.scrollTop = 0;
+};
+
 const openRecipe = (recipeId) => {
   displayRecipeInfo(recipeId);
   showRecipe();
+  scrollRecipeToTop();
 
   (0,_general__WEBPACK_IMPORTED_MODULE_3__.preventBodyScrolling)();
 };
@@ -2293,8 +2300,8 @@ const loadSavedRecipes = () => {
   });
 };
 
-loadSavedRecipes();
-displayFetchedRecipes();
+// loadSavedRecipes();
+// displayFetchedRecipes();
 
 
 /***/ }),

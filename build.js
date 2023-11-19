@@ -1180,13 +1180,11 @@ const fetchData = async function (query, successCallback) {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _router_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router.js */ "./src/js/router.js");
-/* harmony import */ var _ingredientsSearch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ingredientsSearch */ "./src/js/ingredientsSearch.js");
-/* harmony import */ var _filters_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./filters.js */ "./src/js/filters.js");
-/* harmony import */ var _popup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./popup.js */ "./src/js/popup.js");
-/* harmony import */ var _ingredients_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ingredients.js */ "./src/js/ingredients.js");
-/* harmony import */ var _recipes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./recipes */ "./src/js/recipes.js");
-
+/* harmony import */ var _ingredientsSearch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ingredientsSearch */ "./src/js/ingredientsSearch.js");
+/* harmony import */ var _filters_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./filters.js */ "./src/js/filters.js");
+/* harmony import */ var _popup_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./popup.js */ "./src/js/popup.js");
+/* harmony import */ var _ingredients_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ingredients.js */ "./src/js/ingredients.js");
+/* harmony import */ var _recipes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./recipes */ "./src/js/recipes.js");
 
 
 
@@ -1194,11 +1192,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  (0,_ingredientsSearch__WEBPACK_IMPORTED_MODULE_1__.addIngredientsSearchFormHandlers)();
-  (0,_filters_js__WEBPACK_IMPORTED_MODULE_2__.addFiltersHandlers)();
-  (0,_popup_js__WEBPACK_IMPORTED_MODULE_3__.addHandlersToAllPopups)();
-  (0,_ingredients_js__WEBPACK_IMPORTED_MODULE_4__.addIngredientsHandlers)();
-  (0,_recipes__WEBPACK_IMPORTED_MODULE_5__.addRecipesHandlers)();
+  (0,_ingredientsSearch__WEBPACK_IMPORTED_MODULE_0__.addIngredientsSearchFormHandlers)();
+  (0,_filters_js__WEBPACK_IMPORTED_MODULE_1__.addFiltersHandlers)();
+  (0,_popup_js__WEBPACK_IMPORTED_MODULE_2__.addHandlersToAllPopups)();
+  (0,_ingredients_js__WEBPACK_IMPORTED_MODULE_3__.addIngredientsHandlers)();
+  (0,_recipes__WEBPACK_IMPORTED_MODULE_4__.addRecipesHandlers)();
 });
 
 
@@ -1957,20 +1955,18 @@ const addHandlersToAllPopups = () => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addRecipesHandlers: () => (/* binding */ addRecipesHandlers),
-/* harmony export */   closeRecipe: () => (/* binding */ closeRecipe),
-/* harmony export */   openRecipe: () => (/* binding */ openRecipe)
+/* harmony export */   addRecipesHandlers: () => (/* binding */ addRecipesHandlers)
 /* harmony export */ });
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router */ "./src/js/router.js");
-/* harmony import */ var _ingredients__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ingredients */ "./src/js/ingredients.js");
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./api */ "./src/js/api.js");
-/* harmony import */ var _general__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./general */ "./src/js/general.js");
-/* harmony import */ var _assets_recipes_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../assets/recipes.json */ "./src/assets/recipes.json");
+/* harmony import */ var _ingredients__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ingredients */ "./src/js/ingredients.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api */ "./src/js/api.js");
+/* harmony import */ var _general__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./general */ "./src/js/general.js");
+/* harmony import */ var _assets_recipes_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/recipes.json */ "./src/assets/recipes.json");
 
 
 
 
 
+console.log(_assets_recipes_json__WEBPACK_IMPORTED_MODULE_3__);
 
 const fetchedRecipes = [];
 
@@ -2036,13 +2032,13 @@ const displayFetchedRecipes = () => {
 };
 
 const handleRecipesSearchButtonClick = (event) => {
-  const selectedIngredientsArr = (0,_ingredients__WEBPACK_IMPORTED_MODULE_1__.getSelectedIngredientsArr)();
+  const selectedIngredientsArr = (0,_ingredients__WEBPACK_IMPORTED_MODULE_0__.getSelectedIngredientsArr)();
 
   if (!selectedIngredientsArr.length) return;
 
   const searchQuery = createRecipesSearchQuery(selectedIngredientsArr, 2);
 
-  (0,_api__WEBPACK_IMPORTED_MODULE_2__.fetchData)(searchQuery, parseRecipes);
+  (0,_api__WEBPACK_IMPORTED_MODULE_1__.fetchData)(searchQuery, parseRecipes);
 };
 
 const showRecipe = () => {
@@ -2059,7 +2055,7 @@ const hideRecipe = () => {
 
 const getRecipeObjById = (recipeId) => {
   return fetchedRecipes.find((fetchedRecipe) => {
-    return fetchedRecipe.id.toString() === recipeId.toString();
+    return fetchedRecipe.id === recipeId;
   });
 };
 
@@ -2201,19 +2197,6 @@ const displayRecipeInfo = (recipeId) => {
   });
 };
 
-const openRecipe = (recipeId) => {
-  displayRecipeInfo(recipeId);
-  showRecipe();
-
-  (0,_general__WEBPACK_IMPORTED_MODULE_3__.preventBodyScrolling)();
-};
-
-const closeRecipe = () => {
-  hideRecipe();
-
-  (0,_general__WEBPACK_IMPORTED_MODULE_3__.allowBodyScrolling)();
-};
-
 const handleRecipeCardClick = (event) => {
   const recipeCardElem = event.target.closest(".recipe-card");
 
@@ -2221,11 +2204,15 @@ const handleRecipeCardClick = (event) => {
 
   const recipeId = parseInt(recipeCardElem.dataset.recipeId);
 
-  (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/recipe/${recipeId}`);
+  displayRecipeInfo(recipeId);
+  showRecipe();
+  (0,_general__WEBPACK_IMPORTED_MODULE_2__.preventBodyScrolling)();
 };
 
 const handleRecipeCloseButtonClick = (event) => {
-  (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/`);
+  hideRecipe();
+
+  (0,_general__WEBPACK_IMPORTED_MODULE_2__.allowBodyScrolling)();
 };
 
 const handleRecipeTouchstart = (event) => {
@@ -2244,8 +2231,6 @@ const handleRecipeTouchstart = (event) => {
 
     if (touchVelocity > 0.4) {
       hideRecipe();
-
-      (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/`);
     }
   };
 
@@ -2266,7 +2251,7 @@ const addRecipesHandlers = () => {
 };
 
 const loadSavedRecipes = () => {
-  _assets_recipes_json__WEBPACK_IMPORTED_MODULE_4__.results.forEach((fetchedRecipe) => {
+  _assets_recipes_json__WEBPACK_IMPORTED_MODULE_3__.results.forEach((fetchedRecipe) => {
     let {
       id,
       readyInMinutes: cookingTime,
@@ -2295,69 +2280,6 @@ const loadSavedRecipes = () => {
 
 loadSavedRecipes();
 displayFetchedRecipes();
-
-
-/***/ }),
-
-/***/ "./src/js/router.js":
-/*!**************************!*\
-  !*** ./src/js/router.js ***!
-  \**************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   navigateUrl: () => (/* binding */ navigateUrl)
-/* harmony export */ });
-/* harmony import */ var _recipes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./recipes */ "./src/js/recipes.js");
-
-
-
-const navigateUrl = (url) => {
-  window.history.pushState(null, null, url);
-
-  handleRoute();
-};
-
-const handleRoute = () => {
-  const path = window.location.pathname;
-
-  const routes = [
-    {
-      path: /^\/$/g,
-      response: () => {
-        (0,_recipes__WEBPACK_IMPORTED_MODULE_0__.closeRecipe)();
-      },
-    },
-    {
-      path: /^\/recipe\/.*$/g,
-      response: () => {
-        const recipeId = path.split("/").at(-1);
-
-        (0,_recipes__WEBPACK_IMPORTED_MODULE_0__.openRecipe)(recipeId);
-      },
-    },
-  ];
-
-  const potentialMatches = routes.map((route) => {
-    return { route, isMatch: route.path.test(path) };
-  });
-
-  let match = potentialMatches.find((potentialMatch) => potentialMatch.isMatch);
-
-  if (!match) {
-    match = { route: routes[0], isMatch: true };
-    window.location.href = "/";
-  }
-
-  match.route.response();
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-  handleRoute();
-});
-
-window.addEventListener("popstate", handleRoute);
 
 
 /***/ }),

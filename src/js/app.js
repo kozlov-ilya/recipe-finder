@@ -1,3 +1,4 @@
+import "./router.js";
 import { addIngredientsSearchFormHandlers } from "./ingredientsSearch";
 import { addFiltersHandlers } from "./filters.js";
 import { addHandlersToAllPopups } from "./popup.js";

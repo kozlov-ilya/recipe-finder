@@ -1,9 +1,8 @@
+import { navigateUrl } from "./router";
 import { getSelectedIngredientsArr } from "./ingredients";
 import { fetchData } from "./api";
 import { preventBodyScrolling, allowBodyScrolling } from "./general";
 import savedRecipes from "../assets/recipes.json" assert { type: "json" };
-
-console.log(savedRecipes);
 
 const fetchedRecipes = [];
 
@@ -92,7 +91,7 @@ const hideRecipe = () => {
 
 const getRecipeObjById = (recipeId) => {
   return fetchedRecipes.find((fetchedRecipe) => {
-    return fetchedRecipe.id === recipeId;
+    return fetchedRecipe.id.toString() === recipeId.toString();
   });
 };
 
@@ -234,6 +233,19 @@ const displayRecipeInfo = (recipeId) => {
   });
 };
 
+export const openRecipe = (recipeId) => {
+  displayRecipeInfo(recipeId);
+  showRecipe();
+
+  preventBodyScrolling();
+};
+
+export const closeRecipe = () => {
+  hideRecipe();
+
+  allowBodyScrolling();
+};
+
 const handleRecipeCardClick = (event) => {
   const recipeCardElem = event.target.closest(".recipe-card");
 
@@ -241,15 +253,11 @@ const handleRecipeCardClick = (event) => {
 
   const recipeId = parseInt(recipeCardElem.dataset.recipeId);
 
-  displayRecipeInfo(recipeId);
-  showRecipe();
-  preventBodyScrolling();
+  navigateUrl(`/recipe-finder/recipe/${recipeId}`);
 };
 
 const handleRecipeCloseButtonClick = (event) => {
-  hideRecipe();
-
-  allowBodyScrolling();
+  navigateUrl(`/recipe-finder/`);
 };
 
 const handleRecipeTouchstart = (event) => {
@@ -268,6 +276,8 @@ const handleRecipeTouchstart = (event) => {
 
     if (touchVelocity > 0.4) {
       hideRecipe();
+
+      navigateUrl(`/recipe-finder/`);
     }
   };
 

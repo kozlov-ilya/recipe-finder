@@ -1180,13 +1180,11 @@ const fetchData = async function (query, successCallback) {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _router_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router.js */ "./src/js/router.js");
-/* harmony import */ var _ingredientsSearch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ingredientsSearch */ "./src/js/ingredientsSearch.js");
-/* harmony import */ var _filters_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./filters.js */ "./src/js/filters.js");
-/* harmony import */ var _popup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./popup.js */ "./src/js/popup.js");
-/* harmony import */ var _ingredients_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ingredients.js */ "./src/js/ingredients.js");
-/* harmony import */ var _recipes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./recipes */ "./src/js/recipes.js");
-
+/* harmony import */ var _ingredientsSearch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ingredientsSearch */ "./src/js/ingredientsSearch.js");
+/* harmony import */ var _filters_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./filters.js */ "./src/js/filters.js");
+/* harmony import */ var _popup_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./popup.js */ "./src/js/popup.js");
+/* harmony import */ var _ingredients_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ingredients.js */ "./src/js/ingredients.js");
+/* harmony import */ var _recipes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./recipes */ "./src/js/recipes.js");
 
 
 
@@ -1194,11 +1192,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  (0,_ingredientsSearch__WEBPACK_IMPORTED_MODULE_1__.addIngredientsSearchFormHandlers)();
-  (0,_filters_js__WEBPACK_IMPORTED_MODULE_2__.addFiltersHandlers)();
-  (0,_popup_js__WEBPACK_IMPORTED_MODULE_3__.addHandlersToAllPopups)();
-  (0,_ingredients_js__WEBPACK_IMPORTED_MODULE_4__.addIngredientsHandlers)();
-  (0,_recipes__WEBPACK_IMPORTED_MODULE_5__.addRecipesHandlers)();
+  (0,_ingredientsSearch__WEBPACK_IMPORTED_MODULE_0__.addIngredientsSearchFormHandlers)();
+  (0,_filters_js__WEBPACK_IMPORTED_MODULE_1__.addFiltersHandlers)();
+  (0,_popup_js__WEBPACK_IMPORTED_MODULE_2__.addHandlersToAllPopups)();
+  (0,_ingredients_js__WEBPACK_IMPORTED_MODULE_3__.addIngredientsHandlers)();
+  (0,_recipes__WEBPACK_IMPORTED_MODULE_4__.addRecipesHandlers)();
 });
 
 
@@ -2282,70 +2280,6 @@ const loadSavedRecipes = () => {
 
 loadSavedRecipes();
 displayFetchedRecipes();
-
-
-/***/ }),
-
-/***/ "./src/js/router.js":
-/*!**************************!*\
-  !*** ./src/js/router.js ***!
-  \**************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   navigateUrl: () => (/* binding */ navigateUrl)
-/* harmony export */ });
-// import { openRecipe } from "./recipes";
-// import { closeRecipe } from "./recipes";
-
-const navigateUrl = (url) => {
-  window.history.pushState(null, null, url);
-
-  handleRoute();
-};
-
-const handleRoute = () => {
-  const path = window.location.pathname;
-
-  const routes = [
-    {
-      path: /^\/$/g,
-      response: () => {
-        console.log("home");
-        // closeRecipe();
-      },
-    },
-    {
-      path: /^\/recipe\/.*$/g,
-      response: () => {
-        const recipeId = path.split("/").at(-1);
-        console.log("recipe");
-        // openRecipe(recipeId);
-      },
-    },
-  ];
-
-  const potentialMatches = routes.map((route) => {
-    return { route, isMatch: route.path.test(path) };
-  });
-
-  let match = potentialMatches.find((potentialMatch) => potentialMatch.isMatch);
-
-  if (!match) {
-    match = { route: routes[0], isMatch: true };
-    window.location.href = "/";
-  }
-
-  console.log(path);
-  // match.route.response();
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-  handleRoute();
-});
-
-window.addEventListener("popstate", handleRoute);
 
 
 /***/ }),

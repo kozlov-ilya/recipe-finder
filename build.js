@@ -2221,11 +2221,11 @@ const handleRecipeCardClick = (event) => {
 
   const recipeId = parseInt(recipeCardElem.dataset.recipeId);
 
-  // navigateUrl(`/recipe/${recipeId}`);
+  (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/recipe-finder/recipe/${recipeId}`);
 };
 
 const handleRecipeCloseButtonClick = (event) => {
-  // navigateUrl(`/`);
+  (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/recipe-finder/`);
 };
 
 const handleRecipeTouchstart = (event) => {
@@ -2245,7 +2245,7 @@ const handleRecipeTouchstart = (event) => {
     if (touchVelocity > 0.4) {
       hideRecipe();
 
-      // navigateUrl(`/`);
+      (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/recipe-finder/`);
     }
   };
 
@@ -2326,7 +2326,7 @@ const handleRoute = () => {
 
   const routes = [
     {
-      path: /^\/recipe-finder.+$/g,
+      path: /^\/recipe-finder\/$/g,
       response: () => {
         (0,_recipes__WEBPACK_IMPORTED_MODULE_0__.closeRecipe)();
       },
@@ -2347,10 +2347,10 @@ const handleRoute = () => {
 
   let match = potentialMatches.find((potentialMatch) => potentialMatch.isMatch);
 
-  // if (!match) {
-  //   match = { route: routes[0], isMatch: true };
-  //   window.location.href = "/";
-  // }
+  if (!match) {
+    match = { route: routes[0], isMatch: true };
+    window.location.href = "/recipe-finder/";
+  }
 
   match.route.response();
 };

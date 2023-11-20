@@ -2322,8 +2322,6 @@ const navigateUrl = (url) => {
 const handleRoute = () => {
   const path = window.location.pathname;
 
-  console.log(path);
-
   const routes = [
     {
       path: /^\/recipe-finder\/$/g,

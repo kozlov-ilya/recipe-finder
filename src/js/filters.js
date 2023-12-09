@@ -1,5 +1,5 @@
 import popularIngredientsArr from "../assets/popular-ingredients.json" assert { type: "json" };
-import { openPopup } from "./popup.js";
+import { openPopup, openPopupDesktop } from "./popup.js";
 import { updateSelectedIngredientsList } from "./ingredients.js";
 
 const getPopularIngredientsArr = () => {
@@ -7,20 +7,23 @@ const getPopularIngredientsArr = () => {
 };
 
 const displayPopularIngredientsListItem = (ingredientName) => {
-  const ingredientsListElem = document.querySelector(
+  const ingredientsListElems = document.querySelectorAll(
     ".popular-ingredients__list"
   );
 
   const ingredientsListItemTemplate = document.querySelector(
     ".popular-ingredients-list-item-template"
   );
-  const ingredientsListItemFrag =
-    ingredientsListItemTemplate.content.cloneNode(true);
-  const ingredientsListItemElem = ingredientsListItemFrag.children[0];
 
-  ingredientsListItemElem.textContent = ingredientName;
+  ingredientsListElems.forEach((ingredientsListElem) => {
+    const ingredientsListItemFrag =
+      ingredientsListItemTemplate.content.cloneNode(true);
+    const ingredientsListItemElem = ingredientsListItemFrag.children[0];
 
-  ingredientsListElem.append(ingredientsListItemElem);
+    ingredientsListItemElem.textContent = ingredientName;
+
+    ingredientsListElem.append(ingredientsListItemElem);
+  });
 };
 
 const displayAllPopularIngredientsListItems = () => {
@@ -32,29 +35,44 @@ const displayAllPopularIngredientsListItems = () => {
 };
 
 const handleFiltersButtonClick = (event) => {
+  if (window.matchMedia("(width > 1024px)").matches) {
+    const filtersPopupDesktop = document.querySelector(
+      ".filters-popup-desktop"
+    );
+    openPopupDesktop(filtersPopupDesktop);
+
+    return;
+  }
+
   const filtersPopup = document.querySelector(".filters-popup");
   openPopup(filtersPopup);
 };
 
-const getPopularIngredientsItemElemByName = (ingredientItemName) => {
+const getPopularIngredientsItemElemsByName = (ingredientItemName) => {
   const ingredientsItemElems = document.querySelectorAll(
     ".popular-ingredients__list-item"
   );
 
-  return Array.from(ingredientsItemElems).find((ingredientsItemElem) => {
+  return Array.from(ingredientsItemElems).filter((ingredientsItemElem) => {
     return ingredientsItemElem.textContent === ingredientItemName;
   });
 };
 
 export const togglePopularIngredientsItemSelection = (ingredientItemName) => {
-  const ingredientItemElem =
-    getPopularIngredientsItemElemByName(ingredientItemName);
+  const ingredientItemElems =
+    getPopularIngredientsItemElemsByName(ingredientItemName);
 
-  if (!ingredientItemElem) return;
+  if (!ingredientItemElems) return;
 
-  return ingredientItemElem.classList.toggle(
-    "popular-ingredients__list-item_selected"
-  );
+  let isSelected;
+
+  ingredientItemElems.forEach((ingredientItemElem) => {
+    isSelected = ingredientItemElem.classList.toggle(
+      "popular-ingredients__list-item_selected"
+    );
+  });
+
+  return isSelected;
 };
 
 const handlePopularIngredientsItemClick = (event) => {
@@ -80,17 +98,25 @@ const addFiltersButtonHandlers = () => {
 };
 
 const addPopuarIngredientsHandlers = () => {
-  const popularIngredientsElem = document.querySelector(".popular-ingredients");
-
-  popularIngredientsElem.addEventListener(
-    "click",
-    handlePopularIngredientsItemClick
+  const popularIngredientsElems = document.querySelectorAll(
+    ".popular-ingredients"
   );
+
+  popularIngredientsElems.forEach((popularIngredientsElem) => {
+    popularIngredientsElem.addEventListener(
+      "click",
+      handlePopularIngredientsItemClick
+    );
+  });
 };
 
-export const addFiltersHandlers = () => {
+const addFiltersHandlers = () => {
   addFiltersButtonHandlers();
   addPopuarIngredientsHandlers();
 };
 
 displayAllPopularIngredientsListItems();
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  addFiltersHandlers();
+});

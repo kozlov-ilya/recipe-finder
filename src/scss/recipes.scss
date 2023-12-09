@@ -1,17 +1,93 @@
 /* -------------------------------------------------------------------------- */
+/*                               RECIPES MESSAGE                               */
+/* -------------------------------------------------------------------------- */
+.recipes-message-box {
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  min-height: 150px;
+  padding: 0 1rem;
+  background: var(--color-bg-secondary);
+
+  border-radius: var(--border-radius-200);
+
+  &_show {
+    display: flex;
+  }
+}
+
+.recipes-message {
+  text-align: center;
+}
+
+.recipes-message-title {
+  margin: 0;
+  font: var(--font-type-h2);
+}
+.recipes-message-subtitle {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                   RECIPES                                  */
 /* -------------------------------------------------------------------------- */
 
+.recipes-container {
+  @media (width > 1024px) {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    column-gap: 2rem;
+
+    min-height: 90vh;
+  }
+}
+
+.recipes-search-container {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: 1rem;
+}
+
 .recipe-search-button {
-  padding: 0.5rem;
+  // padding: 0.5rem;
+  height: var(--text-input-height);
   background: var(--color-bg-tertiary);
   border: none;
 
   border-radius: var(--border-radius-200);
 
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   color: inherit;
   font: inherit;
   font-weight: bold;
+  cursor: pointer;
+}
+
+.recipe-search__message-box {
+  display: grid;
+
+  grid-template-rows: 0fr;
+
+  transition: grid-template-rows 0.2s, border 0s 0.2s;
+
+  &_show {
+    grid-template-rows: 1fr;
+  }
+}
+
+.recipe-search__message-content {
+  overflow: hidden;
+}
+
+.recipe-search__message {
+  text-align: center;
+}
+
+.recipes {
+  padding-bottom: 1rem;
 }
 
 .recipes__cards-list {
@@ -30,11 +106,16 @@
   width: 100%;
   background: var(--color-bg-secondary);
 
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+
   border-radius: var(--border-radius-400);
+  cursor: pointer;
+  & svg {
+    fill: #fff;
+  }
 }
 
 .recipe-card__img-wrapper {
-  height: 55.5vw;
   overflow: hidden;
   padding: 0.25rem;
 
@@ -52,27 +133,118 @@
 .recipe-card__description {
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  row-gap: 0.75rem;
 
   padding: 0.5rem 1rem;
 }
 
 .recipe-card__title {
   font: var(--font-type-h3);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
 }
 
-.recipe-card__cooking-time-value {
-  font-weight: 700;
+.recipe-card__meta {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0rem;
+}
+
+.recipe-card__meta-item {
+  display: flex;
+  align-items: center;
+  column-gap: 0.75rem;
+  line-height: 1.5;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              RECIPE BACKGROUND                             */
+/* -------------------------------------------------------------------------- */
+
+.recipe-bg {
+  display: none;
+
+  @media (width > 1024px) {
+    position: sticky;
+    top: 2rem;
+
+    max-height: calc(100vh - 6rem);
+
+    &_show {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.recipe-bg-img {
+  width: 450px;
+  height: 450px;
+
+  & #salmon {
+    animation: 12s ease-in-out infinite inverse-slide;
+  }
+
+  & #mushroom-4,
+  & #avocado-1,
+  & #tomato-1,
+  & #avocado-2 {
+    animation: 7.5s ease-in-out infinite slide;
+  }
+
+  & #mushroom-3,
+  & #tomato-2,
+  & #mushroom-2 {
+    animation: 7.5s 0.5s ease-in-out infinite inverse-slide;
+  }
+
+  & #broccoli-4,
+  & #stick-2,
+  & #broccoli-1 {
+    animation: 9s ease-in-out infinite inverse-slide;
+  }
+
+  & #broccoli-2,
+  & #broccoli-3,
+  & #tomato-3 {
+    animation: 9s 0.5s ease-in-out infinite slide;
+  }
+}
+
+@keyframes slide {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes inverse-slide {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* -------------------------------------------------------------------------- */
 /*                                   RECIPE                                   */
 /* -------------------------------------------------------------------------- */
+
 .recipe {
   position: fixed;
   inset: 0;
+  z-index: 1;
   overflow: auto;
+  overscroll-behavior: none;
 
   background: var(--color-bg-primary);
 
@@ -82,6 +254,36 @@
 
   &_show {
     transform: translateX(0%);
+  }
+
+  @media (width > 1024px) {
+    display: none;
+    position: sticky;
+    top: 2rem;
+
+    max-height: calc(100vh - 2rem);
+
+    transform: none;
+
+    transition: none;
+
+    &_show {
+      display: block;
+
+      &::-webkit-scrollbar {
+        width: 0.75rem;
+      }
+
+      &::-webkit-scrollbar-track {
+        // background: var(--color-bg-tertiary);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--color-bg-tertiary);
+        border: 3px solid var(--color-bg-primary);
+        border-radius: 15px;
+      }
+    }
   }
 }
 
@@ -116,6 +318,10 @@
     width: 1rem;
     fill: #fff;
   }
+
+  @media (width > 1024px) {
+    display: none;
+  }
 }
 
 .recipe__img-wrapper {
@@ -123,6 +329,12 @@
   overflow: hidden;
 
   box-shadow: inset 0 0 20px 10px rgba(0, 0, 0, 0.6);
+
+  @media (width > 1024px) {
+    height: 25vw;
+
+    border-radius: 1rem 1rem 0 0;
+  }
 }
 
 .recipe__img {
@@ -177,6 +389,8 @@
 .recipe__src-link {
   color: var(--color-text-primary);
   // text-decoration: none;
+
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   &:visited {
     color: var(--color-text-primary);
   }
@@ -263,7 +477,7 @@
 
 .instruction-step {
   display: grid;
-  grid-template-columns: 1.5rem 1fr;
+  grid-template-columns: 2rem 1fr;
 
   font: var(--font-type-body);
   line-height: 1.5;

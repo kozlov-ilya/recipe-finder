@@ -1,17 +1,17 @@
-import { navigateUrl } from "./router";
+import { navigateUrl, ROOT } from "./router";
 import { getSelectedIngredientsArr } from "./ingredients";
 import { fetchData } from "./api";
 import { preventBodyScrolling, allowBodyScrolling } from "./general";
 import savedRecipes from "../assets/recipes.json" assert { type: "json" };
 
-const fetchedRecipes = [];
+let fetchedRecipes = [];
 
 const changeRecipeImageSrcResolution = (recipeImageSrc) => {
   const regex = /(?<=-)(.*?)(?=\.jpg)/;
   return recipeImageSrc.replace(regex, "636x393");
 };
 
-const displayRecipeCard = ({ title, image, cookingTime, id }) => {
+const displayRecipeCard = ({ title, image, cookingTime, id, servings }) => {
   const recipesListElem = document.querySelector(".recipes__cards-list");
 
   const recipeCardTemplate = document.querySelector(".recipe-card-template");
@@ -24,10 +24,14 @@ const displayRecipeCard = ({ title, image, cookingTime, id }) => {
   const recipeCardCookingTimeValueElem = recipeCardElem.querySelector(
     ".recipe-card__cooking-time-value"
   );
+  const recipeCardServingsValueElem = recipeCardElem.querySelector(
+    ".recipe-card__servings-value"
+  );
 
   recipeCardImgElem.src = image;
   recipeCardTitleElem.textContent = title;
-  recipeCardCookingTimeValueElem.textContent = cookingTime;
+  recipeCardCookingTimeValueElem.textContent = `${cookingTime} mins`;
+  recipeCardServingsValueElem.textContent = `${servings} servings`;
 
   recipesListElem.append(recipeCardElem);
 
@@ -39,19 +43,11 @@ const clearRecipesList = () => {
   recipesElem.innerHTML = "";
 };
 
-const parseRecipes = (fetchedData) => {
-  clearRecipesList();
-
-  // fetchedRecipes = fetchedData.results.map((fetchedRecipe) => {
-  //   return ({ id, readyInMinutes } = fetchedRecipe);
-  // });
-};
-
 const createRecipesSearchQuery = (ingredientsArr, recipesNumber) => {
   let query = `includeIngredients=${ingredientsArr.join(",")}`;
 
   query = query + "&" + `number=${recipesNumber}`;
-  query = query + "&" + `sort=min-missing-ingredients`;
+  query = query + "&" + `sort=max-used-ingredients`;
   query = query + "&" + `ignorePantry=${true}`;
   query = query + "&" + `instructionsRequired=${true}`;
   query = query + "&" + `addRecipeInformation=${true}`;
@@ -67,18 +63,10 @@ const displayFetchedRecipes = () => {
   });
 };
 
-const handleRecipesSearchButtonClick = (event) => {
-  const selectedIngredientsArr = getSelectedIngredientsArr();
-
-  if (!selectedIngredientsArr.length) return;
-
-  const searchQuery = createRecipesSearchQuery(selectedIngredientsArr, 2);
-
-  fetchData(searchQuery, parseRecipes);
-};
-
 const showRecipe = () => {
   const recipeElem = document.querySelector(".recipe");
+
+  recipeElem.scrollTop = 0;
 
   recipeElem.classList.add("recipe_show");
 };
@@ -104,9 +92,13 @@ const sortRecipeIngredients = (ingredientsArr) => {
 const getIngredientsInfo = (recipeId) => {
   const recipeObj = getRecipeObjById(recipeId);
 
-  const usedIngredientsArr = recipeObj.usedIngredients.map((ingredientObj) => {
-    return ingredientObj.name;
-  });
+  const selectedIngredientsArr = getSelectedIngredientsArr();
+
+  const usedIngredientsArr = recipeObj.usedIngredients
+    .map((ingredientObj) => {
+      return ingredientObj.name;
+    })
+    .concat(selectedIngredientsArr);
 
   const allIngredientsArr = recipeObj.allIngredients.map((ingredientObj) => {
     const {
@@ -116,7 +108,12 @@ const getIngredientsInfo = (recipeId) => {
       },
     } = ingredientObj;
 
-    return { name, amount, unit, isUsed: usedIngredientsArr.includes(name) };
+    return {
+      name,
+      amount,
+      unit,
+      isUsed: usedIngredientsArr.includes(name),
+    };
   });
 
   sortRecipeIngredients(allIngredientsArr);
@@ -163,11 +160,11 @@ const clearRecipeIngredientsList = () => {
 const getInstructionsInfo = (recipeId) => {
   const recipeObj = getRecipeObjById(recipeId);
 
-  const instructionsArr = recipeObj.instruction.map((instructionStep) => {
+  const instructionsArr = recipeObj.instruction?.map((instructionStep) => {
     return { number: instructionStep.number, step: instructionStep.step };
   });
 
-  return instructionsArr;
+  return instructionsArr ? instructionsArr : [];
 };
 
 const displayRecipeInstructionStep = (instructionStepObj) => {
@@ -215,6 +212,7 @@ const displayRecipeInfo = (recipeId) => {
   );
   const recipeSourceLink = document.querySelector(".recipe__src-link");
   const recipeIngredients = getIngredientsInfo(recipeId);
+
   const recipeInstructions = getInstructionsInfo(recipeId);
 
   clearRecipeIngredientsList();
@@ -225,6 +223,7 @@ const displayRecipeInfo = (recipeId) => {
   recipeCookingTimeValueElem.textContent = `${recipeObj.cookingTime} mins`;
   recipeServingsValueElem.textContent = `${recipeObj.servings} servings`;
   recipeSourceLink.href = recipeObj.src;
+
   recipeIngredients.forEach((ingredientObj) => {
     displayRecipeIngredient(ingredientObj);
   });
@@ -233,17 +232,142 @@ const displayRecipeInfo = (recipeId) => {
   });
 };
 
+const hideRecipeBackground = () => {
+  const recipeBgElem = document.querySelector(".recipe-bg");
+
+  recipeBgElem.classList.remove("recipe-bg_show");
+};
+
+const showRecipeBackground = () => {
+  const recipeBgElem = document.querySelector(".recipe-bg");
+
+  recipeBgElem.classList.add("recipe-bg_show");
+};
+
+const hideRecipesMessage = () => {
+  const recipesMessageBoxElem = document.querySelector(".recipes-message-box");
+
+  recipesMessageBoxElem.classList.remove("recipes-message-box_show");
+};
+
+const showRecipesMessage = () => {
+  const recipesMessageBoxElem = document.querySelector(".recipes-message-box");
+
+  recipesMessageBoxElem.classList.add("recipes-message-box_show");
+};
+
+const changeRecipesMessage = (title, subtitle) => {
+  const recipesMessageTitleElem = document.querySelector(
+    ".recipes-message-title"
+  );
+  const recipesMessageSubtitleElem = document.querySelector(
+    ".recipes-message-subtitle"
+  );
+
+  recipesMessageTitleElem.textContent = title;
+  recipesMessageSubtitleElem.textContent = subtitle;
+};
+
 export const openRecipe = (recipeId) => {
   displayRecipeInfo(recipeId);
+
+  hideRecipeBackground();
+
   showRecipe();
 
-  preventBodyScrolling();
+  if (matchMedia("(width < 1024px)").matches) {
+    preventBodyScrolling();
+  }
 };
 
 export const closeRecipe = () => {
+  showRecipeBackground();
+
   hideRecipe();
 
   allowBodyScrolling();
+};
+
+const clearFetchedRecipesArr = () => {
+  fetchedRecipes = [];
+};
+
+const parseRecipes = (fetchedData) => {
+  clearRecipesList();
+  clearFetchedRecipesArr();
+
+  fetchedData.results.forEach((fetchedRecipe) => {
+    let {
+      id,
+      readyInMinutes: cookingTime,
+      servings,
+      extendedIngredients: allIngredients,
+      usedIngredients,
+      title,
+      sourceUrl: src,
+      image,
+      analyzedInstructions: [{ steps: instruction } = {}] = [],
+    } = fetchedRecipe;
+
+    fetchedRecipes.push({
+      id,
+      cookingTime,
+      servings,
+      allIngredients,
+      usedIngredients,
+      title,
+      src,
+      image: changeRecipeImageSrcResolution(image),
+      instruction,
+    });
+  });
+
+  if (fetchedRecipes.length > 0) {
+    displayFetchedRecipes();
+  } else {
+    changeRecipesMessage("No recipes found :(", "Try one more time");
+    showRecipesMessage();
+  }
+};
+
+const showRecipesSearchMessage = () => {
+  const recipeSearchMessageBoxElem = document.querySelector(
+    ".recipe-search__message-box"
+  );
+
+  recipeSearchMessageBoxElem.classList.add("recipe-search__message-box_show");
+};
+
+const hideRecipesSearchMessage = () => {
+  const recipeSearchMessageBoxElem = document.querySelector(
+    ".recipe-search__message-box"
+  );
+
+  recipeSearchMessageBoxElem.classList.remove(
+    "recipe-search__message-box_show"
+  );
+};
+
+const handleRecipesSearchButtonClick = (event) => {
+  event.stopPropagation();
+
+  const selectedIngredientsArr = getSelectedIngredientsArr();
+
+  if (selectedIngredientsArr.length < 3) {
+    showRecipesSearchMessage();
+
+    document.addEventListener("click", hideRecipesSearchMessage);
+
+    return;
+  }
+
+  hideRecipesSearchMessage();
+
+  const searchQuery = createRecipesSearchQuery(selectedIngredientsArr, 5);
+
+  hideRecipesMessage();
+
+  fetchData(searchQuery, parseRecipes);
 };
 
 const handleRecipeCardClick = (event) => {
@@ -253,11 +377,11 @@ const handleRecipeCardClick = (event) => {
 
   const recipeId = parseInt(recipeCardElem.dataset.recipeId);
 
-  navigateUrl(`/recipe-finder/recipe/${recipeId}`);
+  navigateUrl(`${ROOT}recipe/${recipeId}`);
 };
 
 const handleRecipeCloseButtonClick = (event) => {
-  navigateUrl(`/recipe-finder/`);
+  navigateUrl(ROOT);
 };
 
 const handleRecipeTouchstart = (event) => {
@@ -277,25 +401,44 @@ const handleRecipeTouchstart = (event) => {
     if (touchVelocity > 0.4) {
       hideRecipe();
 
-      navigateUrl(`/recipe-finder/`);
+      navigateUrl(ROOT);
     }
   };
 
   event.currentTarget.addEventListener("touchend", handlePopupTouchend);
 };
 
-export const addRecipesHandlers = () => {
+const manageRecipesHandlers = () => {
   const recipesList = document.querySelector(".recipes__cards-list");
   const recipesSearchButton = document.querySelector(".recipe-search-button");
   const recipeElem = document.querySelector(".recipe");
   const recipeCloseButton = document.querySelector(".recipe__close-button");
 
   recipesSearchButton.addEventListener("click", handleRecipesSearchButtonClick);
-  recipesList.addEventListener("click", handleRecipeCardClick);
-  recipeCloseButton.addEventListener("click", handleRecipeCloseButtonClick);
 
-  recipeElem.addEventListener("touchstart", handleRecipeTouchstart);
+  recipesList.addEventListener("click", handleRecipeCardClick);
+
+  if (matchMedia("(width < 1024px)").matches) {
+    recipeCloseButton.addEventListener("click", handleRecipeCloseButtonClick);
+
+    recipeElem.addEventListener("touchstart", handleRecipeTouchstart);
+  } else {
+    recipeCloseButton.removeEventListener(
+      "click",
+      handleRecipeCloseButtonClick
+    );
+
+    recipeElem.removeEventListener("touchstart", handleRecipeTouchstart);
+  }
 };
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  manageRecipesHandlers();
+});
+
+window.addEventListener("resize", (event) => {
+  manageRecipesHandlers();
+});
 
 const loadSavedRecipes = () => {
   savedRecipes.results.forEach((fetchedRecipe) => {
@@ -325,5 +468,5 @@ const loadSavedRecipes = () => {
   });
 };
 
-loadSavedRecipes();
-displayFetchedRecipes();
+// loadSavedRecipes();
+// displayFetchedRecipes();

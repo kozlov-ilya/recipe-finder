@@ -5,12 +5,16 @@
 @import "./filters.scss";
 
 body {
+  width: 100%;
+  background: var(--color-bg-primary);
+
   font: var(--font-type-body);
   color: var(--color-text-primary);
+  overflow-y: scroll;
 }
 
 .prevent-scrolling {
-  overflow: hidden;
+  position: fixed;
 }
 
 .main {
@@ -26,4 +30,5 @@ body {
 }
 
 .content {
+  padding: 2rem 0 0rem 0;
 }

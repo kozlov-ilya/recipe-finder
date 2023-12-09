@@ -1,6 +1,7 @@
 import {
   getAllIngredientsArr,
   updateSelectedIngredientsList,
+  isIngredientAlreadySelected,
 } from "./ingredients";
 import { togglePopularIngredientsItemSelection } from "./filters";
 
@@ -149,6 +150,9 @@ const handleSearchInputInput = (event) => {
 
   if (filteredSuggestionsArr.length) {
     highlightSuggestionsItemByIndex(0);
+
+    searchSuggestionsListElem.scrollTop = 0;
+
     openSearchSuggestions();
   }
 };
@@ -175,10 +179,7 @@ const handleSearchInputKeydown = (event) => {
 
     unhighlightAllSuggestionsItems();
     highlightSuggestionsItemByIndex(itemIndexToHighlight);
-    scrollToHighlightedSuggestionsItems(
-      suggestionsItemElems,
-      itemIndexToHighlight
-    );
+    scrollToHighlightedSuggestionsItems(suggestionsItemElems);
   }
 };
 
@@ -193,9 +194,11 @@ const handleSuggestionsItemClick = (event) => {
 
   const ingredientName = clickedSuggestionsItem.textContent;
 
-  updateSelectedIngredientsList(ingredientName);
+  if (!isIngredientAlreadySelected(ingredientName)) {
+    togglePopularIngredientsItemSelection(ingredientName);
+  }
 
-  togglePopularIngredientsItemSelection(ingredientName);
+  updateSelectedIngredientsList(ingredientName);
 
   clearSearchInput();
   closeSearchSuggestions();
@@ -218,9 +221,11 @@ const handleIngredientsSearchFormSubmit = (event) => {
 
   const ingredientName = highlightedSuggestionsItemElem.textContent;
 
-  updateSelectedIngredientsList(ingredientName);
+  if (!isIngredientAlreadySelected(ingredientName)) {
+    togglePopularIngredientsItemSelection(ingredientName);
+  }
 
-  togglePopularIngredientsItemSelection(ingredientName);
+  updateSelectedIngredientsList(ingredientName);
 
   clearSearchInput();
   closeSearchSuggestions();

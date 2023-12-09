@@ -87,7 +87,7 @@ const deleteSelectedIngredient = (
   );
 };
 
-const isIngredientAlreadySelected = (ingredientName) => {
+export const isIngredientAlreadySelected = (ingredientName) => {
   const selectedIngredientsArr = getSelectedIngredientsArr();
 
   return selectedIngredientsArr.includes(ingredientName);
@@ -132,7 +132,7 @@ const handleSelectedIngredientsItemClick = (event) => {
   togglePopularIngredientsItemSelection(ingredientName);
 };
 
-export const addIngredientsHandlers = () => {
+const addIngredientsHandlers = () => {
   const selectedIngredientsMenuElem = document.querySelector(
     ".selected-ingredients-menu"
   );
@@ -147,3 +147,7 @@ export const addIngredientsHandlers = () => {
     handleSelectedIngredientsItemClick
   );
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  addIngredientsHandlers();
+});

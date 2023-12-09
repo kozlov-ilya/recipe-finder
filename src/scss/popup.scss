@@ -50,3 +50,71 @@
 
   transition: transform var(--transition-popup);
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                POPUP-DESKTOP                               */
+/* -------------------------------------------------------------------------- */
+
+.popup-desktop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  max-width: 768px;
+  margin: 0 auto;
+  margin-top: 10vh;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: opacity var(--transition-popup);
+
+  &_opened {
+    opacity: 1;
+
+    pointer-events: auto;
+
+    .popup-desktop__content {
+      transform: translateY(0);
+    }
+  }
+}
+
+.popup-desktop__overlay {
+  position: fixed;
+  inset: 0;
+
+  background: var(--color-bg-overlay);
+
+  opacity: 1;
+
+  transition: opacity var(--transition-popup);
+}
+
+.popup-desktop__content {
+  position: relative;
+  overflow: auto;
+
+  width: 100%;
+  height: auto;
+  padding-top: 1.5rem;
+  background: var(--color-bg-secondary);
+
+  border-radius: var(--border-radius-400);
+  transform: translateY(20px);
+
+  scroll-behavior: smooth;
+
+  transition: transform var(--transition-popup);
+}
+
+.popup-desktop__close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  fill: #fff;
+  cursor: pointer;
+}

@@ -5,8 +5,12 @@
 
   --button-height: 2.25rem;
 
-  --text-input-height: 42px;
+  --text-input-height: 46px;
 
   --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);
   --transition-popup-open: 120ms ease-out;
+
+  @media (width > 1024px) {
+    --text-input-height: 52px;
+  }
 }

@@ -158,10 +158,79 @@ const addPopupTouchHandlers = (popupElem) => {
   popupElem.addEventListener("touchend", handlePopupTouchend);
 };
 
-export const addHandlersToAllPopups = () => {
+const addHandlersToAllPopups = () => {
   const popupElems = document.querySelectorAll(".popup");
 
   popupElems.forEach((popupElem) => {
     addPopupTouchHandlers(popupElem);
   });
 };
+
+/* -------------------------------------------------------------------------- */
+/*                                POPUP-DESKTOP                               */
+/* -------------------------------------------------------------------------- */
+
+export const openPopupDesktop = (popupDesktopElem) => {
+  /* If popup opened before closing animation ended */
+  if (popupDesktopElem.style.display) return;
+
+  popupDesktopElem.style.display = "block";
+
+  setTimeout(() => {
+    popupDesktopElem.classList.add("popup-desktop_opened");
+  }, 0);
+
+  preventBodyScrolling();
+};
+
+const closePopupDesktop = (popupDesktopElem) => {
+  const hidePopupDesktopElem = (e) => {
+    popupDesktopElem.style = "";
+
+    popupDesktopElem.removeEventListener("transitionend", hidePopupDesktopElem);
+  };
+
+  popupDesktopElem.addEventListener("transitionend", hidePopupDesktopElem);
+
+  popupDesktopElem.classList.remove("popup-desktop_opened");
+
+  allowBodyScrolling();
+};
+
+const handlePopupDesktopCloseButtonClick = (event) => {
+  const popupDesktopElem = document.querySelector(".popup-desktop");
+
+  closePopupDesktop(popupDesktopElem);
+};
+
+const handlePopupDesktopClick = (event) => {
+  const popupDesktopContentElem = event.target.closest(
+    ".popup-desktop__content"
+  );
+
+  const popupDesktopElem = event.currentTarget;
+
+  if (!popupDesktopContentElem) {
+    closePopupDesktop(popupDesktopElem);
+  }
+};
+
+const addPopupDesktopHandlers = (event) => {
+  const popupDesktopCloseButtonElem = document.querySelector(
+    ".popup-desktop__close-button"
+  );
+
+  const popupDesktopElem = document.querySelector(".popup-desktop");
+
+  popupDesktopCloseButtonElem.addEventListener(
+    "click",
+    handlePopupDesktopCloseButtonClick
+  );
+
+  popupDesktopElem.addEventListener("click", handlePopupDesktopClick);
+};
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  addHandlersToAllPopups();
+  addPopupDesktopHandlers();
+});

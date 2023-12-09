@@ -1,14 +1,10 @@
 import "./router.js";
 import { addIngredientsSearchFormHandlers } from "./ingredientsSearch";
-import { addFiltersHandlers } from "./filters.js";
-import { addHandlersToAllPopups } from "./popup.js";
-import { addIngredientsHandlers } from "./ingredients.js";
-import { addRecipesHandlers } from "./recipes";
+import "./filters.js";
+import "./popup.js";
+import "./ingredients.js";
+import "./recipes";
 
 document.addEventListener("DOMContentLoaded", (event) => {
   addIngredientsSearchFormHandlers();
-  addFiltersHandlers();
-  addHandlersToAllPopups();
-  addIngredientsHandlers();
-  addRecipesHandlers();
 });

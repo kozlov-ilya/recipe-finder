@@ -27,4 +27,10 @@
     var(--font-family-heading);
   --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)
     var(--font-family-heading);
+
+  @media (width > 1024px) {
+    --font-size-body: var(--font-size-500);
+    --font-size-h2: var(--font-size-700);
+    --font-size-h3: var(--font-size-600);
+  }
 }

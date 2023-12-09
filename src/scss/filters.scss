@@ -6,13 +6,15 @@
   display: grid;
   place-items: center;
 
-  height: 42px;
+  height: var(--text-input-height);
   aspect-ratio: 1 / 1;
   border: 0;
   padding: 0;
   background: var(--color-bg-secondary);
 
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   border-radius: var(--border-radius-200);
+  cursor: pointer;
 }
 
 .filters__button-svg {
@@ -69,7 +71,9 @@
   padding: 0.1rem 0.7rem;
   background: var(--color-bg-tertiary);
 
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   border-radius: var(--border-radius-300);
+  cursor: pointer;
 
   &_selected {
     background: var(--color-bg-highlight);

@@ -1,5 +1,6 @@
-import { openRecipe } from "./recipes";
-import { closeRecipe } from "./recipes";
+import { openRecipe, closeRecipe } from "./recipes";
+
+export const ROOT = "/recipe-finder/";
 
 export const navigateUrl = (url) => {
   window.history.pushState(null, null, url);
@@ -13,12 +14,14 @@ const handleRoute = () => {
   const routes = [
     {
       path: /^\/recipe-finder\/$/g,
+      // path: /^\/$/g,
       response: () => {
         closeRecipe();
       },
     },
     {
       path: /^\/recipe-finder\/recipe\/.*$/g,
+      // path: /^\/recipe\/.*$/g,
       response: () => {
         const recipeId = path.split("/").at(-1);
 
@@ -35,7 +38,7 @@ const handleRoute = () => {
 
   if (!match) {
     match = { route: routes[0], isMatch: true };
-    window.location.href = "/recipe-finder/";
+    window.location.href = ROOT;
   }
 
   match.route.response();

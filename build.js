@@ -55,6 +55,7 @@ body {
 }
 
 :root {
+  color-scheme: dark;
   --color-gray-400: #161617;
   --color-gray-300: #232325;
   --color-gray-200: #2f2f32;
@@ -111,15 +112,27 @@ body {
   --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)
     var(--font-family-heading);
 }
+@media (width > 1024px) {
+  :root {
+    --font-size-body: var(--font-size-500);
+    --font-size-h2: var(--font-size-700);
+    --font-size-h3: var(--font-size-600);
+  }
+}
 
 :root {
   --border-radius-400: 0.875rem;
   --border-radius-300: 0.75rem;
   --border-radius-200: 0.5rem;
   --button-height: 2.25rem;
-  --text-input-height: 42px;
+  --text-input-height: 46px;
   --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);
   --transition-popup-open: 120ms ease-out;
+}
+@media (width > 1024px) {
+  :root {
+    --text-input-height: 52px;
+  }
 }
 
 .popup {
@@ -165,12 +178,70 @@ body {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                POPUP-DESKTOP                               */
+/* -------------------------------------------------------------------------- */
+.popup-desktop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  max-width: 768px;
+  margin: 0 auto;
+  margin-top: 10vh;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-popup);
+}
+.popup-desktop_opened {
+  opacity: 1;
+  pointer-events: auto;
+}
+.popup-desktop_opened .popup-desktop__content {
+  transform: translateY(0);
+}
+
+.popup-desktop__overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-overlay);
+  opacity: 1;
+  transition: opacity var(--transition-popup);
+}
+
+.popup-desktop__content {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  height: auto;
+  padding-top: 1.5rem;
+  background: var(--color-bg-secondary);
+  border-radius: var(--border-radius-400);
+  transform: translateY(20px);
+  scroll-behavior: smooth;
+  transition: transform var(--transition-popup);
+}
+
+.popup-desktop__close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  fill: #fff;
+  cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                   SEARCH                                   */
 /* -------------------------------------------------------------------------- */
 .recipes-search-container {
   display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: 1rem;
+}
+
+.recipes-search__search {
+  display: flex;
+  flex-direction: column;
   row-gap: 10px;
-  padding: 1rem 0;
 }
 
 .ingredients-search {
@@ -189,7 +260,6 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  height: var(--text-input-height);
 }
 
 .ingredients-search__input-container {
@@ -213,7 +283,8 @@ body {
   border: none;
   outline: none;
   background: var(--color-bg-secondary);
-  padding: 0 0.8rem;
+  height: var(--text-input-height);
+  padding: 0rem 0.8rem;
   padding-left: 2.75rem;
   border-radius: var(--border-radius-200);
   font: inherit;
@@ -251,12 +322,26 @@ body {
   text-indent: 0;
   list-style-type: none;
 }
+@media (width > 1024px) {
+  .ingredients-search__suggestions-list::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  .ingredients-search__suggestions-list::-webkit-scrollbar-track {
+    margin-block: 0.1rem;
+  }
+  .ingredients-search__suggestions-list::-webkit-scrollbar-thumb {
+    background: var(--color-text-tertiary);
+    border: 2px solid var(--color-bg-secondary);
+    border-radius: 15px;
+  }
+}
 
 .ingredients-search__suggestions-item {
   display: flex;
   align-items: center;
   padding: 0 0.8rem;
   height: var(--text-input-height);
+  cursor: pointer;
 }
 .ingredients-search__suggestions-item_active {
   background: var(--color-bg-tertiary);
@@ -269,7 +354,6 @@ body {
   width: 100%;
   background: var(--color-bg-secondary);
   border-radius: var(--border-radius-200);
-  cursor: pointer;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 .selected-ingredients-menu_active .selected-ingredients-menu__body {
@@ -286,8 +370,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: var(--text-input-height);
   padding: 0 0.75rem;
-  min-height: 42px;
+  cursor: pointer;
 }
 
 .selected-ingredients-menu__arrow-down-icon {
@@ -330,6 +415,7 @@ body {
   padding: 0 0.75rem;
   background: var(--color-bg-tertiary);
   border-radius: 18px;
+  cursor: pointer;
   font: var(--font-type-body);
 }
 .selected-ingredients-menu__item-xmark-icon {
@@ -346,16 +432,61 @@ body {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                               RECIPES MESSAGE                               */
+/* -------------------------------------------------------------------------- */
+.recipes-message-box {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 150px;
+  padding: 0 1rem;
+  background: var(--color-bg-secondary);
+  border-radius: var(--border-radius-200);
+}
+.recipes-message-box_show {
+  display: flex;
+}
+
+.recipes-message {
+  text-align: center;
+}
+
+.recipes-message-title {
+  margin: 0;
+  font: var(--font-type-h2);
+}
+
+.recipes-message-subtitle {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                   RECIPES                                  */
 /* -------------------------------------------------------------------------- */
+@media (width > 1024px) {
+  .recipes-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    column-gap: 2rem;
+    min-height: 90vh;
+  }
+}
+
 .recipe-search-button {
-  padding: 0.5rem;
+  height: var(--text-input-height);
   background: var(--color-bg-tertiary);
   border: none;
   border-radius: var(--border-radius-200);
   color: inherit;
   font: inherit;
   font-weight: bold;
+  cursor: pointer;
+}
+
+.recipes {
+  padding-bottom: 1rem;
 }
 
 .recipes__cards-list {
@@ -372,10 +503,13 @@ body {
   width: 100%;
   background: var(--color-bg-secondary);
   border-radius: var(--border-radius-400);
+  cursor: pointer;
+}
+.recipe-card svg {
+  fill: #fff;
 }
 
 .recipe-card__img-wrapper {
-  height: 55.5vw;
   overflow: hidden;
   padding: 0.25rem;
   border-radius: var(--border-radius-400);
@@ -391,32 +525,125 @@ body {
 .recipe-card__description {
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  row-gap: 0.75rem;
   padding: 0.5rem 1rem;
 }
 
 .recipe-card__title {
   font: var(--font-type-h3);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
 }
 
-.recipe-card__cooking-time-value {
-  font-weight: 700;
+.recipe-card__meta {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0rem;
 }
 
+.recipe-card__meta-item {
+  display: flex;
+  align-items: center;
+  column-gap: 0.75rem;
+  line-height: 1.5;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              RECIPE BACKGROUND                             */
+/* -------------------------------------------------------------------------- */
+.recipe-bg {
+  display: none;
+}
+@media (width > 1024px) {
+  .recipe-bg {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 6rem);
+  }
+  .recipe-bg_show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.recipe-bg-img {
+  width: 450px;
+  height: 450px;
+}
+.recipe-bg-img #salmon {
+  animation: 12s ease-in-out infinite inverse-slide;
+}
+.recipe-bg-img #mushroom-4, .recipe-bg-img #avocado-1, .recipe-bg-img #tomato-1, .recipe-bg-img #avocado-2 {
+  animation: 7.5s ease-in-out infinite slide;
+}
+.recipe-bg-img #mushroom-3, .recipe-bg-img #tomato-2, .recipe-bg-img #mushroom-2 {
+  animation: 7.5s 0.5s ease-in-out infinite inverse-slide;
+}
+.recipe-bg-img #broccoli-4, .recipe-bg-img #stick-2, .recipe-bg-img #broccoli-1 {
+  animation: 9s ease-in-out infinite inverse-slide;
+}
+.recipe-bg-img #broccoli-2, .recipe-bg-img #broccoli-3, .recipe-bg-img #tomato-3 {
+  animation: 9s 0.5s ease-in-out infinite slide;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes inverse-slide {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 /* -------------------------------------------------------------------------- */
 /*                                   RECIPE                                   */
 /* -------------------------------------------------------------------------- */
 .recipe {
   position: fixed;
   inset: 0;
+  z-index: 1;
   overflow: auto;
+  overscroll-behavior: none;
   background: var(--color-bg-primary);
   transform: translateX(100%);
   transition: transform 0.3s;
 }
 .recipe_show {
   transform: translateX(0%);
+}
+@media (width > 1024px) {
+  .recipe {
+    display: none;
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 2rem);
+    transform: none;
+    transition: none;
+  }
+  .recipe_show {
+    display: block;
+  }
+  .recipe_show::-webkit-scrollbar {
+    width: 0.75rem;
+  }
+  .recipe_show::-webkit-scrollbar-thumb {
+    background: var(--color-bg-tertiary);
+    border: 3px solid var(--color-bg-primary);
+    border-radius: 15px;
+  }
 }
 
 .recipe-content {
@@ -447,11 +674,22 @@ body {
   width: 1rem;
   fill: #fff;
 }
+@media (width > 1024px) {
+  .recipe__close-button {
+    display: none;
+  }
+}
 
 .recipe__img-wrapper {
   height: 60vw;
   overflow: hidden;
   box-shadow: inset 0 0 20px 10px rgba(0, 0, 0, 0.6);
+}
+@media (width > 1024px) {
+  .recipe__img-wrapper {
+    height: 25vw;
+    border-radius: 1rem 1rem 0 0;
+  }
 }
 
 .recipe__img {
@@ -573,7 +811,7 @@ body {
 
 .instruction-step {
   display: grid;
-  grid-template-columns: 1.5rem 1fr;
+  grid-template-columns: 2rem 1fr;
   font: var(--font-type-body);
   line-height: 1.5;
 }
@@ -588,12 +826,13 @@ body {
 .filters__button {
   display: grid;
   place-items: center;
-  height: 42px;
+  height: var(--text-input-height);
   aspect-ratio: 1/1;
   border: 0;
   padding: 0;
   background: var(--color-bg-secondary);
   border-radius: var(--border-radius-200);
+  cursor: pointer;
 }
 
 .filters__button-svg * {
@@ -638,6 +877,7 @@ body {
   padding: 0.1rem 0.7rem;
   background: var(--color-bg-tertiary);
   border-radius: var(--border-radius-300);
+  cursor: pointer;
 }
 .popular-ingredients__list-item_selected {
   background: var(--color-bg-highlight);
@@ -645,12 +885,15 @@ body {
 }
 
 body {
+  width: 100%;
+  background: var(--color-bg-primary);
   font: var(--font-type-body);
   color: var(--color-text-primary);
+  overflow-y: scroll;
 }
 
 .prevent-scrolling {
-  overflow: hidden;
+  position: fixed;
 }
 
 .main {
@@ -663,7 +906,11 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 16px;
-}`, "",{"version":3,"sources":["webpack://./src/scss/base/_base.scss","webpack://./src/scss/main.scss","webpack://./src/scss/base/_colors.scss","webpack://./src/scss/base/_fonts.scss","webpack://./src/scss/base/_typography.scss","webpack://./src/scss/base/_variables.scss","webpack://./src/scss/popup.scss","webpack://./src/scss/search.scss","webpack://./src/scss/recipes.scss","webpack://./src/scss/filters.scss"],"names":[],"mappings":"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","sourcesContent":["*,\r\n::before,\r\n::after {\r\n  box-sizing: border-box;\r\n}\r\n\r\nhtml {\r\n  font-size: 100%; /* 16px */\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n}\r\n\r\n.preload-transitions * {\r\n  -webkit-transition: none !important;\r\n  -moz-transition: none !important;\r\n  -ms-transition: none !important;\r\n  -o-transition: none !important;\r\n  transition: none !important;\r\n}\r\n","@import \"./base/index.scss\";\n@import \"./popup.scss\";\n@import \"./search.scss\";\n@import \"./recipes.scss\";\n@import \"./filters.scss\";\n\nbody {\n  font: var(--font-type-body);\n  color: var(--color-text-primary);\n}\n\n.prevent-scrolling {\n  overflow: hidden;\n}\n\n.main {\n  min-height: 100svh;\n  background: var(--color-bg-primary);\n}\n\n.wrapper {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n  padding: 0 16px;\n}\n\n.content {\n}\n",":root {\r\n  --color-gray-400: #161617;\r\n  --color-gray-300: #232325;\r\n  --color-gray-200: #2f2f32;\r\n  --color-yellow: #fdde55;\r\n\r\n  --color-white-400: #fff;\r\n  --color-white-300: hsla(0, 0%, 100%, 0.8);\r\n  --color-white-200: hsla(0, 0%, 100%, 0.6);\r\n  --color-white-100: hsla(0, 0%, 100%, 0.4);\r\n\r\n  --color-bg-primary: var(--color-gray-400);\r\n  --color-bg-secondary: var(--color-gray-300);\r\n  --color-bg-tertiary: var(--color-gray-200);\r\n  --color-bg-overlay: rgba(0, 0, 0, 0.6);\r\n  --color-bg-highlight: var(--color-white-200);\r\n\r\n  --color-text-primary: var(--color-white-400);\r\n  --color-text-secondary: var(--color-white-300);\r\n  --color-text-tertiary: var(--color-white-100);\r\n  --color-text-highlight: #000;\r\n}\r\n","@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 400;\r\n  src: url(../fonts/Satoshi-Regular.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Regular.woff) format(woff);\r\n  // src: url(../../assets/fonts/Satoshi-Regular.woff2) format(woff2),\r\n  //   url(../../assets/fonts/Satoshi-Regular.woff) format(woff);\r\n}\r\n\r\n@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 700;\r\n  src: url(../fonts/Satoshi-Bold.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Bold.woff) format(woff);\r\n}\r\n",":root {\r\n  --font-fallback: \"Satoshi\", sans-serif;\r\n  --font-family-body: var(--font-fallback);\r\n  --font-family-heading: var(--font-fallback);\r\n\r\n  --font-size-900: 3.052rem;\r\n  --font-size-800: 2.441rem;\r\n  --font-size-700: 1.953rem;\r\n  --font-size-600: 1.563rem;\r\n  --font-size-500: 1.25rem;\r\n  --font-size-400: 1rem;\r\n  --font-size-300: 0.8rem;\r\n\r\n  --font-size-body: var(--font-size-400);\r\n  --font-size-h1: var(--font-size-800);\r\n  --font-size-h2: var(--font-size-600);\r\n  --font-size-h3: var(--font-size-500);\r\n  --font-size-small: var(--font-size-300);\r\n  --line-height-body: 1.75;\r\n  --line-height-heading: 1.3;\r\n\r\n  --font-type-body: 400 var(--font-size-body) / var(--line-height-body)\r\n    var(--font-family-body);\r\n  --font-type-h1: 700 var(--font-size-h1) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h2: 700 var(--font-size-h2) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n}\r\n",":root {\r\n  --border-radius-400: 0.875rem;\r\n  --border-radius-300: 0.75rem;\r\n  --border-radius-200: 0.5rem;\r\n\r\n  --button-height: 2.25rem;\r\n\r\n  --text-input-height: 42px;\r\n\r\n  --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);\r\n  --transition-popup-open: 120ms ease-out;\r\n}\r\n",".popup {\n  display: none;\n  flex-direction: column;\n  justify-content: flex-end;\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n\n  height: 100%;\n\n  pointer-events: none;\n}\n\n.popup_opened {\n  pointer-events: auto;\n\n  & .popup__overlay {\n    opacity: 1;\n  }\n\n  & .popup__content {\n    transform: translateY(0);\n  }\n}\n\n.popup__overlay {\n  position: fixed;\n  inset: 0;\n\n  background: var(--color-bg-overlay);\n\n  opacity: 0;\n\n  transition: opacity var(--transition-popup);\n}\n\n.popup__content {\n  position: relative;\n  overflow: auto;\n\n  width: 100%;\n  height: auto;\n  max-height: calc(100% - 3rem);\n  background: var(--color-bg-secondary);\n\n  transform: translateY(100%);\n  border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;\n\n  scroll-behavior: smooth;\n\n  transition: transform var(--transition-popup);\n}\n","/* -------------------------------------------------------------------------- */\r\n/*                                   SEARCH                                   */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.recipes-search-container {\r\n  display: grid;\r\n  row-gap: 10px;\r\n\r\n  padding: 1rem 0;\r\n}\r\n\r\n.ingredients-search {\r\n  display: grid;\r\n  grid-template-columns: 1fr auto;\r\n  grid-template-rows: auto auto;\r\n  column-gap: 0.75rem;\r\n  row-gap: 0.75rem;\r\n\r\n  width: 100%;\r\n\r\n  &__selected-ingredients {\r\n    grid-column: 1 / 3;\r\n  }\r\n}\r\n\r\n.ingredients-search__form {\r\n  display: flex;\r\n  flex-direction: column;\r\n  position: relative;\r\n\r\n  height: var(--text-input-height);\r\n}\r\n\r\n.ingredients-search__input-container {\r\n  position: relative;\r\n\r\n  height: 100%;\r\n}\r\n\r\n.ingredients-search__search-icon {\r\n  position: absolute;\r\n  top: 0;\r\n  bottom: 0;\r\n\r\n  margin: auto;\r\n  margin-left: 0.75rem;\r\n\r\n  fill: #fff;\r\n  pointer-events: none;\r\n}\r\n\r\n.ingredients-search__input {\r\n  width: 100%;\r\n  height: 100%;\r\n  border: none;\r\n  outline: none;\r\n  background: var(--color-bg-secondary);\r\n\r\n  padding: 0 0.8rem;\r\n  padding-left: 2.75rem;\r\n\r\n  border-radius: var(--border-radius-200);\r\n\r\n  font: inherit;\r\n  color: inherit;\r\n\r\n  &::placeholder {\r\n    font: var(--font-type-body);\r\n    color: var(--color-text-tertiary);\r\n  }\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                        INGREDIENT SEARCH SUGGESTIONS                       */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.ingredients-search__suggestions {\r\n  display: none;\r\n  position: absolute;\r\n  top: calc(100% + 0.5rem);\r\n  overflow: hidden;\r\n  z-index: 10;\r\n\r\n  width: 100%;\r\n\r\n  background: var(--color-bg-secondary);\r\n\r\n  font: var(--font-type-body);\r\n  border-radius: var(--border-radius-200);\r\n}\r\n\r\n.ingredients-search__suggestions_show {\r\n  display: block;\r\n}\r\n\r\n.ingredients-search__suggestions-list {\r\n  max-height: calc(var(--text-input-height) * 5);\r\n  margin: 0;\r\n  padding: 0;\r\n  overflow: auto;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.ingredients-search__suggestions-item {\r\n  display: flex;\r\n  align-items: center;\r\n\r\n  padding: 0 0.8rem;\r\n  height: var(--text-input-height);\r\n\r\n  &_active {\r\n    background: var(--color-bg-tertiary);\r\n  }\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                          SELECTED INGREDIENTS MENU                         */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.selected-ingredients-menu {\r\n  width: 100%;\r\n  background: var(--color-bg-secondary);\r\n  // border: 2px solid var(--color-bg-tertiary);\r\n\r\n  border-radius: var(--border-radius-200);\r\n\r\n  cursor: pointer;\r\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\r\n\r\n  &_active {\r\n    .selected-ingredients-menu__body {\r\n      grid-template-rows: 1fr;\r\n\r\n      border-width: 2px;\r\n\r\n      transition: grid-template-rows 0.2s;\r\n    }\r\n\r\n    .selected-ingredients-menu__arrow-down-icon {\r\n      transform: rotateX(180deg);\r\n\r\n      transition: transform 0.2s;\r\n    }\r\n  }\r\n}\r\n\r\n.selected-ingredients-menu__header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n\r\n  padding: 0 0.75rem;\r\n\r\n  min-height: 42px;\r\n}\r\n\r\n.selected-ingredients-menu__arrow-down-icon {\r\n  fill: #fff;\r\n  transition: transform 0.3s;\r\n}\r\n\r\n.selected-ingredients-menu__body {\r\n  display: grid;\r\n  grid-template-rows: 0fr;\r\n  overflow: hidden;\r\n\r\n  padding: 0 0.5rem;\r\n  border-top: solid var(--color-bg-primary);\r\n  border-width: 0;\r\n\r\n  transition: grid-template-rows 0.2s, border 0s 0.2s;\r\n}\r\n\r\n.selected-ingredients-menu__content {\r\n  overflow: hidden;\r\n}\r\n\r\n.selected-ingredients-menu__list {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 0.5rem;\r\n\r\n  padding: 0.5rem 0;\r\n  margin: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n\r\n  &[empty] {\r\n    .selected-ingredients-menu__list-message {\r\n      display: block;\r\n    }\r\n  }\r\n}\r\n\r\n.selected-ingredients-menu__item {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 0.5rem;\r\n\r\n  min-height: 36px;\r\n  padding: 0 0.75rem;\r\n  background: var(--color-bg-tertiary);\r\n  // border: 2px solid var(--color-white-400);\r\n\r\n  border-radius: 18px;\r\n  font: var(--font-type-body);\r\n\r\n  &-xmark-icon {\r\n    position: relative;\r\n    top: 1px;\r\n\r\n    fill: #fff;\r\n  }\r\n}\r\n\r\n.selected-ingredients-menu__list-message {\r\n  display: none;\r\n\r\n  margin: 0 auto;\r\n  padding: 0;\r\n\r\n  color: var(--color-text-secondary);\r\n}\r\n","/* -------------------------------------------------------------------------- */\r\n/*                                   RECIPES                                  */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.recipe-search-button {\r\n  padding: 0.5rem;\r\n  background: var(--color-bg-tertiary);\r\n  border: none;\r\n\r\n  border-radius: var(--border-radius-200);\r\n\r\n  color: inherit;\r\n  font: inherit;\r\n  font-weight: bold;\r\n}\r\n\r\n.recipes__cards-list {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 0.75rem;\r\n\r\n  width: 100%;\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                                 RECIPE CARD                                */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.recipe-card {\r\n  width: 100%;\r\n  background: var(--color-bg-secondary);\r\n\r\n  border-radius: var(--border-radius-400);\r\n}\r\n\r\n.recipe-card__img-wrapper {\r\n  height: 55.5vw;\r\n  overflow: hidden;\r\n  padding: 0.25rem;\r\n\r\n  border-radius: var(--border-radius-400);\r\n}\r\n\r\n.recipe-card__img {\r\n  width: 100%;\r\n  height: 100%;\r\n  object-fit: cover;\r\n\r\n  border-radius: var(--border-radius-300);\r\n}\r\n\r\n.recipe-card__description {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 1rem;\r\n\r\n  padding: 0.5rem 1rem;\r\n}\r\n\r\n.recipe-card__title {\r\n  font: var(--font-type-h3);\r\n  color: var(--color-text-secondary);\r\n}\r\n\r\n.recipe-card__cooking-time-value {\r\n  font-weight: 700;\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                                   RECIPE                                   */\r\n/* -------------------------------------------------------------------------- */\r\n.recipe {\r\n  position: fixed;\r\n  inset: 0;\r\n  overflow: auto;\r\n\r\n  background: var(--color-bg-primary);\r\n\r\n  transform: translateX(100%);\r\n\r\n  transition: transform 0.3s;\r\n\r\n  &_show {\r\n    transform: translateX(0%);\r\n  }\r\n}\r\n\r\n.recipe-content {\r\n  width: 100%;\r\n  height: 100%;\r\n  min-height: 100vh;\r\n}\r\n\r\n.recipe__header {\r\n  position: relative;\r\n}\r\n\r\n.recipe__close-button {\r\n  display: grid;\r\n  place-items: center;\r\n  position: absolute;\r\n  top: 10px;\r\n  left: 10px;\r\n\r\n  width: 35px;\r\n  height: 35px;\r\n  border: none;\r\n  background-color: var(--color-bg-primary);\r\n\r\n  border-radius: 50%;\r\n\r\n  color: inherit;\r\n  font: inherit;\r\n\r\n  & svg {\r\n    width: 1rem;\r\n    fill: #fff;\r\n  }\r\n}\r\n\r\n.recipe__img-wrapper {\r\n  height: 60vw;\r\n  overflow: hidden;\r\n\r\n  box-shadow: inset 0 0 20px 10px rgba(0, 0, 0, 0.6);\r\n}\r\n\r\n.recipe__img {\r\n  width: 100%;\r\n  height: 100%;\r\n  object-fit: cover;\r\n  position: relative;\r\n  z-index: -1;\r\n}\r\n\r\n.recipe__body {\r\n  position: relative;\r\n  top: -1rem;\r\n\r\n  padding: 1rem;\r\n  background: var(--color-bg-primary);\r\n\r\n  border-radius: var(--border-radius-400);\r\n}\r\n\r\n.recipe__title {\r\n  font: var(--font-type-h2);\r\n}\r\n\r\n.recipe__meta {\r\n  margin: 0;\r\n  margin-top: 1rem;\r\n  padding: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.recipe__meta-item {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 0.75rem;\r\n}\r\n\r\n.recipe__clock-icon {\r\n  fill: #fff;\r\n}\r\n\r\n.recipe__user-icon {\r\n  fill: #fff;\r\n}\r\n\r\n.recipe__src {\r\n  margin-top: 1rem;\r\n}\r\n\r\n.recipe__src-link {\r\n  color: var(--color-text-primary);\r\n  // text-decoration: none;\r\n  &:visited {\r\n    color: var(--color-text-primary);\r\n  }\r\n}\r\n\r\n.recipe__ingredients {\r\n  margin-top: 1rem;\r\n}\r\n\r\n.recipe__ingredients-title {\r\n  font: var(--font-type-h3);\r\n}\r\n\r\n.recipe__ingredients-list {\r\n  margin: 0;\r\n  margin-top: 0.5rem;\r\n  padding: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.recipe__ingredient {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  position: relative;\r\n\r\n  padding-left: 1.25rem;\r\n\r\n  font: var(--font-type-body);\r\n  color: var(--color-text-secondary);\r\n\r\n  &::before {\r\n    content: \"+\";\r\n\r\n    position: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    bottom: 0;\r\n\r\n    margin: auto 0;\r\n\r\n    // font-weight: 700;\r\n  }\r\n\r\n  &_used {\r\n    color: var(--color-text-primary);\r\n\r\n    &::before {\r\n      content: \"\";\r\n\r\n      left: 1px;\r\n      top: 3px;\r\n\r\n      width: 7px;\r\n      height: 7px;\r\n      background: #fff;\r\n\r\n      border-radius: 50%;\r\n    }\r\n  }\r\n}\r\n\r\n.recipe__instructions {\r\n  margin-top: 1rem;\r\n}\r\n\r\n.recipe__instructions-title {\r\n  font: var(--font-type-h3);\r\n}\r\n\r\n.recipe__instruction-steps-list {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.75rem;\r\n\r\n  margin: 0;\r\n  margin-top: 0.5rem;\r\n  padding: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.instruction-step {\r\n  display: grid;\r\n  grid-template-columns: 1.5rem 1fr;\r\n\r\n  font: var(--font-type-body);\r\n  line-height: 1.5;\r\n}\r\n\r\n.instruction-step__number {\r\n}\r\n\r\n.instruction-step__step {\r\n  margin: 0;\r\n}\r\n","/* -------------------------------------------------------------------------- */\r\n/*                                   FILTERS                                  */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.filters__button {\r\n  display: grid;\r\n  place-items: center;\r\n\r\n  height: 42px;\r\n  aspect-ratio: 1 / 1;\r\n  border: 0;\r\n  padding: 0;\r\n  background: var(--color-bg-secondary);\r\n\r\n  border-radius: var(--border-radius-200);\r\n}\r\n\r\n.filters__button-svg {\r\n  & * {\r\n    fill: #fff;\r\n  }\r\n}\r\n\r\n.filters {\r\n  position: relative;\r\n\r\n  padding: 1.5rem 0;\r\n}\r\n\r\n.filters__body {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 1.5rem;\r\n\r\n  background: var(--color-bg-secondary);\r\n\r\n  padding: 0 1.5rem;\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                             POPULAR INGREDIENTS                            */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.popular-ingredients {\r\n}\r\n\r\n.popular-ingredients__title {\r\n  font: var(--font-type-h3);\r\n  color: var(--color-text-secondary);\r\n}\r\n\r\n.popular-ingredients__list {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 0.5rem;\r\n\r\n  padding: 0;\r\n  margin: 0;\r\n  margin-top: 0.75rem;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.popular-ingredients__list-item {\r\n  display: flex;\r\n  align-items: center;\r\n\r\n  padding: 0.1rem 0.7rem;\r\n  background: var(--color-bg-tertiary);\r\n\r\n  border-radius: var(--border-radius-300);\r\n\r\n  &_selected {\r\n    background: var(--color-bg-highlight);\r\n\r\n    color: var(--color-text-highlight);\r\n  }\r\n}\r\n"],"sourceRoot":""}]);
+}
+
+.content {
+  padding: 2rem 0 0rem 0;
+}`, "",{"version":3,"sources":["webpack://./src/scss/base/_base.scss","webpack://./src/scss/main.scss","webpack://./src/scss/base/_colors.scss","webpack://./src/scss/base/_fonts.scss","webpack://./src/scss/base/_typography.scss","webpack://./src/scss/base/_variables.scss","webpack://./src/scss/popup.scss","webpack://./src/scss/search.scss","webpack://./src/scss/recipes.scss","webpack://./src/scss/filters.scss"],"names":[],"mappings":"AAAA;;;EAGE,sBAAA;ACCF;;ADEA;EACE,eAAA,EAAA,SAAA;ACCF;;ADEA;EACE,SAAA;ACCF;;ADEA;EACE,mCAAA;EACA,gCAAA;EACA,+BAAA;EACA,8BAAA;EACA,2BAAA;ACCF;;ACpBA;EACE,kBAAA;EAEA,yBAAA;EACA,yBAAA;EACA,yBAAA;EACA,uBAAA;EAEA,uBAAA;EACA,yCAAA;EACA,yCAAA;EACA,yCAAA;EAEA,yCAAA;EACA,2CAAA;EACA,0CAAA;EACA,sCAAA;EACA,4CAAA;EAEA,4CAAA;EACA,8CAAA;EACA,6CAAA;EACA,4BAAA;ADmBF;;AEzCA;EACE,sBAAA;EACA,gBAAA;EACA,gHAAA;AF4CF;AEtCA;EACE,sBAAA;EACA,gBAAA;EACA,gHAAA;AFwCF;AGpDA;EACE,sCAAA;EACA,wCAAA;EACA,2CAAA;EAEA,yBAAA;EACA,yBAAA;EACA,yBAAA;EACA,yBAAA;EACA,wBAAA;EACA,qBAAA;EACA,uBAAA;EAEA,sCAAA;EACA,oCAAA;EACA,oCAAA;EACA,oCAAA;EACA,uCAAA;EACA,wBAAA;EACA,0BAAA;EAEA;2BAAA;EAEA;8BAAA;EAEA;8BAAA;EAEA;8BAAA;AHoDF;AGjDE;EA9BF;IA+BI,sCAAA;IACA,oCAAA;IACA,oCAAA;EHoDF;AACF;;AItFA;EACE,6BAAA;EACA,4BAAA;EACA,2BAAA;EAEA,wBAAA;EAEA,yBAAA;EAEA,qDAAA;EACA,uCAAA;AJsFF;AIpFE;EAZF;IAaI,yBAAA;EJuFF;AACF;;AKrGA;EACE,aAAA;EACA,sBAAA;EACA,yBAAA;EACA,eAAA;EACA,QAAA;EACA,YAAA;EAEA,YAAA;EAEA,oBAAA;ALsGF;;AKnGA;EACE,oBAAA;ALsGF;AKpGE;EACE,UAAA;ALsGJ;AKnGE;EACE,wBAAA;ALqGJ;;AKjGA;EACE,eAAA;EACA,QAAA;EAEA,mCAAA;EAEA,UAAA;EAEA,2CAAA;ALiGF;;AK9FA;EACE,kBAAA;EACA,cAAA;EAEA,WAAA;EACA,YAAA;EACA,6BAAA;EACA,qCAAA;EAEA,2BAAA;EACA,oEAAA;EAEA,uBAAA;EAEA,6CAAA;AL6FF;;AK1FA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAEA;EACE,aAAA;EACA,eAAA;EACA,QAAA;EACA,YAAA;EAEA,gBAAA;EACA,cAAA;EACA,gBAAA;EAEA,UAAA;EAEA,oBAAA;EAEA,2CAAA;ALwFF;AKtFE;EACE,UAAA;EAEA,oBAAA;ALuFJ;AKrFI;EACE,wBAAA;ALuFN;;AKlFA;EACE,eAAA;EACA,QAAA;EAEA,mCAAA;EAEA,UAAA;EAEA,2CAAA;ALkFF;;AK/EA;EACE,kBAAA;EACA,cAAA;EAEA,WAAA;EACA,YAAA;EACA,mBAAA;EACA,qCAAA;EAEA,uCAAA;EACA,2BAAA;EAEA,uBAAA;EAEA,6CAAA;AL8EF;;AK3EA;EACE,kBAAA;EACA,SAAA;EACA,WAAA;EAEA,UAAA;EACA,eAAA;AL6EF;;AMnMA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAEA;EACE,aAAA;EACA,4BAAA;EACA,aAAA;ANqMF;;AMlMA;EACE,aAAA;EACA,sBAAA;EACA,aAAA;ANqMF;;AMlMA;EACE,aAAA;EACA,+BAAA;EACA,6BAAA;EACA,mBAAA;EACA,gBAAA;EAEA,WAAA;ANoMF;AMlME;EACE,gBAAA;ANoMJ;;AMhMA;EACE,aAAA;EACA,sBAAA;EACA,kBAAA;ANmMF;;AMhMA;EACE,kBAAA;EAEA,YAAA;ANkMF;;AM/LA;EACE,kBAAA;EACA,MAAA;EACA,SAAA;EAEA,YAAA;EACA,oBAAA;EAEA,UAAA;EACA,oBAAA;ANgMF;;AM7LA;EACE,WAAA;EACA,YAAA;EACA,YAAA;EACA,aAAA;EACA,qCAAA;EAEA,gCAAA;EACA,oBAAA;EACA,qBAAA;EAEA,uCAAA;EAEA,aAAA;EACA,cAAA;AN6LF;AM3LE;EACE,2BAAA;EACA,iCAAA;AN6LJ;;AMzLA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAEA;EACE,aAAA;EACA,kBAAA;EACA,wBAAA;EACA,gBAAA;EACA,WAAA;EAEA,WAAA;EAEA,qCAAA;EAEA,2BAAA;EACA,uCAAA;ANwLF;;AMrLA;EACE,cAAA;ANwLF;;AMrLA;EACE,8CAAA;EACA,SAAA;EACA,UAAA;EACA,cAAA;EAEA,cAAA;EACA,qBAAA;ANuLF;AMrLE;EACE;IACE,aAAA;ENuLJ;EMpLE;IAEE,oBAAA;ENqLJ;EMlLE;IACE,sCAAA;IACA,2CAAA;IACA,mBAAA;ENoLJ;AACF;;AMhLA;EACE,aAAA;EACA,mBAAA;EAEA,iBAAA;EACA,gCAAA;EAEA,eAAA;ANiLF;AM/KE;EACE,oCAAA;ANiLJ;;AM7KA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAEA;EACE,WAAA;EACA,qCAAA;EAGA,uCAAA;EAEA,mDAAA;AN4KF;AMzKI;EACE,uBAAA;EAEA,iBAAA;EAEA,mCAAA;ANyKN;AMtKI;EACE,0BAAA;EAEA,0BAAA;ANuKN;;AMlKA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;EAEA,oCAAA;EACA,kBAAA;EAEA,eAAA;ANmKF;;AMhKA;EACE,UAAA;EACA,0BAAA;ANmKF;;AMhKA;EACE,aAAA;EACA,uBAAA;EACA,gBAAA;EAEA,iBAAA;EACA,yCAAA;EACA,eAAA;EAEA,mDAAA;ANiKF;;AM9JA;EACE,gBAAA;ANiKF;;AM9JA;EACE,aAAA;EACA,eAAA;EACA,WAAA;EAEA,iBAAA;EACA,SAAA;EAEA,cAAA;EACA,qBAAA;AN+JF;AM5JI;EACE,cAAA;AN8JN;;AMzJA;EACE,aAAA;EACA,mBAAA;EACA,WAAA;EAEA,gBAAA;EACA,kBAAA;EACA,oCAAA;EAGA,mBAAA;EACA,eAAA;EACA,2BAAA;ANyJF;AMvJE;EACE,kBAAA;EACA,QAAA;EAEA,UAAA;ANwJJ;;AMpJA;EACE,aAAA;EAEA,cAAA;EACA,UAAA;EAEA,kCAAA;ANqJF;;AO7YA,+EAAA;AACA,gFAAA;AACA,+EAAA;AACA;EACE,aAAA;EACA,uBAAA;EACA,mBAAA;EAEA,YAAA;EACA,iBAAA;EACA,eAAA;EACA,qCAAA;EAEA,uCAAA;AP8YF;AO5YE;EACE,aAAA;AP8YJ;;AO1YA;EACE,kBAAA;AP6YF;;AO1YA;EACE,SAAA;EACA,yBAAA;AP6YF;;AO3YA;EACE,kCAAA;EACA,SAAA;AP8YF;;AO3YA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAGE;EADF;IAEI,aAAA;IACA,gCAAA;IACA,gBAAA;IAEA,gBAAA;EP4YF;AACF;;AOzYA;EAEE,gCAAA;EACA,oCAAA;EACA,YAAA;EAEA,uCAAA;EAEA,cAAA;EACA,aAAA;EACA,iBAAA;EACA,eAAA;APyYF;;AOtYA;EACE,oBAAA;APyYF;;AOtYA;EACE,aAAA;EACA,sBAAA;EACA,gBAAA;EAEA,WAAA;APwYF;;AOrYA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAEA;EACE,WAAA;EACA,qCAAA;EAEA,uCAAA;EACA,eAAA;APsYF;AOrYE;EACE,UAAA;APuYJ;;AOnYA;EACE,gBAAA;EACA,gBAAA;EAEA,uCAAA;APqYF;;AOlYA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;EAEA,uCAAA;APoYF;;AOjYA;EACE,aAAA;EACA,sBAAA;EACA,gBAAA;EAEA,oBAAA;APmYF;;AOhYA;EACE,yBAAA;EACA,gCAAA;APmYF;;AOhYA;EACE,aAAA;EACA,sBAAA;EACA,aAAA;APmYF;;AOhYA;EACE,aAAA;EACA,mBAAA;EACA,mBAAA;EACA,gBAAA;APmYF;;AOhYA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAEA;EACE,aAAA;APkYF;AOhYE;EAHF;IAII,gBAAA;IACA,SAAA;IAEA,8BAAA;EPkYF;EOhYE;IACE,aAAA;IACA,uBAAA;IACA,mBAAA;EPkYJ;AACF;;AO9XA;EACE,YAAA;EACA,aAAA;APiYF;AO/XE;EACE,iDAAA;APiYJ;AO9XE;EAIE,0CAAA;AP6XJ;AO1XE;EAGE,uDAAA;AP0XJ;AOvXE;EAGE,gDAAA;APuXJ;AOpXE;EAGE,6CAAA;APoXJ;;AOhXA;EACE;IACE,wBAAA;EPmXF;EOjXA;IACE,0BAAA;EPmXF;EOjXA;IACE,wBAAA;EPmXF;AACF;AOhXA;EACE;IACE,wBAAA;EPkXF;EOhXA;IACE,2BAAA;EPkXF;EOhXA;IACE,wBAAA;EPkXF;AACF;AO/WA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAEA;EACE,eAAA;EACA,QAAA;EACA,UAAA;EACA,cAAA;EACA,yBAAA;EAEA,mCAAA;EAEA,2BAAA;EAEA,0BAAA;AP6WF;AO3WE;EACE,yBAAA;AP6WJ;AO1WE;EAjBF;IAkBI,aAAA;IACA,gBAAA;IACA,SAAA;IAEA,8BAAA;IAEA,eAAA;IAEA,gBAAA;EP0WF;EOxWE;IACE,cAAA;EP0WJ;EOxWI;IACE,cAAA;EP0WN;EOnWI;IACE,oCAAA;IACA,yCAAA;IACA,mBAAA;EPqWN;AACF;;AOhWA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;APmWF;;AOhWA;EACE,kBAAA;APmWF;;AOhWA;EACE,aAAA;EACA,mBAAA;EACA,kBAAA;EACA,SAAA;EACA,UAAA;EAEA,WAAA;EACA,YAAA;EACA,YAAA;EACA,yCAAA;EAEA,kBAAA;EAEA,cAAA;EACA,aAAA;APgWF;AO9VE;EACE,WAAA;EACA,UAAA;APgWJ;AO7VE;EAtBF;IAuBI,aAAA;EPgWF;AACF;;AO7VA;EACE,YAAA;EACA,gBAAA;EAEA,kDAAA;AP+VF;AO7VE;EANF;IAOI,YAAA;IAEA,4BAAA;EP+VF;AACF;;AO5VA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;EACA,kBAAA;EACA,WAAA;AP+VF;;AO5VA;EACE,kBAAA;EACA,UAAA;EAEA,aAAA;EACA,mCAAA;EAEA,uCAAA;AP6VF;;AO1VA;EACE,yBAAA;AP6VF;;AO1VA;EACE,SAAA;EACA,gBAAA;EACA,UAAA;EAEA,cAAA;EACA,qBAAA;AP4VF;;AOzVA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AP4VF;;AOzVA;EACE,UAAA;AP4VF;;AOzVA;EACE,UAAA;AP4VF;;AOzVA;EACE,gBAAA;AP4VF;;AOzVA;EACE,gCAAA;AP4VF;AO1VE;EACE,gCAAA;AP4VJ;;AOxVA;EACE,gBAAA;AP2VF;;AOxVA;EACE,yBAAA;AP2VF;;AOxVA;EACE,SAAA;EACA,kBAAA;EACA,UAAA;EAEA,cAAA;EACA,qBAAA;AP0VF;;AOvVA;EACE,aAAA;EACA,8BAAA;EACA,kBAAA;EAEA,qBAAA;EAEA,2BAAA;EACA,kCAAA;APwVF;AOtVE;EACE,YAAA;EAEA,kBAAA;EACA,OAAA;EACA,MAAA;EACA,SAAA;EAEA,cAAA;APsVJ;AOjVE;EACE,gCAAA;APmVJ;AOjVI;EACE,WAAA;EAEA,SAAA;EACA,QAAA;EAEA,UAAA;EACA,WAAA;EACA,gBAAA;EAEA,kBAAA;APgVN;;AO3UA;EACE,gBAAA;AP8UF;;AO3UA;EACE,yBAAA;AP8UF;;AO3UA;EACE,aAAA;EACA,sBAAA;EACA,YAAA;EAEA,SAAA;EACA,kBAAA;EACA,UAAA;EAEA,cAAA;EACA,qBAAA;AP4UF;;AOzUA;EACE,aAAA;EACA,+BAAA;EAEA,2BAAA;EACA,gBAAA;AP2UF;;AOrUA;EACE,SAAA;APwUF;;AQlxBA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAEA;EACE,aAAA;EACA,mBAAA;EAEA,gCAAA;EACA,iBAAA;EACA,SAAA;EACA,UAAA;EACA,qCAAA;EAEA,uCAAA;EACA,eAAA;ARkxBF;;AQ9wBE;EACE,UAAA;ARixBJ;;AQ7wBA;EACE,kBAAA;EAEA,iBAAA;AR+wBF;;AQ5wBA;EACE,aAAA;EACA,sBAAA;EACA,WAAA;EAEA,qCAAA;EAEA,iBAAA;AR6wBF;;AQ1wBA,+EAAA;AACA,+EAAA;AACA,+EAAA;AAKA;EACE,yBAAA;EACA,kCAAA;ARywBF;;AQtwBA;EACE,aAAA;EACA,eAAA;EACA,WAAA;EAEA,UAAA;EACA,SAAA;EACA,mBAAA;EAEA,cAAA;EACA,qBAAA;ARuwBF;;AQpwBA;EACE,aAAA;EACA,mBAAA;EAEA,sBAAA;EACA,oCAAA;EAEA,uCAAA;EACA,eAAA;ARqwBF;AQnwBE;EACE,qCAAA;EAEA,kCAAA;ARowBJ;;AA50BA;EACE,WAAA;EACA,mCAAA;EAEA,2BAAA;EACA,gCAAA;EACA,kBAAA;AA80BF;;AA30BA;EACE,eAAA;AA80BF;;AA30BA;EACE,kBAAA;EACA,mCAAA;AA80BF;;AA30BA;EACE,WAAA;EACA,iBAAA;EACA,cAAA;EACA,eAAA;AA80BF;;AA30BA;EACE,sBAAA;AA80BF","sourcesContent":["*,\r\n::before,\r\n::after {\r\n  box-sizing: border-box;\r\n}\r\n\r\nhtml {\r\n  font-size: 100%; /* 16px */\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n}\r\n\r\n.preload-transitions * {\r\n  -webkit-transition: none !important;\r\n  -moz-transition: none !important;\r\n  -ms-transition: none !important;\r\n  -o-transition: none !important;\r\n  transition: none !important;\r\n}\r\n","@import \"./base/index.scss\";\n@import \"./popup.scss\";\n@import \"./search.scss\";\n@import \"./recipes.scss\";\n@import \"./filters.scss\";\n\nbody {\n  width: 100%;\n  background: var(--color-bg-primary);\n\n  font: var(--font-type-body);\n  color: var(--color-text-primary);\n  overflow-y: scroll;\n}\n\n.prevent-scrolling {\n  position: fixed;\n}\n\n.main {\n  min-height: 100svh;\n  background: var(--color-bg-primary);\n}\n\n.wrapper {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n  padding: 0 16px;\n}\n\n.content {\n  padding: 2rem 0 0rem 0;\n}\n",":root {\r\n  color-scheme: dark;\r\n\r\n  --color-gray-400: #161617;\r\n  --color-gray-300: #232325;\r\n  --color-gray-200: #2f2f32;\r\n  --color-yellow: #fdde55;\r\n\r\n  --color-white-400: #fff;\r\n  --color-white-300: hsla(0, 0%, 100%, 0.8);\r\n  --color-white-200: hsla(0, 0%, 100%, 0.6);\r\n  --color-white-100: hsla(0, 0%, 100%, 0.4);\r\n\r\n  --color-bg-primary: var(--color-gray-400);\r\n  --color-bg-secondary: var(--color-gray-300);\r\n  --color-bg-tertiary: var(--color-gray-200);\r\n  --color-bg-overlay: rgba(0, 0, 0, 0.6);\r\n  --color-bg-highlight: var(--color-white-200);\r\n\r\n  --color-text-primary: var(--color-white-400);\r\n  --color-text-secondary: var(--color-white-300);\r\n  --color-text-tertiary: var(--color-white-100);\r\n  --color-text-highlight: #000;\r\n}\r\n","@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 400;\r\n  src: url(../fonts/Satoshi-Regular.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Regular.woff) format(woff);\r\n  // src: url(../../assets/fonts/Satoshi-Regular.woff2) format(woff2),\r\n  //   url(../../assets/fonts/Satoshi-Regular.woff) format(woff);\r\n}\r\n\r\n@font-face {\r\n  font-family: \"Satoshi\";\r\n  font-weight: 700;\r\n  src: url(../fonts/Satoshi-Bold.woff2) format(woff2),\r\n    url(../fonts/Satoshi-Bold.woff) format(woff);\r\n}\r\n",":root {\r\n  --font-fallback: \"Satoshi\", sans-serif;\r\n  --font-family-body: var(--font-fallback);\r\n  --font-family-heading: var(--font-fallback);\r\n\r\n  --font-size-900: 3.052rem;\r\n  --font-size-800: 2.441rem;\r\n  --font-size-700: 1.953rem;\r\n  --font-size-600: 1.563rem;\r\n  --font-size-500: 1.25rem;\r\n  --font-size-400: 1rem;\r\n  --font-size-300: 0.8rem;\r\n\r\n  --font-size-body: var(--font-size-400);\r\n  --font-size-h1: var(--font-size-800);\r\n  --font-size-h2: var(--font-size-600);\r\n  --font-size-h3: var(--font-size-500);\r\n  --font-size-small: var(--font-size-300);\r\n  --line-height-body: 1.75;\r\n  --line-height-heading: 1.3;\r\n\r\n  --font-type-body: 400 var(--font-size-body) / var(--line-height-body)\r\n    var(--font-family-body);\r\n  --font-type-h1: 700 var(--font-size-h1) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h2: 700 var(--font-size-h2) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n  --font-type-h3: 700 var(--font-size-h3) / var(--line-height-heading)\r\n    var(--font-family-heading);\r\n\r\n  @media (width > 1024px) {\r\n    --font-size-body: var(--font-size-500);\r\n    --font-size-h2: var(--font-size-700);\r\n    --font-size-h3: var(--font-size-600);\r\n  }\r\n}\r\n",":root {\r\n  --border-radius-400: 0.875rem;\r\n  --border-radius-300: 0.75rem;\r\n  --border-radius-200: 0.5rem;\r\n\r\n  --button-height: 2.25rem;\r\n\r\n  --text-input-height: 46px;\r\n\r\n  --transition-popup: 0.3s cubic-bezier(0.3, 0, 0.2, 1);\r\n  --transition-popup-open: 120ms ease-out;\r\n\r\n  @media (width > 1024px) {\r\n    --text-input-height: 52px;\r\n  }\r\n}\r\n",".popup {\n  display: none;\n  flex-direction: column;\n  justify-content: flex-end;\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n\n  height: 100%;\n\n  pointer-events: none;\n}\n\n.popup_opened {\n  pointer-events: auto;\n\n  & .popup__overlay {\n    opacity: 1;\n  }\n\n  & .popup__content {\n    transform: translateY(0);\n  }\n}\n\n.popup__overlay {\n  position: fixed;\n  inset: 0;\n\n  background: var(--color-bg-overlay);\n\n  opacity: 0;\n\n  transition: opacity var(--transition-popup);\n}\n\n.popup__content {\n  position: relative;\n  overflow: auto;\n\n  width: 100%;\n  height: auto;\n  max-height: calc(100% - 3rem);\n  background: var(--color-bg-secondary);\n\n  transform: translateY(100%);\n  border-radius: var(--border-radius-400) var(--border-radius-400) 0 0;\n\n  scroll-behavior: smooth;\n\n  transition: transform var(--transition-popup);\n}\n\n/* -------------------------------------------------------------------------- */\n/*                                POPUP-DESKTOP                               */\n/* -------------------------------------------------------------------------- */\n\n.popup-desktop {\n  display: none;\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n\n  max-width: 768px;\n  margin: 0 auto;\n  margin-top: 10vh;\n\n  opacity: 0;\n\n  pointer-events: none;\n\n  transition: opacity var(--transition-popup);\n\n  &_opened {\n    opacity: 1;\n\n    pointer-events: auto;\n\n    .popup-desktop__content {\n      transform: translateY(0);\n    }\n  }\n}\n\n.popup-desktop__overlay {\n  position: fixed;\n  inset: 0;\n\n  background: var(--color-bg-overlay);\n\n  opacity: 1;\n\n  transition: opacity var(--transition-popup);\n}\n\n.popup-desktop__content {\n  position: relative;\n  overflow: auto;\n\n  width: 100%;\n  height: auto;\n  padding-top: 1.5rem;\n  background: var(--color-bg-secondary);\n\n  border-radius: var(--border-radius-400);\n  transform: translateY(20px);\n\n  scroll-behavior: smooth;\n\n  transition: transform var(--transition-popup);\n}\n\n.popup-desktop__close-button {\n  position: absolute;\n  top: 1rem;\n  right: 1rem;\n\n  fill: #fff;\n  cursor: pointer;\n}\n","/* -------------------------------------------------------------------------- */\r\n/*                                   SEARCH                                   */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.recipes-search-container {\r\n  display: grid;\r\n  grid-template-rows: auto 1fr;\r\n  row-gap: 1rem;\r\n}\r\n\r\n.recipes-search__search {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 10px;\r\n}\r\n\r\n.ingredients-search {\r\n  display: grid;\r\n  grid-template-columns: 1fr auto;\r\n  grid-template-rows: auto auto;\r\n  column-gap: 0.75rem;\r\n  row-gap: 0.75rem;\r\n\r\n  width: 100%;\r\n\r\n  &__selected-ingredients {\r\n    grid-column: 1 / 3;\r\n  }\r\n}\r\n\r\n.ingredients-search__form {\r\n  display: flex;\r\n  flex-direction: column;\r\n  position: relative;\r\n}\r\n\r\n.ingredients-search__input-container {\r\n  position: relative;\r\n\r\n  height: 100%;\r\n}\r\n\r\n.ingredients-search__search-icon {\r\n  position: absolute;\r\n  top: 0;\r\n  bottom: 0;\r\n\r\n  margin: auto;\r\n  margin-left: 0.75rem;\r\n\r\n  fill: #fff;\r\n  pointer-events: none;\r\n}\r\n\r\n.ingredients-search__input {\r\n  width: 100%;\r\n  height: 100%;\r\n  border: none;\r\n  outline: none;\r\n  background: var(--color-bg-secondary);\r\n\r\n  height: var(--text-input-height);\r\n  padding: 0rem 0.8rem;\r\n  padding-left: 2.75rem;\r\n\r\n  border-radius: var(--border-radius-200);\r\n\r\n  font: inherit;\r\n  color: inherit;\r\n\r\n  &::placeholder {\r\n    font: var(--font-type-body);\r\n    color: var(--color-text-tertiary);\r\n  }\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                        INGREDIENT SEARCH SUGGESTIONS                       */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.ingredients-search__suggestions {\r\n  display: none;\r\n  position: absolute;\r\n  top: calc(100% + 0.5rem);\r\n  overflow: hidden;\r\n  z-index: 10;\r\n\r\n  width: 100%;\r\n\r\n  background: var(--color-bg-secondary);\r\n\r\n  font: var(--font-type-body);\r\n  border-radius: var(--border-radius-200);\r\n}\r\n\r\n.ingredients-search__suggestions_show {\r\n  display: block;\r\n}\r\n\r\n.ingredients-search__suggestions-list {\r\n  max-height: calc(var(--text-input-height) * 5);\r\n  margin: 0;\r\n  padding: 0;\r\n  overflow: auto;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n\r\n  @media (width > 1024px) {\r\n    &::-webkit-scrollbar {\r\n      width: 0.5rem;\r\n    }\r\n\r\n    &::-webkit-scrollbar-track {\r\n      // background: var(--color-bg-tertiary);\r\n      margin-block: 0.1rem;\r\n    }\r\n\r\n    &::-webkit-scrollbar-thumb {\r\n      background: var(--color-text-tertiary);\r\n      border: 2px solid var(--color-bg-secondary);\r\n      border-radius: 15px;\r\n    }\r\n  }\r\n}\r\n\r\n.ingredients-search__suggestions-item {\r\n  display: flex;\r\n  align-items: center;\r\n\r\n  padding: 0 0.8rem;\r\n  height: var(--text-input-height);\r\n\r\n  cursor: pointer;\r\n\r\n  &_active {\r\n    background: var(--color-bg-tertiary);\r\n  }\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                          SELECTED INGREDIENTS MENU                         */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.selected-ingredients-menu {\r\n  width: 100%;\r\n  background: var(--color-bg-secondary);\r\n  // border: 2px solid var(--color-bg-tertiary);\r\n\r\n  border-radius: var(--border-radius-200);\r\n\r\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\r\n\r\n  &_active {\r\n    .selected-ingredients-menu__body {\r\n      grid-template-rows: 1fr;\r\n\r\n      border-width: 2px;\r\n\r\n      transition: grid-template-rows 0.2s;\r\n    }\r\n\r\n    .selected-ingredients-menu__arrow-down-icon {\r\n      transform: rotateX(180deg);\r\n\r\n      transition: transform 0.2s;\r\n    }\r\n  }\r\n}\r\n\r\n.selected-ingredients-menu__header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n\r\n  min-height: var(--text-input-height);\r\n  padding: 0 0.75rem;\r\n\r\n  cursor: pointer;\r\n}\r\n\r\n.selected-ingredients-menu__arrow-down-icon {\r\n  fill: #fff;\r\n  transition: transform 0.3s;\r\n}\r\n\r\n.selected-ingredients-menu__body {\r\n  display: grid;\r\n  grid-template-rows: 0fr;\r\n  overflow: hidden;\r\n\r\n  padding: 0 0.5rem;\r\n  border-top: solid var(--color-bg-primary);\r\n  border-width: 0;\r\n\r\n  transition: grid-template-rows 0.2s, border 0s 0.2s;\r\n}\r\n\r\n.selected-ingredients-menu__content {\r\n  overflow: hidden;\r\n}\r\n\r\n.selected-ingredients-menu__list {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 0.5rem;\r\n\r\n  padding: 0.5rem 0;\r\n  margin: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n\r\n  &[empty] {\r\n    .selected-ingredients-menu__list-message {\r\n      display: block;\r\n    }\r\n  }\r\n}\r\n\r\n.selected-ingredients-menu__item {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 0.5rem;\r\n\r\n  min-height: 36px;\r\n  padding: 0 0.75rem;\r\n  background: var(--color-bg-tertiary);\r\n  // border: 2px solid var(--color-white-400);\r\n\r\n  border-radius: 18px;\r\n  cursor: pointer;\r\n  font: var(--font-type-body);\r\n\r\n  &-xmark-icon {\r\n    position: relative;\r\n    top: 1px;\r\n\r\n    fill: #fff;\r\n  }\r\n}\r\n\r\n.selected-ingredients-menu__list-message {\r\n  display: none;\r\n\r\n  margin: 0 auto;\r\n  padding: 0;\r\n\r\n  color: var(--color-text-secondary);\r\n}\r\n","/* -------------------------------------------------------------------------- */\r\n/*                               RECIPES MESSAGE                               */\r\n/* -------------------------------------------------------------------------- */\r\n.recipes-message-box {\r\n  display: none;\r\n  justify-content: center;\r\n  align-items: center;\r\n\r\n  height: 100%;\r\n  min-height: 150px;\r\n  padding: 0 1rem;\r\n  background: var(--color-bg-secondary);\r\n\r\n  border-radius: var(--border-radius-200);\r\n\r\n  &_show {\r\n    display: flex;\r\n  }\r\n}\r\n\r\n.recipes-message {\r\n  text-align: center;\r\n}\r\n\r\n.recipes-message-title {\r\n  margin: 0;\r\n  font: var(--font-type-h2);\r\n}\r\n.recipes-message-subtitle {\r\n  color: var(--color-text-secondary);\r\n  margin: 0;\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                                   RECIPES                                  */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.recipes-container {\r\n  @media (width > 1024px) {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1.5fr;\r\n    column-gap: 2rem;\r\n\r\n    min-height: 90vh;\r\n  }\r\n}\r\n\r\n.recipe-search-button {\r\n  // padding: 0.5rem;\r\n  height: var(--text-input-height);\r\n  background: var(--color-bg-tertiary);\r\n  border: none;\r\n\r\n  border-radius: var(--border-radius-200);\r\n\r\n  color: inherit;\r\n  font: inherit;\r\n  font-weight: bold;\r\n  cursor: pointer;\r\n}\r\n\r\n.recipes {\r\n  padding-bottom: 1rem;\r\n}\r\n\r\n.recipes__cards-list {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 0.75rem;\r\n\r\n  width: 100%;\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                                 RECIPE CARD                                */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.recipe-card {\r\n  width: 100%;\r\n  background: var(--color-bg-secondary);\r\n\r\n  border-radius: var(--border-radius-400);\r\n  cursor: pointer;\r\n  & svg {\r\n    fill: #fff;\r\n  }\r\n}\r\n\r\n.recipe-card__img-wrapper {\r\n  overflow: hidden;\r\n  padding: 0.25rem;\r\n\r\n  border-radius: var(--border-radius-400);\r\n}\r\n\r\n.recipe-card__img {\r\n  width: 100%;\r\n  height: 100%;\r\n  object-fit: cover;\r\n\r\n  border-radius: var(--border-radius-300);\r\n}\r\n\r\n.recipe-card__description {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 0.75rem;\r\n\r\n  padding: 0.5rem 1rem;\r\n}\r\n\r\n.recipe-card__title {\r\n  font: var(--font-type-h3);\r\n  color: var(--color-text-primary);\r\n}\r\n\r\n.recipe-card__meta {\r\n  display: flex;\r\n  flex-direction: column;\r\n  row-gap: 0rem;\r\n}\r\n\r\n.recipe-card__meta-item {\r\n  display: flex;\r\n  align-items: center;\r\n  column-gap: 0.75rem;\r\n  line-height: 1.5;\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                              RECIPE BACKGROUND                             */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.recipe-bg {\r\n  display: none;\r\n\r\n  @media (width > 1024px) {\r\n    position: sticky;\r\n    top: 2rem;\r\n\r\n    max-height: calc(100vh - 6rem);\r\n\r\n    &_show {\r\n      display: flex;\r\n      justify-content: center;\r\n      align-items: center;\r\n    }\r\n  }\r\n}\r\n\r\n.recipe-bg-img {\r\n  width: 450px;\r\n  height: 450px;\r\n\r\n  & #salmon {\r\n    animation: 12s ease-in-out infinite inverse-slide;\r\n  }\r\n\r\n  & #mushroom-4,\r\n  & #avocado-1,\r\n  & #tomato-1,\r\n  & #avocado-2 {\r\n    animation: 7.5s ease-in-out infinite slide;\r\n  }\r\n\r\n  & #mushroom-3,\r\n  & #tomato-2,\r\n  & #mushroom-2 {\r\n    animation: 7.5s 0.5s ease-in-out infinite inverse-slide;\r\n  }\r\n\r\n  & #broccoli-4,\r\n  & #stick-2,\r\n  & #broccoli-1 {\r\n    animation: 9s ease-in-out infinite inverse-slide;\r\n  }\r\n\r\n  & #broccoli-2,\r\n  & #broccoli-3,\r\n  & #tomato-3 {\r\n    animation: 9s 0.5s ease-in-out infinite slide;\r\n  }\r\n}\r\n\r\n@keyframes slide {\r\n  0% {\r\n    transform: translateY(0);\r\n  }\r\n  50% {\r\n    transform: translateY(3px);\r\n  }\r\n  100% {\r\n    transform: translateY(0);\r\n  }\r\n}\r\n\r\n@keyframes inverse-slide {\r\n  0% {\r\n    transform: translateY(0);\r\n  }\r\n  50% {\r\n    transform: translateY(-3px);\r\n  }\r\n  100% {\r\n    transform: translateY(0);\r\n  }\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                                   RECIPE                                   */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.recipe {\r\n  position: fixed;\r\n  inset: 0;\r\n  z-index: 1;\r\n  overflow: auto;\r\n  overscroll-behavior: none;\r\n\r\n  background: var(--color-bg-primary);\r\n\r\n  transform: translateX(100%);\r\n\r\n  transition: transform 0.3s;\r\n\r\n  &_show {\r\n    transform: translateX(0%);\r\n  }\r\n\r\n  @media (width > 1024px) {\r\n    display: none;\r\n    position: sticky;\r\n    top: 2rem;\r\n\r\n    max-height: calc(100vh - 2rem);\r\n\r\n    transform: none;\r\n\r\n    transition: none;\r\n\r\n    &_show {\r\n      display: block;\r\n\r\n      &::-webkit-scrollbar {\r\n        width: 0.75rem;\r\n      }\r\n\r\n      &::-webkit-scrollbar-track {\r\n        // background: var(--color-bg-tertiary);\r\n      }\r\n\r\n      &::-webkit-scrollbar-thumb {\r\n        background: var(--color-bg-tertiary);\r\n        border: 3px solid var(--color-bg-primary);\r\n        border-radius: 15px;\r\n      }\r\n    }\r\n  }\r\n}\r\n\r\n.recipe-content {\r\n  width: 100%;\r\n  height: 100%;\r\n  min-height: 100vh;\r\n}\r\n\r\n.recipe__header {\r\n  position: relative;\r\n}\r\n\r\n.recipe__close-button {\r\n  display: grid;\r\n  place-items: center;\r\n  position: absolute;\r\n  top: 10px;\r\n  left: 10px;\r\n\r\n  width: 35px;\r\n  height: 35px;\r\n  border: none;\r\n  background-color: var(--color-bg-primary);\r\n\r\n  border-radius: 50%;\r\n\r\n  color: inherit;\r\n  font: inherit;\r\n\r\n  & svg {\r\n    width: 1rem;\r\n    fill: #fff;\r\n  }\r\n\r\n  @media (width > 1024px) {\r\n    display: none;\r\n  }\r\n}\r\n\r\n.recipe__img-wrapper {\r\n  height: 60vw;\r\n  overflow: hidden;\r\n\r\n  box-shadow: inset 0 0 20px 10px rgba(0, 0, 0, 0.6);\r\n\r\n  @media (width > 1024px) {\r\n    height: 25vw;\r\n\r\n    border-radius: 1rem 1rem 0 0;\r\n  }\r\n}\r\n\r\n.recipe__img {\r\n  width: 100%;\r\n  height: 100%;\r\n  object-fit: cover;\r\n  position: relative;\r\n  z-index: -1;\r\n}\r\n\r\n.recipe__body {\r\n  position: relative;\r\n  top: -1rem;\r\n\r\n  padding: 1rem;\r\n  background: var(--color-bg-primary);\r\n\r\n  border-radius: var(--border-radius-400);\r\n}\r\n\r\n.recipe__title {\r\n  font: var(--font-type-h2);\r\n}\r\n\r\n.recipe__meta {\r\n  margin: 0;\r\n  margin-top: 1rem;\r\n  padding: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.recipe__meta-item {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 0.75rem;\r\n}\r\n\r\n.recipe__clock-icon {\r\n  fill: #fff;\r\n}\r\n\r\n.recipe__user-icon {\r\n  fill: #fff;\r\n}\r\n\r\n.recipe__src {\r\n  margin-top: 1rem;\r\n}\r\n\r\n.recipe__src-link {\r\n  color: var(--color-text-primary);\r\n  // text-decoration: none;\r\n  &:visited {\r\n    color: var(--color-text-primary);\r\n  }\r\n}\r\n\r\n.recipe__ingredients {\r\n  margin-top: 1rem;\r\n}\r\n\r\n.recipe__ingredients-title {\r\n  font: var(--font-type-h3);\r\n}\r\n\r\n.recipe__ingredients-list {\r\n  margin: 0;\r\n  margin-top: 0.5rem;\r\n  padding: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.recipe__ingredient {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  position: relative;\r\n\r\n  padding-left: 1.25rem;\r\n\r\n  font: var(--font-type-body);\r\n  color: var(--color-text-secondary);\r\n\r\n  &::before {\r\n    content: \"+\";\r\n\r\n    position: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    bottom: 0;\r\n\r\n    margin: auto 0;\r\n\r\n    // font-weight: 700;\r\n  }\r\n\r\n  &_used {\r\n    color: var(--color-text-primary);\r\n\r\n    &::before {\r\n      content: \"\";\r\n\r\n      left: 1px;\r\n      top: 3px;\r\n\r\n      width: 7px;\r\n      height: 7px;\r\n      background: #fff;\r\n\r\n      border-radius: 50%;\r\n    }\r\n  }\r\n}\r\n\r\n.recipe__instructions {\r\n  margin-top: 1rem;\r\n}\r\n\r\n.recipe__instructions-title {\r\n  font: var(--font-type-h3);\r\n}\r\n\r\n.recipe__instruction-steps-list {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.75rem;\r\n\r\n  margin: 0;\r\n  margin-top: 0.5rem;\r\n  padding: 0;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.instruction-step {\r\n  display: grid;\r\n  grid-template-columns: 2rem 1fr;\r\n\r\n  font: var(--font-type-body);\r\n  line-height: 1.5;\r\n}\r\n\r\n.instruction-step__number {\r\n}\r\n\r\n.instruction-step__step {\r\n  margin: 0;\r\n}\r\n","/* -------------------------------------------------------------------------- */\r\n/*                                   FILTERS                                  */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.filters__button {\r\n  display: grid;\r\n  place-items: center;\r\n\r\n  height: var(--text-input-height);\r\n  aspect-ratio: 1 / 1;\r\n  border: 0;\r\n  padding: 0;\r\n  background: var(--color-bg-secondary);\r\n\r\n  border-radius: var(--border-radius-200);\r\n  cursor: pointer;\r\n}\r\n\r\n.filters__button-svg {\r\n  & * {\r\n    fill: #fff;\r\n  }\r\n}\r\n\r\n.filters {\r\n  position: relative;\r\n\r\n  padding: 1.5rem 0;\r\n}\r\n\r\n.filters__body {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 1.5rem;\r\n\r\n  background: var(--color-bg-secondary);\r\n\r\n  padding: 0 1.5rem;\r\n}\r\n\r\n/* -------------------------------------------------------------------------- */\r\n/*                             POPULAR INGREDIENTS                            */\r\n/* -------------------------------------------------------------------------- */\r\n\r\n.popular-ingredients {\r\n}\r\n\r\n.popular-ingredients__title {\r\n  font: var(--font-type-h3);\r\n  color: var(--color-text-secondary);\r\n}\r\n\r\n.popular-ingredients__list {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 0.5rem;\r\n\r\n  padding: 0;\r\n  margin: 0;\r\n  margin-top: 0.75rem;\r\n\r\n  text-indent: 0;\r\n  list-style-type: none;\r\n}\r\n\r\n.popular-ingredients__list-item {\r\n  display: flex;\r\n  align-items: center;\r\n\r\n  padding: 0.1rem 0.7rem;\r\n  background: var(--color-bg-tertiary);\r\n\r\n  border-radius: var(--border-radius-300);\r\n  cursor: pointer;\r\n\r\n  &_selected {\r\n    background: var(--color-bg-highlight);\r\n\r\n    color: var(--color-text-highlight);\r\n  }\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1195,10 +1442,6 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener("DOMContentLoaded", (event) => {
   (0,_ingredientsSearch__WEBPACK_IMPORTED_MODULE_1__.addIngredientsSearchFormHandlers)();
-  (0,_filters_js__WEBPACK_IMPORTED_MODULE_2__.addFiltersHandlers)();
-  (0,_popup_js__WEBPACK_IMPORTED_MODULE_3__.addHandlersToAllPopups)();
-  (0,_ingredients_js__WEBPACK_IMPORTED_MODULE_4__.addIngredientsHandlers)();
-  (0,_recipes__WEBPACK_IMPORTED_MODULE_5__.addRecipesHandlers)();
 });
 
 
@@ -1212,7 +1455,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addFiltersHandlers: () => (/* binding */ addFiltersHandlers),
 /* harmony export */   togglePopularIngredientsItemSelection: () => (/* binding */ togglePopularIngredientsItemSelection)
 /* harmony export */ });
 /* harmony import */ var _assets_popular_ingredients_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/popular-ingredients.json */ "./src/assets/popular-ingredients.json");
@@ -1227,20 +1469,23 @@ const getPopularIngredientsArr = () => {
 };
 
 const displayPopularIngredientsListItem = (ingredientName) => {
-  const ingredientsListElem = document.querySelector(
+  const ingredientsListElems = document.querySelectorAll(
     ".popular-ingredients__list"
   );
 
   const ingredientsListItemTemplate = document.querySelector(
     ".popular-ingredients-list-item-template"
   );
-  const ingredientsListItemFrag =
-    ingredientsListItemTemplate.content.cloneNode(true);
-  const ingredientsListItemElem = ingredientsListItemFrag.children[0];
 
-  ingredientsListItemElem.textContent = ingredientName;
+  ingredientsListElems.forEach((ingredientsListElem) => {
+    const ingredientsListItemFrag =
+      ingredientsListItemTemplate.content.cloneNode(true);
+    const ingredientsListItemElem = ingredientsListItemFrag.children[0];
 
-  ingredientsListElem.append(ingredientsListItemElem);
+    ingredientsListItemElem.textContent = ingredientName;
+
+    ingredientsListElem.append(ingredientsListItemElem);
+  });
 };
 
 const displayAllPopularIngredientsListItems = () => {
@@ -1252,29 +1497,44 @@ const displayAllPopularIngredientsListItems = () => {
 };
 
 const handleFiltersButtonClick = (event) => {
+  if (window.matchMedia("(width > 1024px)").matches) {
+    const filtersPopupDesktop = document.querySelector(
+      ".filters-popup-desktop"
+    );
+    (0,_popup_js__WEBPACK_IMPORTED_MODULE_1__.openPopupDesktop)(filtersPopupDesktop);
+
+    return;
+  }
+
   const filtersPopup = document.querySelector(".filters-popup");
   (0,_popup_js__WEBPACK_IMPORTED_MODULE_1__.openPopup)(filtersPopup);
 };
 
-const getPopularIngredientsItemElemByName = (ingredientItemName) => {
+const getPopularIngredientsItemElemsByName = (ingredientItemName) => {
   const ingredientsItemElems = document.querySelectorAll(
     ".popular-ingredients__list-item"
   );
 
-  return Array.from(ingredientsItemElems).find((ingredientsItemElem) => {
+  return Array.from(ingredientsItemElems).filter((ingredientsItemElem) => {
     return ingredientsItemElem.textContent === ingredientItemName;
   });
 };
 
 const togglePopularIngredientsItemSelection = (ingredientItemName) => {
-  const ingredientItemElem =
-    getPopularIngredientsItemElemByName(ingredientItemName);
+  const ingredientItemElems =
+    getPopularIngredientsItemElemsByName(ingredientItemName);
 
-  if (!ingredientItemElem) return;
+  if (!ingredientItemElems) return;
 
-  return ingredientItemElem.classList.toggle(
-    "popular-ingredients__list-item_selected"
-  );
+  let isSelected;
+
+  ingredientItemElems.forEach((ingredientItemElem) => {
+    isSelected = ingredientItemElem.classList.toggle(
+      "popular-ingredients__list-item_selected"
+    );
+  });
+
+  return isSelected;
 };
 
 const handlePopularIngredientsItemClick = (event) => {
@@ -1300,12 +1560,16 @@ const addFiltersButtonHandlers = () => {
 };
 
 const addPopuarIngredientsHandlers = () => {
-  const popularIngredientsElem = document.querySelector(".popular-ingredients");
-
-  popularIngredientsElem.addEventListener(
-    "click",
-    handlePopularIngredientsItemClick
+  const popularIngredientsElems = document.querySelectorAll(
+    ".popular-ingredients"
   );
+
+  popularIngredientsElems.forEach((popularIngredientsElem) => {
+    popularIngredientsElem.addEventListener(
+      "click",
+      handlePopularIngredientsItemClick
+    );
+  });
 };
 
 const addFiltersHandlers = () => {
@@ -1314,6 +1578,10 @@ const addFiltersHandlers = () => {
 };
 
 displayAllPopularIngredientsListItems();
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  addFiltersHandlers();
+});
 
 
 /***/ }),
@@ -1330,11 +1598,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   preventBodyScrolling: () => (/* binding */ preventBodyScrolling)
 /* harmony export */ });
 const preventBodyScrolling = () => {
-  document.querySelector("body").classList.add("prevent-scrolling");
+  const body = document.querySelector("body");
+
+  const scrollPosition = window.scrollY;
+
+  body.style.top = -scrollPosition + "px";
+
+  body.classList.add("prevent-scrolling");
 };
 
 const allowBodyScrolling = () => {
-  document.querySelector("body").classList.remove("prevent-scrolling");
+  const body = document.querySelector("body");
+  body.classList.remove("prevent-scrolling");
+
+  const topPosition = Math.abs(parseFloat(body.style.top));
+
+  if (topPosition) {
+    window.scrollTo(0, topPosition);
+  }
 };
 
 
@@ -1348,9 +1629,9 @@ const allowBodyScrolling = () => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addIngredientsHandlers: () => (/* binding */ addIngredientsHandlers),
 /* harmony export */   getAllIngredientsArr: () => (/* binding */ getAllIngredientsArr),
 /* harmony export */   getSelectedIngredientsArr: () => (/* binding */ getSelectedIngredientsArr),
+/* harmony export */   isIngredientAlreadySelected: () => (/* binding */ isIngredientAlreadySelected),
 /* harmony export */   updateSelectedIngredientsList: () => (/* binding */ updateSelectedIngredientsList)
 /* harmony export */ });
 /* harmony import */ var _assets_ingredients_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/ingredients.json */ "./src/assets/ingredients.json");
@@ -1504,6 +1785,10 @@ const addIngredientsHandlers = () => {
     handleSelectedIngredientsItemClick
   );
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  addIngredientsHandlers();
+});
 
 
 /***/ }),
@@ -1668,6 +1953,9 @@ const handleSearchInputInput = (event) => {
 
   if (filteredSuggestionsArr.length) {
     highlightSuggestionsItemByIndex(0);
+
+    searchSuggestionsListElem.scrollTop = 0;
+
     openSearchSuggestions();
   }
 };
@@ -1694,10 +1982,7 @@ const handleSearchInputKeydown = (event) => {
 
     unhighlightAllSuggestionsItems();
     highlightSuggestionsItemByIndex(itemIndexToHighlight);
-    scrollToHighlightedSuggestionsItems(
-      suggestionsItemElems,
-      itemIndexToHighlight
-    );
+    scrollToHighlightedSuggestionsItems(suggestionsItemElems);
   }
 };
 
@@ -1712,9 +1997,11 @@ const handleSuggestionsItemClick = (event) => {
 
   const ingredientName = clickedSuggestionsItem.textContent;
 
-  (0,_ingredients__WEBPACK_IMPORTED_MODULE_0__.updateSelectedIngredientsList)(ingredientName);
+  if (!(0,_ingredients__WEBPACK_IMPORTED_MODULE_0__.isIngredientAlreadySelected)(ingredientName)) {
+    (0,_filters__WEBPACK_IMPORTED_MODULE_1__.togglePopularIngredientsItemSelection)(ingredientName);
+  }
 
-  (0,_filters__WEBPACK_IMPORTED_MODULE_1__.togglePopularIngredientsItemSelection)(ingredientName);
+  (0,_ingredients__WEBPACK_IMPORTED_MODULE_0__.updateSelectedIngredientsList)(ingredientName);
 
   clearSearchInput();
   closeSearchSuggestions();
@@ -1737,9 +2024,11 @@ const handleIngredientsSearchFormSubmit = (event) => {
 
   const ingredientName = highlightedSuggestionsItemElem.textContent;
 
-  (0,_ingredients__WEBPACK_IMPORTED_MODULE_0__.updateSelectedIngredientsList)(ingredientName);
+  if (!(0,_ingredients__WEBPACK_IMPORTED_MODULE_0__.isIngredientAlreadySelected)(ingredientName)) {
+    (0,_filters__WEBPACK_IMPORTED_MODULE_1__.togglePopularIngredientsItemSelection)(ingredientName);
+  }
 
-  (0,_filters__WEBPACK_IMPORTED_MODULE_1__.togglePopularIngredientsItemSelection)(ingredientName);
+  (0,_ingredients__WEBPACK_IMPORTED_MODULE_0__.updateSelectedIngredientsList)(ingredientName);
 
   clearSearchInput();
   closeSearchSuggestions();
@@ -1774,8 +2063,8 @@ const addIngredientsSearchFormHandlers = () => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addHandlersToAllPopups: () => (/* binding */ addHandlersToAllPopups),
-/* harmony export */   openPopup: () => (/* binding */ openPopup)
+/* harmony export */   openPopup: () => (/* binding */ openPopup),
+/* harmony export */   openPopupDesktop: () => (/* binding */ openPopupDesktop)
 /* harmony export */ });
 /* harmony import */ var _general__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./general */ "./src/js/general.js");
 
@@ -1946,6 +2235,75 @@ const addHandlersToAllPopups = () => {
   });
 };
 
+/* -------------------------------------------------------------------------- */
+/*                                POPUP-DESKTOP                               */
+/* -------------------------------------------------------------------------- */
+
+const openPopupDesktop = (popupDesktopElem) => {
+  /* If popup opened before closing animation ended */
+  if (popupDesktopElem.style.display) return;
+
+  popupDesktopElem.style.display = "block";
+
+  setTimeout(() => {
+    popupDesktopElem.classList.add("popup-desktop_opened");
+  }, 0);
+
+  (0,_general__WEBPACK_IMPORTED_MODULE_0__.preventBodyScrolling)();
+};
+
+const closePopupDesktop = (popupDesktopElem) => {
+  const hidePopupDesktopElem = (e) => {
+    popupDesktopElem.style = "";
+
+    popupDesktopElem.removeEventListener("transitionend", hidePopupDesktopElem);
+  };
+
+  popupDesktopElem.addEventListener("transitionend", hidePopupDesktopElem);
+
+  popupDesktopElem.classList.remove("popup-desktop_opened");
+
+  (0,_general__WEBPACK_IMPORTED_MODULE_0__.allowBodyScrolling)();
+};
+
+const handlePopupDesktopCloseButtonClick = (event) => {
+  const popupDesktopElem = document.querySelector(".popup-desktop");
+
+  closePopupDesktop(popupDesktopElem);
+};
+
+const handlePopupDesktopClick = (event) => {
+  const popupDesktopContentElem = event.target.closest(
+    ".popup-desktop__content"
+  );
+
+  const popupDesktopElem = event.currentTarget;
+
+  if (!popupDesktopContentElem) {
+    closePopupDesktop(popupDesktopElem);
+  }
+};
+
+const addPopupDesktopHandlers = (event) => {
+  const popupDesktopCloseButtonElem = document.querySelector(
+    ".popup-desktop__close-button"
+  );
+
+  const popupDesktopElem = document.querySelector(".popup-desktop");
+
+  popupDesktopCloseButtonElem.addEventListener(
+    "click",
+    handlePopupDesktopCloseButtonClick
+  );
+
+  popupDesktopElem.addEventListener("click", handlePopupDesktopClick);
+};
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  addHandlersToAllPopups();
+  addPopupDesktopHandlers();
+});
+
 
 /***/ }),
 
@@ -1957,7 +2315,6 @@ const addHandlersToAllPopups = () => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addRecipesHandlers: () => (/* binding */ addRecipesHandlers),
 /* harmony export */   closeRecipe: () => (/* binding */ closeRecipe),
 /* harmony export */   openRecipe: () => (/* binding */ openRecipe)
 /* harmony export */ });
@@ -1972,14 +2329,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const fetchedRecipes = [];
+let fetchedRecipes = [];
 
 const changeRecipeImageSrcResolution = (recipeImageSrc) => {
   const regex = /(?<=-)(.*?)(?=\.jpg)/;
   return recipeImageSrc.replace(regex, "636x393");
 };
 
-const displayRecipeCard = ({ title, image, cookingTime, id }) => {
+const displayRecipeCard = ({ title, image, cookingTime, id, servings }) => {
   const recipesListElem = document.querySelector(".recipes__cards-list");
 
   const recipeCardTemplate = document.querySelector(".recipe-card-template");
@@ -1992,10 +2349,14 @@ const displayRecipeCard = ({ title, image, cookingTime, id }) => {
   const recipeCardCookingTimeValueElem = recipeCardElem.querySelector(
     ".recipe-card__cooking-time-value"
   );
+  const recipeCardServingsValueElem = recipeCardElem.querySelector(
+    ".recipe-card__servings-value"
+  );
 
   recipeCardImgElem.src = image;
   recipeCardTitleElem.textContent = title;
-  recipeCardCookingTimeValueElem.textContent = cookingTime;
+  recipeCardCookingTimeValueElem.textContent = `${cookingTime} mins`;
+  recipeCardServingsValueElem.textContent = `${servings} servings`;
 
   recipesListElem.append(recipeCardElem);
 
@@ -2005,14 +2366,6 @@ const displayRecipeCard = ({ title, image, cookingTime, id }) => {
 const clearRecipesList = () => {
   const recipesElem = document.querySelector(".recipes__cards-list");
   recipesElem.innerHTML = "";
-};
-
-const parseRecipes = (fetchedData) => {
-  clearRecipesList();
-
-  // fetchedRecipes = fetchedData.results.map((fetchedRecipe) => {
-  //   return ({ id, readyInMinutes } = fetchedRecipe);
-  // });
 };
 
 const createRecipesSearchQuery = (ingredientsArr, recipesNumber) => {
@@ -2035,18 +2388,10 @@ const displayFetchedRecipes = () => {
   });
 };
 
-const handleRecipesSearchButtonClick = (event) => {
-  const selectedIngredientsArr = (0,_ingredients__WEBPACK_IMPORTED_MODULE_1__.getSelectedIngredientsArr)();
-
-  if (!selectedIngredientsArr.length) return;
-
-  const searchQuery = createRecipesSearchQuery(selectedIngredientsArr, 2);
-
-  (0,_api__WEBPACK_IMPORTED_MODULE_2__.fetchData)(searchQuery, parseRecipes);
-};
-
 const showRecipe = () => {
   const recipeElem = document.querySelector(".recipe");
+
+  recipeElem.scrollTop = 0;
 
   recipeElem.classList.add("recipe_show");
 };
@@ -2131,11 +2476,11 @@ const clearRecipeIngredientsList = () => {
 const getInstructionsInfo = (recipeId) => {
   const recipeObj = getRecipeObjById(recipeId);
 
-  const instructionsArr = recipeObj.instruction.map((instructionStep) => {
+  const instructionsArr = recipeObj.instruction?.map((instructionStep) => {
     return { number: instructionStep.number, step: instructionStep.step };
   });
 
-  return instructionsArr;
+  return instructionsArr ? instructionsArr : [];
 };
 
 const displayRecipeInstructionStep = (instructionStepObj) => {
@@ -2183,6 +2528,7 @@ const displayRecipeInfo = (recipeId) => {
   );
   const recipeSourceLink = document.querySelector(".recipe__src-link");
   const recipeIngredients = getIngredientsInfo(recipeId);
+
   const recipeInstructions = getInstructionsInfo(recipeId);
 
   clearRecipeIngredientsList();
@@ -2201,17 +2547,118 @@ const displayRecipeInfo = (recipeId) => {
   });
 };
 
+const hideRecipeBackground = () => {
+  const recipeBgElem = document.querySelector(".recipe-bg");
+
+  recipeBgElem.classList.remove("recipe-bg_show");
+};
+
+const showRecipeBackground = () => {
+  const recipeBgElem = document.querySelector(".recipe-bg");
+
+  recipeBgElem.classList.add("recipe-bg_show");
+};
+
+const hideRecipesMessage = () => {
+  const recipesMessageBoxElem = document.querySelector(".recipes-message-box");
+
+  recipesMessageBoxElem.classList.remove("recipes-message-box_show");
+};
+
+const showRecipesMessage = () => {
+  const recipesMessageBoxElem = document.querySelector(".recipes-message-box");
+
+  recipesMessageBoxElem.classList.add("recipes-message-box_show");
+};
+
+const changeRecipesMessage = (title, subtitle) => {
+  const recipesMessageTitleElem = document.querySelector(
+    ".recipes-message-title"
+  );
+  const recipesMessageSubtitleElem = document.querySelector(
+    ".recipes-message-subtitle"
+  );
+
+  recipesMessageTitleElem.textContent = title;
+  recipesMessageSubtitleElem.textContent = subtitle;
+};
+
 const openRecipe = (recipeId) => {
   displayRecipeInfo(recipeId);
+
+  hideRecipeBackground();
+
   showRecipe();
 
-  (0,_general__WEBPACK_IMPORTED_MODULE_3__.preventBodyScrolling)();
+  if (matchMedia("(width < 1024px)").matches) {
+    (0,_general__WEBPACK_IMPORTED_MODULE_3__.preventBodyScrolling)();
+  }
 };
 
 const closeRecipe = () => {
+  showRecipeBackground();
+
   hideRecipe();
 
   (0,_general__WEBPACK_IMPORTED_MODULE_3__.allowBodyScrolling)();
+};
+
+const clearFetchedRecipesArr = () => {
+  fetchedRecipes = [];
+};
+
+const parseRecipes = (fetchedData) => {
+  clearRecipesList();
+  clearFetchedRecipesArr();
+
+  fetchedData.results.forEach((fetchedRecipe) => {
+    let {
+      id,
+      readyInMinutes: cookingTime,
+      servings,
+      extendedIngredients: allIngredients,
+      usedIngredients,
+      title,
+      sourceUrl: src,
+      image,
+      analyzedInstructions: [{ steps: instruction } = {}] = [],
+    } = fetchedRecipe;
+
+    fetchedRecipes.push({
+      id,
+      cookingTime,
+      servings,
+      allIngredients,
+      usedIngredients,
+      title,
+      src,
+      image: changeRecipeImageSrcResolution(image),
+      instruction,
+    });
+  });
+
+  console.log(fetchedRecipes);
+
+  if (fetchedRecipes.length > 0) {
+    displayFetchedRecipes();
+  } else {
+    changeRecipesMessage("No recipes found :(", "Try one more time");
+    showRecipesMessage();
+  }
+};
+
+const handleRecipesSearchButtonClick = (event) => {
+  const selectedIngredientsArr = (0,_ingredients__WEBPACK_IMPORTED_MODULE_1__.getSelectedIngredientsArr)();
+
+  console.log(selectedIngredientsArr.arr);
+
+  if (!selectedIngredientsArr.length) return;
+
+  const searchQuery = createRecipesSearchQuery(selectedIngredientsArr, 5);
+
+  hideRecipesMessage();
+
+  (0,_api__WEBPACK_IMPORTED_MODULE_2__.fetchData)(searchQuery, parseRecipes);
 };
 
 const handleRecipeCardClick = (event) => {
@@ -2221,11 +2668,11 @@ const handleRecipeCardClick = (event) => {
 
   const recipeId = parseInt(recipeCardElem.dataset.recipeId);
 
-  (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/recipe-finder/recipe/${recipeId}`);
+  (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`${_router__WEBPACK_IMPORTED_MODULE_0__.ROOT}recipe/${recipeId}`);
 };
 
 const handleRecipeCloseButtonClick = (event) => {
-  (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/recipe-finder/`);
+  (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(_router__WEBPACK_IMPORTED_MODULE_0__.ROOT);
 };
 
 const handleRecipeTouchstart = (event) => {
@@ -2245,25 +2692,44 @@ const handleRecipeTouchstart = (event) => {
     if (touchVelocity > 0.4) {
       hideRecipe();
 
-      (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(`/recipe-finder/`);
+      (0,_router__WEBPACK_IMPORTED_MODULE_0__.navigateUrl)(_router__WEBPACK_IMPORTED_MODULE_0__.ROOT);
     }
   };
 
   event.currentTarget.addEventListener("touchend", handlePopupTouchend);
 };
 
-const addRecipesHandlers = () => {
+const manageRecipesHandlers = () => {
   const recipesList = document.querySelector(".recipes__cards-list");
   const recipesSearchButton = document.querySelector(".recipe-search-button");
   const recipeElem = document.querySelector(".recipe");
   const recipeCloseButton = document.querySelector(".recipe__close-button");
 
   recipesSearchButton.addEventListener("click", handleRecipesSearchButtonClick);
-  recipesList.addEventListener("click", handleRecipeCardClick);
-  recipeCloseButton.addEventListener("click", handleRecipeCloseButtonClick);
 
-  recipeElem.addEventListener("touchstart", handleRecipeTouchstart);
+  recipesList.addEventListener("click", handleRecipeCardClick);
+
+  if (matchMedia("(width < 1024px)").matches) {
+    recipeCloseButton.addEventListener("click", handleRecipeCloseButtonClick);
+
+    recipeElem.addEventListener("touchstart", handleRecipeTouchstart);
+  } else {
+    recipeCloseButton.removeEventListener(
+      "click",
+      handleRecipeCloseButtonClick
+    );
+
+    recipeElem.removeEventListener("touchstart", handleRecipeTouchstart);
+  }
 };
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  manageRecipesHandlers();
+});
+
+window.addEventListener("resize", (event) => {
+  manageRecipesHandlers();
+});
 
 const loadSavedRecipes = () => {
   _assets_recipes_json__WEBPACK_IMPORTED_MODULE_4__.results.forEach((fetchedRecipe) => {
@@ -2293,8 +2759,8 @@ const loadSavedRecipes = () => {
   });
 };
 
-loadSavedRecipes();
-displayFetchedRecipes();
+// loadSavedRecipes();
+// displayFetchedRecipes();
 
 
 /***/ }),
@@ -2307,11 +2773,13 @@ displayFetchedRecipes();
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ROOT: () => (/* binding */ ROOT),
 /* harmony export */   navigateUrl: () => (/* binding */ navigateUrl)
 /* harmony export */ });
 /* harmony import */ var _recipes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./recipes */ "./src/js/recipes.js");
 
 
+const ROOT = "/recipe-finder/";
 
 const navigateUrl = (url) => {
   window.history.pushState(null, null, url);
@@ -2325,12 +2793,14 @@ const handleRoute = () => {
   const routes = [
     {
       path: /^\/recipe-finder\/$/g,
+      // path: /^\/$/g,
       response: () => {
         (0,_recipes__WEBPACK_IMPORTED_MODULE_0__.closeRecipe)();
       },
     },
     {
       path: /^\/recipe-finder\/recipe\/.*$/g,
+      // path: /^\/recipe\/.*$/g,
       response: () => {
         const recipeId = path.split("/").at(-1);
 
@@ -2347,7 +2817,7 @@ const handleRoute = () => {
 
   if (!match) {
     match = { route: routes[0], isMatch: true };
-    window.location.href = "/recipe-finder/";
+    window.location.href = ROOT;
   }
 
   match.route.response();
@@ -2428,7 +2898,7 @@ module.exports = JSON.parse('[{"name":"olive oil","id":4053},{"name":"flour","id
   \*********************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"results":[{"vegetarian":false,"vegan":false,"glutenFree":true,"dairyFree":false,"veryHealthy":false,"cheap":false,"veryPopular":false,"sustainable":false,"lowFodmap":false,"weightWatcherSmartPoints":3,"gaps":"no","preparationMinutes":10,"cookingMinutes":20,"aggregateLikes":2,"healthScore":2,"creditsText":"Jen West","sourceName":"Pink When","pricePerServing":47.53,"extendedIngredients":[{"id":10211821,"aisle":"Produce","image":"yellow-bell-pepper.jpg","consistency":"SOLID","name":"bell pepper","nameClean":"bell pepper","original":"1 bell pepper chopped","originalName":"bell pepper chopped","amount":1,"unit":"","meta":["chopped"],"measures":{"us":{"amount":1,"unitShort":"","unitLong":""},"metric":{"amount":1,"unitShort":"","unitLong":""}}},{"id":10211821,"aisle":"Produce","image":"bell-pepper-orange.png","consistency":"SOLID","name":"bell pepper","nameClean":"bell pepper","original":"1 bell pepper chopped","originalName":"bell pepper chopped","amount":1,"unit":"","meta":["chopped"],"measures":{"us":{"amount":1,"unitShort":"","unitLong":""},"metric":{"amount":1,"unitShort":"","unitLong":""}}},{"id":1123,"aisle":"Milk, Eggs, Other Dairy","image":"egg.png","consistency":"SOLID","name":"eggs","nameClean":"egg","original":"12 eggs","originalName":"eggs","amount":12,"unit":"","meta":[],"measures":{"us":{"amount":12,"unitShort":"","unitLong":""},"metric":{"amount":12,"unitShort":"","unitLong":""}}},{"id":1077,"aisle":"Milk, Eggs, Other Dairy","image":"milk.png","consistency":"LIQUID","name":"milk","nameClean":"milk","original":"1/2 cup milk","originalName":"milk","amount":0.5,"unit":"cup","meta":[],"measures":{"us":{"amount":0.5,"unitShort":"cups","unitLong":"cups"},"metric":{"amount":122,"unitShort":"ml","unitLong":"milliliters"}}},{"id":11282,"aisle":"Produce","image":"brown-onion.png","consistency":"SOLID","name":"sm onion","nameClean":"onion","original":"1 sm onion chopped","originalName":"sm onion chopped","amount":1,"unit":"","meta":["chopped"],"measures":{"us":{"amount":1,"unitShort":"","unitLong":""},"metric":{"amount":1,"unitShort":"","unitLong":""}}},{"id":11398,"aisle":"Frozen","image":"tater-tots.jpg","consistency":"SOLID","name":"potato tots","nameClean":"tater tots","original":"12 potato tots","originalName":"potato tots","amount":12,"unit":"","meta":[],"measures":{"us":{"amount":12,"unitShort":"","unitLong":""},"metric":{"amount":12,"unitShort":"","unitLong":""}}},{"id":1102047,"aisle":"Spices and Seasonings","image":"salt-and-pepper.jpg","consistency":"SOLID","name":"salt and pepper","nameClean":"salt and pepper","original":"salt and pepper to taste","originalName":"salt and pepper to taste","amount":12,"unit":"servings","meta":["to taste"],"measures":{"us":{"amount":12,"unitShort":"servings","unitLong":"servings"},"metric":{"amount":12,"unitShort":"servings","unitLong":"servings"}}},{"id":1011026,"aisle":"Cheese","image":"cheddar-cheese.png","consistency":"SOLID","name":"cheese","nameClean":"shredded cheese","original":"1 cup cheese shredded","originalName":"cheese shredded","amount":1,"unit":"cup","meta":["shredded"],"measures":{"us":{"amount":1,"unitShort":"cup","unitLong":"cup"},"metric":{"amount":112,"unitShort":"g","unitLong":"grams"}}},{"id":5165,"aisle":"Meat","image":"turkey-raw-whole.jpg","consistency":"SOLID","name":"turkey","nameClean":"whole turkey","original":"1/2 cup turkey chopped","originalName":"turkey chopped","amount":0.5,"unit":"cup","meta":["chopped"],"measures":{"us":{"amount":0.5,"unitShort":"cups","unitLong":"cups"},"metric":{"amount":49.7,"unitShort":"g","unitLong":"grams"}}}],"id":1017374,"title":"Easy Weekday Breakfast Muffins","readyInMinutes":30,"servings":12,"sourceUrl":"https://www.pinkwhen.com/easy-weekday-breakfast-muffins/","image":"https://spoonacular.com/recipeImages/1017374-312x231.jpg","imageType":"jpg","nutrition":{"nutrients":[{"name":"Calories","amount":128.7,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Fat","amount":7.73,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Saturated Fat","amount":3.01,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Carbohydrates","amount":5.42,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Net Carbohydrates","amount":4.63,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Sugar","amount":2,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Cholesterol","amount":175.26,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Sodium","amount":365.49,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Protein","amount":9.32,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin C","amount":26.69,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Selenium","amount":16.26,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Vitamin A","amount":941.01,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin B2","amount":0.27,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Phosphorus","amount":151.92,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Vitamin B12","amount":0.71,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B6","amount":0.2,"unit":"mg","percentOfDailyNeeds":9.83},{"name":"Calcium","amount":89.62,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Vitamin B5","amount":0.86,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Folate","amount":34.04,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Zinc","amount":1.05,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Vitamin D","amount":1.04,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Iron","amount":1,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Vitamin E","amount":0.81,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Potassium","amount":171.27,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Vitamin B1","amount":0.06,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Vitamin B3","amount":0.75,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Magnesium","amount":14.25,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Fiber","amount":0.79,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Manganese","amount":0.06,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Copper","amount":0.05,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin K","amount":1.62,"unit":"µg","percentOfDailyNeeds":1.55}],"properties":[{"name":"Glycemic Index","amount":13,"unit":""},{"name":"Glycemic Load","amount":0.67,"unit":""},{"name":"Nutrition Score","amount":8.904782608695653,"unit":"%"}],"flavonoids":[{"name":"Cyanidin","amount":0,"unit":"mg"},{"name":"Petunidin","amount":0,"unit":""},{"name":"Delphinidin","amount":0,"unit":""},{"name":"Malvidin","amount":0,"unit":""},{"name":"Pelargonidin","amount":0,"unit":""},{"name":"Peonidin","amount":0,"unit":""},{"name":"Catechin","amount":0,"unit":"mg"},{"name":"Epigallocatechin","amount":0,"unit":"mg"},{"name":"Epicatechin","amount":0,"unit":"mg"},{"name":"Epicatechin 3-gallate","amount":0,"unit":"mg"},{"name":"Epigallocatechin 3-gallate","amount":0,"unit":"mg"},{"name":"Theaflavin","amount":0,"unit":""},{"name":"Thearubigins","amount":0,"unit":""},{"name":"Eriodictyol","amount":0,"unit":""},{"name":"Hesperetin","amount":0,"unit":""},{"name":"Naringenin","amount":0,"unit":""},{"name":"Apigenin","amount":0,"unit":"mg"},{"name":"Luteolin","amount":0.12,"unit":"mg"},{"name":"Isorhamnetin","amount":0.46,"unit":"mg"},{"name":"Kaempferol","amount":0.06,"unit":"mg"},{"name":"Myricetin","amount":0,"unit":"mg"},{"name":"Quercetin","amount":1.91,"unit":"mg"},{"name":"Theaflavin-3,3\'-digallate","amount":0,"unit":""},{"name":"Theaflavin-3\'-gallate","amount":0,"unit":""},{"name":"Theaflavin-3-gallate","amount":0,"unit":""},{"name":"Gallocatechin","amount":0,"unit":"mg"}],"ingredients":[{"id":10211821,"name":"bell pepper","amount":0.08,"unit":"","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":0.4,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":310.49,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.16,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.03,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0.21,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":2.58,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":4.56,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.49,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":20.92,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":2.58,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":0.56,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":12.69,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.42,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":0.69,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.39,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.1,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.04,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.19,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.1,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.02,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.01,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.6,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.03,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":10211821,"name":"bell pepper","amount":0.08,"unit":"","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":0.4,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":310.49,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.16,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.03,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0.21,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":2.58,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":4.56,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.49,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":20.92,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":2.58,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":0.56,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":12.69,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.42,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":0.69,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.39,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.1,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.04,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.19,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.1,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.02,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.01,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.6,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.03,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":1123,"name":"eggs","amount":1,"unit":"","nutrients":[{"name":"Zinc","amount":0.57,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":1.61,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":1.38,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":62.48,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":237.6,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.46,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.67,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":4.18,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0.88,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":62.92,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":20.68,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.13,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Choline","amount":129.36,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":60.72,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":87.12,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Vitamin B2","amount":0.2,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Copper","amount":0.03,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Fluoride","amount":0.48,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0.16,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":24.64,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.32,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":5.54,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0.39,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Trans Fat","amount":0.02,"unit":"g","percentOfDailyNeeds":192.88},{"name":"Vitamin B1","amount":0.02,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.77,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":5.28,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.03,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.84,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":163.68,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":13.51,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.32,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.07,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":1077,"name":"milk","amount":0.04,"unit":"cup","nutrients":[{"name":"Zinc","amount":0.04,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0.07,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.19,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":3.86,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":16.47,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.01,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.04,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.33,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0.11,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":6.1,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.03,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":15.25,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":10.27,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":1.81,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.49,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":12.51,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.47,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.33,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0.05,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.22,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":1.22,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.19,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.47,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.01,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":11282,"name":"sm onion","amount":0.08,"unit":"","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":0.37,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":0.18,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.01,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0.16,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":3.67,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":1.74,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.04,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Choline","amount":0.56,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":13.38,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":2.66,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Vitamin B2","amount":0,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Vitamin C","amount":0.68,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Fluoride","amount":0.1,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0.39,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":2.11,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.7,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.1,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.02,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":0.92,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.05,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.86,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.01,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":11398,"name":"potato tots","amount":1,"unit":"","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0.32,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.14,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":41.04,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":0.36,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.01,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.83,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0.22,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":17.02,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":1.55,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.24,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":23.66,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":6.1,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":2.38,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0.01,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":0.63,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.03,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":1.27,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":2.16,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.18,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0.02,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.05,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.55,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.17,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.3,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.03,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":2.38,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.02,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":1102047,"name":"salt and pepper","amount":1,"unit":"servings","nutrients":[{"name":"Zinc","amount":0,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":193.79,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":0,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":0,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Choline","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":0.04,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":0,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Vitamin B2","amount":0,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Fluoride","amount":0.01,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":0.12,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":0,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":1011026,"name":"cheese","amount":0.08,"unit":"cup","nutrients":[{"name":"Zinc","amount":0.27,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0.61,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":1.23,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":58.52,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":63.09,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.02,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.01,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":2.09,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0.04,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":28,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0.65,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.21,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":7.09,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":33.04,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":1.44,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.03,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.1,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":47.13,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.2,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":2.07,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0.21,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.04,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.87,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.07,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":7.37,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":1.59,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.2,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":5165,"name":"turkey","amount":0.04,"unit":"cup","nutrients":[{"name":"Zinc","amount":0.07,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0.08,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.06,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":4.64,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":2.32,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.23,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0.01,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":5.84,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0.29,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":9.28,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":7.58,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":2.4,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":0.46,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.9,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0.05,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Trans Fat","amount":0,"unit":"g","percentOfDailyNeeds":192.88},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.04,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.04,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.32,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.06,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":2.98,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.88,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.02,"unit":"mg","percentOfDailyNeeds":9.83}]}],"caloricBreakdown":{"percentProtein":29.01,"percentFat":54.12,"percentCarbs":16.87},"weightPerServing":{"amount":106,"unit":"g"}},"summary":"Need a <b>gluten free breakfast</b>? Easy Weekday Breakfast Muffins could be an outstanding recipe to try. One portion of this dish contains around <b>9g of protein</b>, <b>8g of fat</b>, and a total of <b>126 calories</b>. This recipe serves 12. For <b>48 cents per serving</b>, this recipe <b>covers 8%</b> of your daily requirements of vitamins and minerals. 2 people were impressed by this recipe. A mixture of sm onion, turkey, milk, and a handful of other ingredients are all it takes to make this recipe so delicious. It is brought to you by Pink When. From preparation to the plate, this recipe takes approximately <b>30 minutes</b>. Overall, this recipe earns a <b>rather bad spoonacular score of 26%</b>. Similar recipes include <a href=\\"https://spoonacular.com/recipes/easy-weekday-breakfast-muffins-1732671\\">Easy Weekday Breakfast Muffins</a>, <a href=\\"https://spoonacular.com/recipes/easy-weekday-breakfast-muffins-1375053\\">Easy Weekday Breakfast Muffins</a>, and <a href=\\"https://spoonacular.com/recipes/easy-weekday-breakfast-muffins-1581591\\">Easy Weekday Breakfast Muffins</a>.","cuisines":[],"dishTypes":["morning meal","brunch","breakfast"],"diets":["gluten free"],"occasions":[],"analyzedInstructions":[{"name":"","steps":[{"number":1,"step":"Heat oven to 35","ingredients":[],"equipment":[{"id":404784,"name":"oven","localizedName":"oven","image":"oven.jpg"}]},{"number":2,"step":"Whisk eggs together in a medium bowl.","ingredients":[{"id":1123,"name":"egg","localizedName":"egg","image":"egg.png"}],"equipment":[{"id":404661,"name":"whisk","localizedName":"whisk","image":"whisk.png"},{"id":404783,"name":"bowl","localizedName":"bowl","image":"bowl.jpg"}]},{"number":3,"step":"Add chopped pepper and onion, salt and pepper, cheese, and milk. Fill muffin tin halfway with egg mixture.","ingredients":[{"id":1102047,"name":"salt and pepper","localizedName":"salt and pepper","image":"salt-and-pepper.jpg"},{"id":1041009,"name":"cheese","localizedName":"cheese","image":"cheddar-cheese.png"},{"id":1002030,"name":"pepper","localizedName":"pepper","image":"pepper.jpg"},{"id":11282,"name":"onion","localizedName":"onion","image":"brown-onion.png"},{"id":1077,"name":"milk","localizedName":"milk","image":"milk.png"},{"id":1123,"name":"egg","localizedName":"egg","image":"egg.png"}],"equipment":[{"id":404671,"name":"muffin tray","localizedName":"muffin tray","image":"muffin-tray.jpg"}]},{"number":4,"step":"Sprinkle turkey meat into each.","ingredients":[{"id":5167,"name":"turkey meat","localizedName":"turkey meat","image":"turkey-raw-whole.jpg"}],"equipment":[]},{"number":5,"step":"Add a potato tot to each. Top with cheese.","ingredients":[{"id":11398,"name":"tater tots","localizedName":"tater tots","image":"tater-tots.jpg"},{"id":1041009,"name":"cheese","localizedName":"cheese","image":"cheddar-cheese.png"}],"equipment":[]},{"number":6,"step":"Place in oven for 20 minutes or until fully cooked.","ingredients":[],"equipment":[{"id":404784,"name":"oven","localizedName":"oven","image":"oven.jpg"}],"length":{"number":20,"unit":"minutes"}},{"number":7,"step":"Serve immediately or store for later.","ingredients":[],"equipment":[]}]}],"spoonacularScore":33.343017578125,"spoonacularSourceUrl":"https://spoonacular.com/easy-weekday-breakfast-muffins-1017374","usedIngredientCount":1,"missedIngredientCount":6,"likes":0,"missedIngredients":[{"id":10211821,"amount":1,"unit":"","unitLong":"","unitShort":"","aisle":"Produce","name":"bell pepper","original":"1 bell pepper chopped","originalName":"bell pepper chopped","meta":["chopped"],"image":"https://spoonacular.com/cdn/ingredients_100x100/yellow-bell-pepper.jpg"},{"id":1123,"amount":12,"unit":"","unitLong":"","unitShort":"","aisle":"Milk, Eggs, Other Dairy","name":"eggs","original":"12 eggs","originalName":"eggs","meta":[],"image":"https://spoonacular.com/cdn/ingredients_100x100/egg.png"},{"id":1077,"amount":0.5,"unit":"cup","unitLong":"cups","unitShort":"cup","aisle":"Milk, Eggs, Other Dairy","name":"milk","original":"1/2 cup milk","originalName":"milk","meta":[],"image":"https://spoonacular.com/cdn/ingredients_100x100/milk.png"},{"id":11282,"amount":1,"unit":"","unitLong":"","unitShort":"","aisle":"Produce","name":"sm onion","original":"1 sm onion chopped","originalName":"sm onion chopped","meta":["chopped"],"image":"https://spoonacular.com/cdn/ingredients_100x100/brown-onion.png"},{"id":11398,"amount":12,"unit":"","unitLong":"","unitShort":"","aisle":"Frozen","name":"potato tots","original":"12 potato tots","originalName":"potato tots","meta":[],"image":"https://spoonacular.com/cdn/ingredients_100x100/tater-tots.jpg"},{"id":1011026,"amount":1,"unit":"cup","unitLong":"cup","unitShort":"cup","aisle":"Cheese","name":"cheese","original":"1 cup cheese shredded","originalName":"cheese shredded","meta":["shredded"],"extendedName":"shredded cheese","image":"https://spoonacular.com/cdn/ingredients_100x100/cheddar-cheese.png"}],"usedIngredients":[{"id":5165,"amount":0.5,"unit":"cup","unitLong":"cups","unitShort":"cup","aisle":"Meat","name":"turkey","original":"1/2 cup turkey chopped","originalName":"turkey chopped","meta":["chopped"],"image":"https://spoonacular.com/cdn/ingredients_100x100/turkey-raw-whole.jpg"}],"unusedIngredients":[]},{"vegetarian":false,"vegan":false,"glutenFree":false,"dairyFree":false,"veryHealthy":false,"cheap":false,"veryPopular":false,"sustainable":false,"lowFodmap":false,"weightWatcherSmartPoints":21,"gaps":"no","preparationMinutes":-1,"cookingMinutes":-1,"aggregateLikes":1,"healthScore":12,"creditsText":"foodista.com","sourceName":"foodista.com","pricePerServing":194.33,"extendedIngredients":[{"id":1001,"aisle":"Milk, Eggs, Other Dairy","image":"butter-sliced.jpg","consistency":"SOLID","name":"butter","nameClean":"butter","original":"1/2 pound Butter, melted","originalName":"Butter, melted","amount":0.5,"unit":"pound","meta":["melted"],"measures":{"us":{"amount":0.5,"unitShort":"lb","unitLong":"pounds"},"metric":{"amount":226.796,"unitShort":"g","unitLong":"grams"}}},{"id":4582,"aisle":"Oil, Vinegar, Salad Dressing","image":"vegetable-oil.jpg","consistency":"LIQUID","name":"butter and oil","nameClean":"cooking oil","original":"1/2 cup each butter and oil","originalName":"each butter and oil","amount":0.5,"unit":"cup","meta":[],"measures":{"us":{"amount":0.5,"unitShort":"cups","unitLong":"cups"},"metric":{"amount":112,"unitShort":"ml","unitLong":"milliliters"}}},{"id":1041009,"aisle":"Cheese","image":"cheddar-cheese.png","consistency":"SOLID","name":"cheese","nameClean":"cheese","original":"Cheese, sliced","originalName":"Cheese, sliced","amount":9,"unit":"servings","meta":["sliced"],"measures":{"us":{"amount":9,"unitShort":"servings","unitLong":"servings"},"metric":{"amount":9,"unitShort":"servings","unitLong":"servings"}}},{"id":10802,"aisle":"Meat","image":"ham-whole.jpg","consistency":"SOLID","name":"ham","nameClean":"cooked ham","original":"Cooked ham, sliced","originalName":"Cooked ham, sliced","amount":9,"unit":"servings","meta":["cooked","sliced"],"measures":{"us":{"amount":9,"unitShort":"servings","unitLong":"servings"},"metric":{"amount":9,"unitShort":"servings","unitLong":"servings"}}},{"id":1123,"aisle":"Milk, Eggs, Other Dairy","image":"egg.png","consistency":"SOLID","name":"eggs","nameClean":"egg","original":"2 Eggs, beaten lightly","originalName":"Eggs, beaten lightly","amount":2,"unit":"","meta":["beaten"],"measures":{"us":{"amount":2,"unitShort":"","unitLong":""},"metric":{"amount":2,"unitShort":"","unitLong":""}}},{"id":1077,"aisle":"Milk, Eggs, Other Dairy","image":"milk.png","consistency":"LIQUID","name":"milk","nameClean":"milk","original":"cup milk","originalName":"milk","amount":1,"unit":"cup","meta":[],"measures":{"us":{"amount":1,"unitShort":"cup","unitLong":"cup"},"metric":{"amount":244,"unitShort":"ml","unitLong":"milliliters"}}},{"id":2047,"aisle":"Spices and Seasonings","image":"salt.jpg","consistency":"SOLID","name":"salt","nameClean":"table salt","original":"1/2 teaspoon Salt","originalName":"Salt","amount":0.5,"unit":"teaspoon","meta":[],"measures":{"us":{"amount":0.5,"unitShort":"tsps","unitLong":"teaspoons"},"metric":{"amount":0.5,"unitShort":"tsps","unitLong":"teaspoons"}}},{"id":5165,"aisle":"Meat","image":"turkey-raw-whole.jpg","consistency":"SOLID","name":"turkey","nameClean":"whole turkey","original":"Turkey, sliced","originalName":"Turkey, sliced","amount":9,"unit":"servings","meta":["sliced"],"measures":{"us":{"amount":6.39,"unitShort":"servings","unitLong":"servings"},"metric":{"amount":6.39,"unitShort":"servings","unitLong":"servings"}}},{"id":18069,"aisle":"Bakery/Bread","image":"white-bread.jpg","consistency":"SOLID","name":"sandwich bread","nameClean":"white bread","original":"12 slices white sandwich bread","originalName":"white sandwich bread","amount":12,"unit":"slices","meta":["white"],"measures":{"us":{"amount":12,"unitShort":"slice","unitLong":"slices"},"metric":{"amount":12,"unitShort":"slice","unitLong":"slices"}}}],"id":652359,"title":"Monte Carlo Sandwich","readyInMinutes":45,"servings":9,"sourceUrl":"http://www.foodista.com/recipe/QSKMGBYY/monte-carlo-sandwich","image":"https://spoonacular.com/recipeImages/652359-312x231.jpg","imageType":"jpg","nutrition":{"nutrients":[{"name":"Calories","amount":613.87,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Fat","amount":43.79,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Saturated Fat","amount":21.81,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Carbohydrates","amount":18.48,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Net Carbohydrates","amount":17.72,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Sugar","amount":3.27,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Cholesterol","amount":208.14,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Sodium","amount":1385.01,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Protein","amount":36.08,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Selenium","amount":43.94,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Phosphorus","amount":501.82,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Vitamin B3","amount":8.24,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Vitamin B12","amount":2.12,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Vitamin B1","amount":0.52,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Calcium","amount":337.38,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Vitamin B2","amount":0.55,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Vitamin B6","amount":0.59,"unit":"mg","percentOfDailyNeeds":29.51},{"name":"Zinc","amount":3.98,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Vitamin A","amount":1061.19,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin C","amount":13.05,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Vitamin B5","amount":1.56,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Folate","amount":54.56,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Iron","amount":2.34,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":48.88,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Manganese","amount":0.24,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Potassium","amount":414.88,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Vitamin E","amount":1.49,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Copper","amount":0.17,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Vitamin D","amount":0.85,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Vitamin K","amount":4.44,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Fiber","amount":0.77,"unit":"g","percentOfDailyNeeds":3.07}],"properties":[{"name":"Glycemic Index","amount":21.09,"unit":""},{"name":"Glycemic Load","amount":12.38,"unit":""},{"name":"Nutrition Score","amount":21.436521739130434,"unit":"%"}],"flavonoids":[{"name":"Cyanidin","amount":0,"unit":""},{"name":"Petunidin","amount":0,"unit":""},{"name":"Delphinidin","amount":0,"unit":""},{"name":"Malvidin","amount":0,"unit":""},{"name":"Pelargonidin","amount":0,"unit":""},{"name":"Peonidin","amount":0,"unit":""},{"name":"Catechin","amount":0,"unit":""},{"name":"Epigallocatechin","amount":0,"unit":""},{"name":"Epicatechin","amount":0,"unit":""},{"name":"Epicatechin 3-gallate","amount":0,"unit":""},{"name":"Epigallocatechin 3-gallate","amount":0,"unit":""},{"name":"Theaflavin","amount":0,"unit":""},{"name":"Thearubigins","amount":0,"unit":""},{"name":"Eriodictyol","amount":0,"unit":""},{"name":"Hesperetin","amount":0,"unit":""},{"name":"Naringenin","amount":0,"unit":""},{"name":"Apigenin","amount":0,"unit":""},{"name":"Luteolin","amount":0,"unit":""},{"name":"Isorhamnetin","amount":0,"unit":""},{"name":"Kaempferol","amount":0,"unit":""},{"name":"Myricetin","amount":0,"unit":""},{"name":"Quercetin","amount":0,"unit":""},{"name":"Theaflavin-3,3\'-digallate","amount":0,"unit":""},{"name":"Theaflavin-3\'-gallate","amount":0,"unit":""},{"name":"Theaflavin-3-gallate","amount":0,"unit":""},{"name":"Gallocatechin","amount":0,"unit":""}],"ingredients":[{"id":1001,"name":"butter","amount":0.06,"unit":"pound","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Mono Unsaturated Fat","amount":5.29,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":12.95,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":162.03,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":629.74,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin E","amount":0.58,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fat","amount":20.44,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Calories","amount":180.68,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0.76,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":1.76,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Choline","amount":4.74,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":6.05,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":6.05,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Fluoride","amount":0.71,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0.02,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":6.05,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":0.02,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":0.21,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0.04,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Trans Fat","amount":0.83,"unit":"g","percentOfDailyNeeds":8860.06},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":0.01,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":0.5,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":0.01,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":0.77,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":54.18,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.25,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":0.02,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Vitamin B6","amount":0,"unit":"mg","percentOfDailyNeeds":29.51}]},{"id":4582,"name":"butter and oil","amount":0.06,"unit":"cup","nutrients":[{"name":"Zinc","amount":0,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Mono Unsaturated Fat","amount":7.88,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.92,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":0,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":0,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin E","amount":2.18,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Vitamin B5","amount":0,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fat","amount":12.44,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Calories","amount":110.01,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":8.87,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Potassium","amount":0,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":0,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Choline","amount":0.02,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Vitamin B2","amount":0,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Sugar","amount":0,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":0,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":0,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Trans Fat","amount":0.05,"unit":"g","percentOfDailyNeeds":8860.06},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":0,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":0,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":0,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":3.5,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Vitamin B6","amount":0,"unit":"mg","percentOfDailyNeeds":29.51}]},{"id":1041009,"name":"cheese","amount":1,"unit":"servings","nutrients":[{"name":"Zinc","amount":1.1,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Mono Unsaturated Fat","amount":2.23,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":5.76,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":196.2,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":300.6,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin E","amount":0.23,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Vitamin B5","amount":0.12,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fat","amount":10.2,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Vitamin D","amount":0.18,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Calories","amount":122.4,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":6.3,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.72,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Choline","amount":4.95,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":23.1,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":137.4,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Vitamin B2","amount":0.13,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Copper","amount":0.01,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Fluoride","amount":10.47,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0.1,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":212.1,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":0.73,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":6.99,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0.32,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Vitamin B1","amount":0.01,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":0.05,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":8.1,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":0.02,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":0.35,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":30,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":8.49,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":0.73,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Vitamin B6","amount":0.02,"unit":"mg","percentOfDailyNeeds":29.51}]},{"id":10802,"name":"ham","amount":1,"unit":"servings","nutrients":[{"name":"Vitamin B6","amount":0.14,"unit":"mg","percentOfDailyNeeds":29.51},{"name":"Mono Unsaturated Fat","amount":1.6,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.95,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":646.8,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":0,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Manganese","amount":0.03,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Fat","amount":4.27,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Vitamin B5","amount":0.49,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Calories","amount":83.44,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":1.68,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Potassium","amount":157.36,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":163.52,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Copper","amount":0.06,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Vitamin C","amount":13.05,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Vitamin B2","amount":0.13,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Sugar","amount":0,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":3.36,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":10.55,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0.79,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Vitamin B1","amount":0.3,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":0.48,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":11.76,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":1.99,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":0.42,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":40.88,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":11.09,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Zinc","amount":1.25,"unit":"mg","percentOfDailyNeeds":26.52}]},{"id":1123,"name":"eggs","amount":0.22,"unit":"","nutrients":[{"name":"Zinc","amount":0.13,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Mono Unsaturated Fat","amount":0.36,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.31,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":13.88,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":52.8,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin E","amount":0.1,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Vitamin B5","amount":0.15,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fat","amount":0.93,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Vitamin D","amount":0.2,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Calories","amount":13.98,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":4.6,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.03,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Choline","amount":28.75,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":13.49,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":19.36,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Vitamin B2","amount":0.04,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Copper","amount":0.01,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Fluoride","amount":0.11,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0.04,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":5.48,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":0.07,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":1.23,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0.09,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Trans Fat","amount":0,"unit":"g","percentOfDailyNeeds":8860.06},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":0.17,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":1.17,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":0.01,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":0.19,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":36.37,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":3,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":0.07,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Vitamin B6","amount":0.02,"unit":"mg","percentOfDailyNeeds":29.51}]},{"id":1077,"name":"milk","amount":0.11,"unit":"cup","nutrients":[{"name":"Zinc","amount":0.11,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Mono Unsaturated Fat","amount":0.19,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.5,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":10.3,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":43.92,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin E","amount":0.01,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Vitamin B5","amount":0.1,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fat","amount":0.87,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Vitamin D","amount":0.3,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Calories","amount":16.27,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.08,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Potassium","amount":40.67,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":27.38,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Choline","amount":4.83,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Vitamin B2","amount":0.04,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Sugar","amount":1.3,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":33.35,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":1.27,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":0.89,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0.15,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Vitamin B1","amount":0.02,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":0,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":3.25,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":0.03,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":0.03,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":3.25,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.52,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":1.27,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Vitamin B6","amount":0.02,"unit":"mg","percentOfDailyNeeds":29.51}]},{"id":2047,"name":"salt","amount":0.06,"unit":"teaspoon","nutrients":[{"name":"Zinc","amount":0,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":129.19,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":0,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin E","amount":0,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Vitamin B5","amount":0,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fat","amount":0,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Calories","amount":0,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Choline","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":0.03,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":0,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Vitamin B2","amount":0,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Fluoride","amount":0.01,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":0.08,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":0,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":0,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":0,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":0,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Vitamin B6","amount":0,"unit":"mg","percentOfDailyNeeds":29.51}]},{"id":5165,"name":"turkey","amount":1,"unit":"servings","nutrients":[{"name":"Zinc","amount":1.07,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Mono Unsaturated Fat","amount":1.1,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.88,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":67.59,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":33.8,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin E","amount":0.05,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Vitamin B5","amount":0.49,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fat","amount":3.4,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Vitamin D","amount":0.18,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Calories","amount":85.09,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":4.22,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Potassium","amount":135.18,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":110.44,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Choline","amount":35,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0.05,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Vitamin B2","amount":0.11,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Sugar","amount":0.04,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":6.64,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":13.06,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0.74,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Trans Fat","amount":0.04,"unit":"g","percentOfDailyNeeds":8860.06},{"name":"Vitamin B1","amount":0.03,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":0.52,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":15.09,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":4.61,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":0.88,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":43.45,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":12.85,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Vitamin B6","amount":0.36,"unit":"mg","percentOfDailyNeeds":29.51}]},{"id":18069,"name":"sandwich bread","amount":1.33,"unit":"slices","nutrients":[{"name":"Zinc","amount":0.29,"unit":"mg","percentOfDailyNeeds":26.52},{"name":"Mono Unsaturated Fat","amount":0.24,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.27,"unit":"g","percentOfDailyNeeds":136.34},{"name":"Sodium","amount":159,"unit":"mg","percentOfDailyNeeds":60.22},{"name":"Vitamin A","amount":0.33,"unit":"IU","percentOfDailyNeeds":21.22},{"name":"Vitamin E","amount":0.07,"unit":"mg","percentOfDailyNeeds":9.93},{"name":"Manganese","amount":0.2,"unit":"mg","percentOfDailyNeeds":11.9},{"name":"Vitamin B5","amount":0.18,"unit":"mg","percentOfDailyNeeds":15.6},{"name":"Fat","amount":1.2,"unit":"g","percentOfDailyNeeds":67.37},{"name":"Fiber","amount":0.77,"unit":"g","percentOfDailyNeeds":3.07},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":5.7},{"name":"Calories","amount":90,"unit":"kcal","percentOfDailyNeeds":30.69},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":37,"unit":"µg","percentOfDailyNeeds":13.64},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.07,"unit":"µg","percentOfDailyNeeds":4.22},{"name":"Potassium","amount":39,"unit":"mg","percentOfDailyNeeds":11.85},{"name":"Phosphorus","amount":37.67,"unit":"mg","percentOfDailyNeeds":50.18},{"name":"Choline","amount":4.87,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0.04,"unit":"mg","percentOfDailyNeeds":8.45},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":15.82},{"name":"Vitamin B2","amount":0.08,"unit":"mg","percentOfDailyNeeds":32.23},{"name":"Sugar","amount":1.78,"unit":"g","percentOfDailyNeeds":3.63},{"name":"Calcium","amount":70.33,"unit":"mg","percentOfDailyNeeds":33.74},{"name":"Net Carbohydrates","amount":15.63,"unit":"g","percentOfDailyNeeds":6.44},{"name":"Protein","amount":3.14,"unit":"g","percentOfDailyNeeds":72.16},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":35.34},{"name":"Trans Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":8860.06},{"name":"Vitamin B1","amount":0.17,"unit":"mg","percentOfDailyNeeds":34.92},{"name":"Iron","amount":1.12,"unit":"mg","percentOfDailyNeeds":13},{"name":"Magnesium","amount":9,"unit":"mg","percentOfDailyNeeds":12.22},{"name":"Vitamin B3","amount":1.59,"unit":"mg","percentOfDailyNeeds":41.22},{"name":"Poly Unsaturated Fat","amount":0.62,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":28.67,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":69.38},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":7.73,"unit":"µg","percentOfDailyNeeds":62.76},{"name":"Carbohydrates","amount":16.4,"unit":"g","percentOfDailyNeeds":6.16},{"name":"Vitamin B6","amount":0.03,"unit":"mg","percentOfDailyNeeds":29.51}]}],"caloricBreakdown":{"percentProtein":23.57,"percentFat":64.36,"percentCarbs":12.07},"weightPerServing":{"amount":255,"unit":"g"}},"summary":"Monte Carlo Sandwich might be just the main course you are searching for. This recipe serves 9. For <b>$1.94 per serving</b>, this recipe <b>covers 23%</b> of your daily requirements of vitamins and minerals. One portion of this dish contains around <b>36g of protein</b>, <b>44g of fat</b>, and a total of <b>614 calories</b>. This recipe from Foodista has 1 fans. A mixture of eggs, turkey, cheese, and a handful of other ingredients are all it takes to make this recipe so tasty. From preparation to the plate, this recipe takes around <b>45 minutes</b>. Taking all factors into account, this recipe <b>earns a spoonacular score of 52%</b>, which is solid. <a href=\\"https://spoonacular.com/recipes/monte-carlo-sandwich-1471513\\">Monte Carlo Sandwich</a>, <a href=\\"https://spoonacular.com/recipes/monte-cristo-sandwich-552947\\">Monte Cristo Sandwich</a>, and <a href=\\"https://spoonacular.com/recipes/monte-cristo-sandwich-1766805\\">Monte Cristo Sandwich</a> are very similar to this recipe.","cuisines":[],"dishTypes":["lunch","main course","main dish","dinner"],"diets":[],"occasions":[],"analyzedInstructions":[{"name":"","steps":[{"number":1,"step":"Spread butter on each slice of bread.","ingredients":[{"id":1001,"name":"butter","localizedName":"butter","image":"butter-sliced.jpg"},{"id":0,"name":"spread","localizedName":"spread","image":""},{"id":18064,"name":"bread","localizedName":"bread","image":"white-bread.jpg"}],"equipment":[]},{"number":2,"step":"Place slice of ham and turkey on one slice of bread. Cover with second slice.","ingredients":[{"id":5165,"name":"whole turkey","localizedName":"whole turkey","image":"turkey-raw-whole.jpg"},{"id":18064,"name":"bread","localizedName":"bread","image":"white-bread.jpg"},{"id":10151,"name":"ham","localizedName":"ham","image":"ham-whole.jpg"}],"equipment":[]},{"number":3,"step":"Place cheese on top and cover with third slice of bread. Secure with toothpicks.","ingredients":[{"id":1041009,"name":"cheese","localizedName":"cheese","image":"cheddar-cheese.png"},{"id":18064,"name":"bread","localizedName":"bread","image":"white-bread.jpg"}],"equipment":[{"id":404644,"name":"toothpicks","localizedName":"toothpicks","image":"toothpicks.jpg"}]}]},{"name":"Cut into halves diagonally.BATTER","steps":[{"number":1,"step":"Mix eggs, milk and salt. Dip sandwiches into egg mixture.","ingredients":[{"id":1123,"name":"egg","localizedName":"egg","image":"egg.png"},{"id":1077,"name":"milk","localizedName":"milk","image":"milk.png"},{"id":2047,"name":"salt","localizedName":"salt","image":"salt.jpg"},{"id":0,"name":"dip","localizedName":"dip","image":""}],"equipment":[]},{"number":2,"step":"Heat butter and oil in skillet to medium. Fry sandwiches slowly in skillet.","ingredients":[{"id":1001,"name":"butter","localizedName":"butter","image":"butter-sliced.jpg"},{"id":4582,"name":"cooking oil","localizedName":"cooking oil","image":"vegetable-oil.jpg"}],"equipment":[{"id":404645,"name":"frying pan","localizedName":"frying pan","image":"pan.png"}]},{"number":3,"step":"Drain on paper toweling. Makes 4 servings.","ingredients":[],"equipment":[]}]}],"spoonacularScore":55.53175354003906,"spoonacularSourceUrl":"https://spoonacular.com/monte-carlo-sandwich-652359","usedIngredientCount":1,"missedIngredientCount":6,"likes":0,"missedIngredients":[{"id":1001,"amount":0.5,"unit":"pound","unitLong":"pounds","unitShort":"lb","aisle":"Milk, Eggs, Other Dairy","name":"butter","original":"1/2 pound Butter, melted","originalName":"Butter, melted","meta":["melted"],"image":"https://spoonacular.com/cdn/ingredients_100x100/butter-sliced.jpg"},{"id":1041009,"amount":9,"unit":"servings","unitLong":"servings","unitShort":"servings","aisle":"Cheese","name":"cheese","original":"Cheese, sliced","originalName":"Cheese, sliced","meta":["sliced"],"image":"https://spoonacular.com/cdn/ingredients_100x100/cheddar-cheese.png"},{"id":10802,"amount":9,"unit":"servings","unitLong":"servings","unitShort":"servings","aisle":"Meat","name":"ham","original":"Cooked ham, sliced","originalName":"Cooked ham, sliced","meta":["cooked","sliced"],"extendedName":"cooked ham","image":"https://spoonacular.com/cdn/ingredients_100x100/ham-whole.jpg"},{"id":1123,"amount":2,"unit":"","unitLong":"","unitShort":"","aisle":"Milk, Eggs, Other Dairy","name":"eggs","original":"2 Eggs, beaten lightly","originalName":"Eggs, beaten lightly","meta":["beaten"],"image":"https://spoonacular.com/cdn/ingredients_100x100/egg.png"},{"id":1077,"amount":1,"unit":"cup","unitLong":"cup","unitShort":"cup","aisle":"Milk, Eggs, Other Dairy","name":"milk","original":"cup milk","originalName":"milk","meta":[],"image":"https://spoonacular.com/cdn/ingredients_100x100/milk.png"},{"id":18069,"amount":12,"unit":"slices","unitLong":"slices","unitShort":"slice","aisle":"Bakery/Bread","name":"sandwich bread","original":"12 slices white sandwich bread","originalName":"white sandwich bread","meta":["white"],"extendedName":"white sandwich bread","image":"https://spoonacular.com/cdn/ingredients_100x100/white-bread.jpg"}],"usedIngredients":[{"id":5165,"amount":9,"unit":"servings","unitLong":"servings","unitShort":"servings","aisle":"Meat","name":"turkey","original":"Turkey, sliced","originalName":"Turkey, sliced","meta":["sliced"],"image":"https://spoonacular.com/cdn/ingredients_100x100/turkey-raw-whole.jpg"}],"unusedIngredients":[]}]}');
+module.exports = JSON.parse('{"results":[{"vegetarian":false,"vegan":false,"glutenFree":true,"dairyFree":false,"veryHealthy":false,"cheap":false,"veryPopular":false,"sustainable":false,"lowFodmap":false,"weightWatcherSmartPoints":3,"gaps":"no","preparationMinutes":10,"cookingMinutes":20,"aggregateLikes":2,"healthScore":2,"creditsText":"Jen West","sourceName":"Pink When","pricePerServing":47.53,"extendedIngredients":[{"id":10211821,"aisle":"Produce","image":"yellow-bell-pepper.jpg","consistency":"SOLID","name":"bell pepper","nameClean":"bell pepper","original":"1 bell pepper chopped","originalName":"bell pepper chopped","amount":1,"unit":"","meta":["chopped"],"measures":{"us":{"amount":1,"unitShort":"","unitLong":""},"metric":{"amount":1,"unitShort":"","unitLong":""}}},{"id":10211821,"aisle":"Produce","image":"bell-pepper-orange.png","consistency":"SOLID","name":"bell pepper","nameClean":"bell pepper","original":"1 bell pepper chopped","originalName":"bell pepper chopped","amount":1,"unit":"","meta":["chopped"],"measures":{"us":{"amount":1,"unitShort":"","unitLong":""},"metric":{"amount":1,"unitShort":"","unitLong":""}}},{"id":1123,"aisle":"Milk, Eggs, Other Dairy","image":"egg.png","consistency":"SOLID","name":"eggs","nameClean":"egg","original":"12 eggs","originalName":"eggs","amount":12,"unit":"","meta":[],"measures":{"us":{"amount":12,"unitShort":"","unitLong":""},"metric":{"amount":12,"unitShort":"","unitLong":""}}},{"id":1077,"aisle":"Milk, Eggs, Other Dairy","image":"milk.png","consistency":"LIQUID","name":"milk","nameClean":"milk","original":"1/2 cup milk","originalName":"milk","amount":0.5,"unit":"cup","meta":[],"measures":{"us":{"amount":0.5,"unitShort":"cups","unitLong":"cups"},"metric":{"amount":122,"unitShort":"ml","unitLong":"milliliters"}}},{"id":11282,"aisle":"Produce","image":"brown-onion.png","consistency":"SOLID","name":"sm onion","nameClean":"onion","original":"1 sm onion chopped","originalName":"sm onion chopped","amount":1,"unit":"","meta":["chopped"],"measures":{"us":{"amount":1,"unitShort":"","unitLong":""},"metric":{"amount":1,"unitShort":"","unitLong":""}}},{"id":11398,"aisle":"Frozen","image":"tater-tots.jpg","consistency":"SOLID","name":"potato tots","nameClean":"tater tots","original":"12 potato tots","originalName":"potato tots","amount":12,"unit":"","meta":[],"measures":{"us":{"amount":12,"unitShort":"","unitLong":""},"metric":{"amount":12,"unitShort":"","unitLong":""}}},{"id":1102047,"aisle":"Spices and Seasonings","image":"salt-and-pepper.jpg","consistency":"SOLID","name":"salt and pepper","nameClean":"salt and pepper","original":"salt and pepper to taste","originalName":"salt and pepper to taste","amount":12,"unit":"servings","meta":["to taste"],"measures":{"us":{"amount":12,"unitShort":"servings","unitLong":"servings"},"metric":{"amount":12,"unitShort":"servings","unitLong":"servings"}}},{"id":1011026,"aisle":"Cheese","image":"cheddar-cheese.png","consistency":"SOLID","name":"cheese","nameClean":"shredded cheese","original":"1 cup cheese shredded","originalName":"cheese shredded","amount":1,"unit":"cup","meta":["shredded"],"measures":{"us":{"amount":1,"unitShort":"cup","unitLong":"cup"},"metric":{"amount":112,"unitShort":"g","unitLong":"grams"}}},{"id":5165,"aisle":"Meat","image":"turkey-raw-whole.jpg","consistency":"SOLID","name":"turkey","nameClean":"whole turkey","original":"1/2 cup turkey chopped","originalName":"turkey chopped","amount":0.5,"unit":"cup","meta":["chopped"],"measures":{"us":{"amount":0.5,"unitShort":"cups","unitLong":"cups"},"metric":{"amount":49.7,"unitShort":"g","unitLong":"grams"}}}],"id":1017374,"title":"Easy Weekday Breakfast Muffins","readyInMinutes":30,"servings":12,"sourceUrl":"https://www.pinkwhen.com/easy-weekday-breakfast-muffins/","image":"https://spoonacular.com/recipeImages/1017374-312x231.jpg","imageType":"jpg","nutrition":{"nutrients":[{"name":"Calories","amount":128.7,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Fat","amount":7.73,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Saturated Fat","amount":3.01,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Carbohydrates","amount":5.42,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Net Carbohydrates","amount":4.63,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Sugar","amount":2,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Cholesterol","amount":175.26,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Sodium","amount":365.49,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Protein","amount":9.32,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin C","amount":26.69,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Selenium","amount":16.26,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Vitamin A","amount":941.01,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin B2","amount":0.27,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Phosphorus","amount":151.92,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Vitamin B12","amount":0.71,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B6","amount":0.2,"unit":"mg","percentOfDailyNeeds":9.83},{"name":"Calcium","amount":89.62,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Vitamin B5","amount":0.86,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Folate","amount":34.04,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Zinc","amount":1.05,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Vitamin D","amount":1.04,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Iron","amount":1,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Vitamin E","amount":0.81,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Potassium","amount":171.27,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Vitamin B1","amount":0.06,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Vitamin B3","amount":0.75,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Magnesium","amount":14.25,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Fiber","amount":0.79,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Manganese","amount":0.06,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Copper","amount":0.05,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin K","amount":1.62,"unit":"µg","percentOfDailyNeeds":1.55}],"properties":[{"name":"Glycemic Index","amount":13,"unit":""},{"name":"Glycemic Load","amount":0.67,"unit":""},{"name":"Nutrition Score","amount":8.904782608695653,"unit":"%"}],"flavonoids":[{"name":"Cyanidin","amount":0,"unit":"mg"},{"name":"Petunidin","amount":0,"unit":""},{"name":"Delphinidin","amount":0,"unit":""},{"name":"Malvidin","amount":0,"unit":""},{"name":"Pelargonidin","amount":0,"unit":""},{"name":"Peonidin","amount":0,"unit":""},{"name":"Catechin","amount":0,"unit":"mg"},{"name":"Epigallocatechin","amount":0,"unit":"mg"},{"name":"Epicatechin","amount":0,"unit":"mg"},{"name":"Epicatechin 3-gallate","amount":0,"unit":"mg"},{"name":"Epigallocatechin 3-gallate","amount":0,"unit":"mg"},{"name":"Theaflavin","amount":0,"unit":""},{"name":"Thearubigins","amount":0,"unit":""},{"name":"Eriodictyol","amount":0,"unit":""},{"name":"Hesperetin","amount":0,"unit":""},{"name":"Naringenin","amount":0,"unit":""},{"name":"Apigenin","amount":0,"unit":"mg"},{"name":"Luteolin","amount":0.12,"unit":"mg"},{"name":"Isorhamnetin","amount":0.46,"unit":"mg"},{"name":"Kaempferol","amount":0.06,"unit":"mg"},{"name":"Myricetin","amount":0,"unit":"mg"},{"name":"Quercetin","amount":1.91,"unit":"mg"},{"name":"Theaflavin-3,3\'-digallate","amount":0,"unit":""},{"name":"Theaflavin-3\'-gallate","amount":0,"unit":""},{"name":"Theaflavin-3-gallate","amount":0,"unit":""},{"name":"Gallocatechin","amount":0,"unit":"mg"}],"ingredients":[{"id":10211821,"name":"bell pepper","amount":0.08,"unit":"","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":0.4,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":310.49,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.16,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.03,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0.21,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":2.58,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":4.56,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.49,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":20.92,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":2.58,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":0.56,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":12.69,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.42,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":0.69,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.39,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.1,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.04,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.19,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.1,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.02,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.01,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.6,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.03,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":10211821,"name":"bell pepper","amount":0.08,"unit":"","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":0.4,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":310.49,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.16,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.03,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0.21,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":2.58,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":4.56,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.49,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":20.92,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":2.58,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":0.56,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":12.69,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.42,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":0.69,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.39,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.1,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.04,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.19,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.1,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.02,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.01,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.6,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.03,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":1123,"name":"eggs","amount":1,"unit":"","nutrients":[{"name":"Zinc","amount":0.57,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":1.61,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":1.38,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":62.48,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":237.6,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.46,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.67,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":4.18,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0.88,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":62.92,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":20.68,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.13,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Choline","amount":129.36,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":60.72,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":87.12,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Vitamin B2","amount":0.2,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Copper","amount":0.03,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Fluoride","amount":0.48,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0.16,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":24.64,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.32,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":5.54,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0.39,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Trans Fat","amount":0.02,"unit":"g","percentOfDailyNeeds":192.88},{"name":"Vitamin B1","amount":0.02,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.77,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":5.28,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.03,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.84,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":163.68,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":13.51,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.32,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.07,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":1077,"name":"milk","amount":0.04,"unit":"cup","nutrients":[{"name":"Zinc","amount":0.04,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0.07,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.19,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":3.86,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":16.47,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.01,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.04,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.33,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0.11,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":6.1,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.03,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":15.25,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":10.27,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":1.81,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.49,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":12.51,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.47,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.33,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0.05,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.22,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":1.22,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.19,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.47,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.01,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":11282,"name":"sm onion","amount":0.08,"unit":"","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":0.37,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":0.18,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.01,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.01,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0.16,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":3.67,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":1.74,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.04,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Choline","amount":0.56,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":13.38,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":2.66,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Vitamin B2","amount":0,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Vitamin C","amount":0.68,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Fluoride","amount":0.1,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0.39,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":2.11,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.7,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.1,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.02,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":0.92,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.05,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.86,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.01,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":11398,"name":"potato tots","amount":1,"unit":"","nutrients":[{"name":"Zinc","amount":0.02,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0.32,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.14,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":41.04,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":0.36,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.01,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.83,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0.22,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":17.02,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":1.55,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.24,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":23.66,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":6.1,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":2.38,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0.01,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":0.63,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.03,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":1.27,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":2.16,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.18,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0.02,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.05,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.55,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.17,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.3,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.03,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":2.38,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.02,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":1102047,"name":"salt and pepper","amount":1,"unit":"servings","nutrients":[{"name":"Zinc","amount":0,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":193.79,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":0,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":0,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Choline","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Potassium","amount":0.04,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":0,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Vitamin B2","amount":0,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Fluoride","amount":0.01,"unit":"mg","percentOfDailyNeeds":0},{"name":"Sugar","amount":0,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":0.12,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":0,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":0,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":1011026,"name":"cheese","amount":0.08,"unit":"cup","nutrients":[{"name":"Zinc","amount":0.27,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0.61,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":1.23,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":58.52,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":63.09,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0.02,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.01,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":2.09,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0.04,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":28,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0.65,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0.21,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":7.09,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":33.04,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":1.44,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.03,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0.1,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":47.13,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0.2,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":2.07,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0.21,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.04,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.87,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.01,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.07,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":7.37,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":1.59,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0.2,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0,"unit":"mg","percentOfDailyNeeds":9.83}]},{"id":5165,"name":"turkey","amount":0.04,"unit":"cup","nutrients":[{"name":"Zinc","amount":0.07,"unit":"mg","percentOfDailyNeeds":6.97},{"name":"Mono Unsaturated Fat","amount":0.08,"unit":"g","percentOfDailyNeeds":0},{"name":"Saturated Fat","amount":0.06,"unit":"g","percentOfDailyNeeds":18.78},{"name":"Sodium","amount":4.64,"unit":"mg","percentOfDailyNeeds":15.89},{"name":"Vitamin A","amount":2.32,"unit":"IU","percentOfDailyNeeds":18.82},{"name":"Vitamin E","amount":0,"unit":"mg","percentOfDailyNeeds":5.43},{"name":"Manganese","amount":0,"unit":"mg","percentOfDailyNeeds":3.06},{"name":"Vitamin B5","amount":0.03,"unit":"mg","percentOfDailyNeeds":8.6},{"name":"Fat","amount":0.23,"unit":"g","percentOfDailyNeeds":11.9},{"name":"Fiber","amount":0,"unit":"g","percentOfDailyNeeds":3.16},{"name":"Vitamin D","amount":0.01,"unit":"µg","percentOfDailyNeeds":6.94},{"name":"Calories","amount":5.84,"unit":"kcal","percentOfDailyNeeds":6.44},{"name":"Alcohol","amount":0,"unit":"g","percentOfDailyNeeds":0},{"name":"Folate","amount":0.29,"unit":"µg","percentOfDailyNeeds":8.51},{"name":"Lycopene","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Vitamin K","amount":0,"unit":"µg","percentOfDailyNeeds":1.55},{"name":"Potassium","amount":9.28,"unit":"mg","percentOfDailyNeeds":4.89},{"name":"Phosphorus","amount":7.58,"unit":"mg","percentOfDailyNeeds":15.19},{"name":"Choline","amount":2.4,"unit":"mg","percentOfDailyNeeds":0},{"name":"Copper","amount":0,"unit":"mg","percentOfDailyNeeds":2.51},{"name":"Vitamin C","amount":0,"unit":"mg","percentOfDailyNeeds":32.36},{"name":"Vitamin B2","amount":0.01,"unit":"mg","percentOfDailyNeeds":16.14},{"name":"Sugar","amount":0,"unit":"g","percentOfDailyNeeds":2.22},{"name":"Calcium","amount":0.46,"unit":"mg","percentOfDailyNeeds":8.96},{"name":"Net Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":1.68},{"name":"Protein","amount":0.9,"unit":"g","percentOfDailyNeeds":18.65},{"name":"Vitamin B12","amount":0.05,"unit":"µg","percentOfDailyNeeds":11.83},{"name":"Trans Fat","amount":0,"unit":"g","percentOfDailyNeeds":192.88},{"name":"Vitamin B1","amount":0,"unit":"mg","percentOfDailyNeeds":3.98},{"name":"Iron","amount":0.04,"unit":"mg","percentOfDailyNeeds":5.55},{"name":"Magnesium","amount":1.04,"unit":"mg","percentOfDailyNeeds":3.56},{"name":"Vitamin B3","amount":0.32,"unit":"mg","percentOfDailyNeeds":3.74},{"name":"Poly Unsaturated Fat","amount":0.06,"unit":"g","percentOfDailyNeeds":0},{"name":"Folic Acid","amount":0,"unit":"µg","percentOfDailyNeeds":0},{"name":"Cholesterol","amount":2.98,"unit":"mg","percentOfDailyNeeds":58.42},{"name":"Caffeine","amount":0,"unit":"mg","percentOfDailyNeeds":0},{"name":"Selenium","amount":0.88,"unit":"µg","percentOfDailyNeeds":23.23},{"name":"Carbohydrates","amount":0,"unit":"g","percentOfDailyNeeds":1.81},{"name":"Vitamin B6","amount":0.02,"unit":"mg","percentOfDailyNeeds":9.83}]}],"caloricBreakdown":{"percentProtein":29.01,"percentFat":54.12,"percentCarbs":16.87},"weightPerServing":{"amount":106,"unit":"g"}},"summary":"Need a <b>gluten free breakfast</b>? Easy Weekday Breakfast Muffins could be an outstanding recipe to try. One portion of this dish contains around <b>9g of protein</b>, <b>8g of fat</b>, and a total of <b>126 calories</b>. This recipe serves 12. For <b>48 cents per serving</b>, this recipe <b>covers 8%</b> of your daily requirements of vitamins and minerals. 2 people were impressed by this recipe. A mixture of sm onion, turkey, milk, and a handful of other ingredients are all it takes to make this recipe so delicious. It is brought to you by Pink When. From preparation to the plate, this recipe takes approximately <b>30 minutes</b>. Overall, this recipe earns a <b>rather bad spoonacular score of 26%</b>. Similar recipes include <a href=\\"https://spoonacular.com/recipes/easy-weekday-breakfast-muffins-1732671\\">Easy Weekday Breakfast Muffins</a>, <a href=\\"https://spoonacular.com/recipes/easy-weekday-breakfast-muffins-1375053\\">Easy Weekday Breakfast Muffins</a>, and <a href=\\"https://spoonacular.com/recipes/easy-weekday-breakfast-muffins-1581591\\">Easy Weekday Breakfast Muffins</a>.","cuisines":[],"dishTypes":["morning meal","brunch","breakfast"],"diets":["gluten free"],"occasions":[],"analyzedInstructions":[{"name":"","steps":[{"number":1,"step":"Heat oven to 35","ingredients":[],"equipment":[{"id":404784,"name":"oven","localizedName":"oven","image":"oven.jpg"}]},{"number":2,"step":"Whisk eggs together in a medium bowl.","ingredients":[{"id":1123,"name":"egg","localizedName":"egg","image":"egg.png"}],"equipment":[{"id":404661,"name":"whisk","localizedName":"whisk","image":"whisk.png"},{"id":404783,"name":"bowl","localizedName":"bowl","image":"bowl.jpg"}]},{"number":3,"step":"Add chopped pepper and onion, salt and pepper, cheese, and milk. Fill muffin tin halfway with egg mixture.","ingredients":[{"id":1102047,"name":"salt and pepper","localizedName":"salt and pepper","image":"salt-and-pepper.jpg"},{"id":1041009,"name":"cheese","localizedName":"cheese","image":"cheddar-cheese.png"},{"id":1002030,"name":"pepper","localizedName":"pepper","image":"pepper.jpg"},{"id":11282,"name":"onion","localizedName":"onion","image":"brown-onion.png"},{"id":1077,"name":"milk","localizedName":"milk","image":"milk.png"},{"id":1123,"name":"egg","localizedName":"egg","image":"egg.png"}],"equipment":[{"id":404671,"name":"muffin tray","localizedName":"muffin tray","image":"muffin-tray.jpg"}]},{"number":4,"step":"Sprinkle turkey meat into each.","ingredients":[{"id":5167,"name":"turkey meat","localizedName":"turkey meat","image":"turkey-raw-whole.jpg"}],"equipment":[]},{"number":5,"step":"Add a potato tot to each. Top with cheese.","ingredients":[{"id":11398,"name":"tater tots","localizedName":"tater tots","image":"tater-tots.jpg"},{"id":1041009,"name":"cheese","localizedName":"cheese","image":"cheddar-cheese.png"}],"equipment":[]},{"number":6,"step":"Place in oven for 20 minutes or until fully cooked.","ingredients":[],"equipment":[{"id":404784,"name":"oven","localizedName":"oven","image":"oven.jpg"}],"length":{"number":20,"unit":"minutes"}},{"number":7,"step":"Serve immediately or store for later.","ingredients":[],"equipment":[]}]}],"spoonacularScore":33.343017578125,"spoonacularSourceUrl":"https://spoonacular.com/easy-weekday-breakfast-muffins-1017374","usedIngredientCount":1,"missedIngredientCount":6,"likes":0,"missedIngredients":[{"id":10211821,"amount":1,"unit":"","unitLong":"","unitShort":"","aisle":"Produce","name":"bell pepper","original":"1 bell pepper chopped","originalName":"bell pepper chopped","meta":["chopped"],"image":"https://spoonacular.com/cdn/ingredients_100x100/yellow-bell-pepper.jpg"},{"id":1123,"amount":12,"unit":"","unitLong":"","unitShort":"","aisle":"Milk, Eggs, Other Dairy","name":"eggs","original":"12 eggs","originalName":"eggs","meta":[],"image":"https://spoonacular.com/cdn/ingredients_100x100/egg.png"},{"id":1077,"amount":0.5,"unit":"cup","unitLong":"cups","unitShort":"cup","aisle":"Milk, Eggs, Other Dairy","name":"milk","original":"1/2 cup milk","originalName":"milk","meta":[],"image":"https://spoonacular.com/cdn/ingredients_100x100/milk.png"},{"id":11282,"amount":1,"unit":"","unitLong":"","unitShort":"","aisle":"Produce","name":"sm onion","original":"1 sm onion chopped","originalName":"sm onion chopped","meta":["chopped"],"image":"https://spoonacular.com/cdn/ingredients_100x100/brown-onion.png"},{"id":11398,"amount":12,"unit":"","unitLong":"","unitShort":"","aisle":"Frozen","name":"potato tots","original":"12 potato tots","originalName":"potato tots","meta":[],"image":"https://spoonacular.com/cdn/ingredients_100x100/tater-tots.jpg"},{"id":1011026,"amount":1,"unit":"cup","unitLong":"cup","unitShort":"cup","aisle":"Cheese","name":"cheese","original":"1 cup cheese shredded","originalName":"cheese shredded","meta":["shredded"],"extendedName":"shredded cheese","image":"https://spoonacular.com/cdn/ingredients_100x100/cheddar-cheese.png"}],"usedIngredients":[{"id":5165,"amount":0.5,"unit":"cup","unitLong":"cups","unitShort":"cup","aisle":"Meat","name":"turkey","original":"1/2 cup turkey chopped","originalName":"turkey chopped","meta":["chopped"],"image":"https://spoonacular.com/cdn/ingredients_100x100/turkey-raw-whole.jpg"}],"unusedIngredients":[]}]}');
 
 /***/ })
 
